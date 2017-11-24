@@ -1,0 +1,1 @@
+# HashUniforme1.0
