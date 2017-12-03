@@ -23,7 +23,7 @@ public class HashIterativeBoolean implements FuncionHash {
 	}
 	
 
-	public long getHashEval( String o) {
+	private long getHashEval( String o) {
 		
 		o = pad(o);
 
