@@ -9,12 +9,12 @@ import java.math.BigInteger;
  * @author jmedina
  *
  */
-public class HashJava implements FuncionHash {
+public class Java implements FuncionHash {
 
 	/**
 	 * 
 	 */
-	public HashJava() {
+	public Java() {
 	}
 	
 	@Override
@@ -34,7 +34,7 @@ public class HashJava implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		HashJava hash = new HashJava(); 
+		Java hash = new Java(); 
 		System.out.println( "===> "+hash.getHash( "friabili" ) );
 		System.out.println( "===> "+hash.getHash( "tensada" ) );
 	}

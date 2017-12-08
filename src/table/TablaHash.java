@@ -1,8 +1,11 @@
-package hash;
+package table;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import hash.Azrael64;
+import hash.FuncionHash;
 
 /**
  * @author jmedina
@@ -233,7 +236,7 @@ public class TablaHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		HashIterativeBoolean funcionHash = new HashIterativeBoolean();
+		Azrael64 funcionHash = new Azrael64(false);
 		TablaHash tablaHash = new TablaHash(funcionHash);
 		tablaHash.put("0", "cero");
 		tablaHash.put("1", "uno");

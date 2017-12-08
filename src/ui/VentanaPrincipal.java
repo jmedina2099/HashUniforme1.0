@@ -5,10 +5,10 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import hash.Azrael64;
 import hash.FuncionHash;
-import hash.HashIterativeBoolean;
-import hash.HashJava;
-import hash.HashSHA;
+import hash.SHA;
+import hash.Java;
 import main.Main;
 
 /**
@@ -63,13 +63,13 @@ public class VentanaPrincipal extends JFrame {
 		
 		Main main = new Main();
 		
-		FuncionHash funcionHash = new HashJava();
+		FuncionHash funcionHash = new Java();
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram);
 
-		funcionHash = new HashSHA();
+		funcionHash = new SHA();
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram); //174848
 
-		funcionHash = new HashIterativeBoolean();
+		funcionHash = new Azrael64(false);
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram);
 		
 	}

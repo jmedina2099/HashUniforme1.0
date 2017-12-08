@@ -12,9 +12,9 @@ import java.security.NoSuchAlgorithmException;
  * @author jmedina
  * 
  */
-public class HashSHA implements FuncionHash {
+public class SHA implements FuncionHash {
 
-	public HashSHA() {
+	public SHA() {
 	}
 
 	public BigInteger getHash(String o ) {
@@ -37,13 +37,27 @@ public class HashSHA implements FuncionHash {
 		return "HashSHA";
 	}
 
-
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		HashSHA hash = new HashSHA(); 
-		System.out.println( "===> "+hash.getHash( "" ) );
+		SHA hash = new SHA(); 
+
+		BigInteger eval = hash.getHash( "" );
+		System.out.println( "===> hashEval="+eval );
+		
+		int promedio = 0;
+		
+		String cad = eval.toString();
+		int digit;
+		for( int i=0; i<cad.length(); i++ ) {
+			digit = Integer.parseInt( ""+cad.charAt(i) );
+			promedio += digit;
+		}
+		
+		double avg = promedio/(double)cad.length();
+		System.out.println( "===> avg="+avg );
+	
 	}
 
 }

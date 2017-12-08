@@ -11,11 +11,11 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
+import hash.Azrael320;
 import hash.FuncionHash;
-import hash.HashIterativeBoolean;
-import hash.HashJava;
-import hash.HashSHA;
-import hash.TablaHash;
+import hash.SHA;
+import hash.Java;
+import table.TablaHash;
 import ui.PanelPrincipal;
 import ui.VentanaPrincipal;
 
@@ -25,17 +25,19 @@ import ui.VentanaPrincipal;
  */
 public class Main {
 	
-	private boolean usePrime = true;
-	private boolean useFiles = true;
+	private boolean usePrime = false;
+	private boolean useFiles = false;
 	private boolean useRockyou = false;
-	private boolean randomBites = true;
+	private boolean oneBitDistinct = true;
+	private boolean randomBites = false;
 	private boolean withHistogram = false;
 
 
 	private void test( FuncionHash funcionHash ) {
 		String[] arrayNames = new String[]{ "/esp.txt", "/en.txt", "/words.txt", "/rockyou.txt" };
 		String[] charsetNames = new String[]{ "ISO-8859-1", "UTF-8", "UTF-8", "UTF-8" };
-		int[] sizes = new int[]{ 174848,194433,466544,14344389 };
+		//int[] sizes = new int[]{ 174848,194433,466544,14344389 };
+		int[] sizes = new int[]{ 200000,200000,500000,14500000 };
 		int[] sizesPrimes = new int[]{ 174851,194483,466547,14344403 };
 		if( useFiles) {
 			processFile( funcionHash, arrayNames[0], charsetNames[0], usePrime? sizesPrimes[0]: sizes[0], withHistogram );
@@ -47,15 +49,26 @@ public class Main {
 			processFile( funcionHash, arrayNames[3], charsetNames[3], usePrime? sizesPrimes[3]: sizes[3], withHistogram );
 		}
 		
+		if( oneBitDistinct ) {
+			System.out.print( "=====> CLEANING UP..." );
+			System.gc();
+			System.out.println( " DONE ==>");
+	
+			int size = 8000;
+			int sizePrime = 120031;
+			processBites( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
+		}
+
 		if( randomBites ) {
 			System.out.print( "=====> CLEANING UP..." );
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 120001;
+			int size = 120000;
 			int sizePrime = 120031;
-			processBites( funcionHash, usePrime? sizePrime: size, withHistogram );
-		}		
+			processBitesRandom( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
+		}
+
 	}
 
 	/**
@@ -89,6 +102,7 @@ public class Main {
 		try {
 			while( (word=reader.readLine())!=null ) {
 				if( word.length() > 0 ) {
+					//System.out.println( "TOT="+total );
 					tablaHash.put( word,null );
 					total++;
 				}
@@ -129,12 +143,10 @@ public class Main {
 	/**
 	 * 
 	 */
-	public static void processBites( FuncionHash funcionHash, int capacityOfTable, boolean withHistogram ) {
-		
-		int size = 15000;
+	public static void processBites( int size, FuncionHash funcionHash, int capacityOfTable, boolean withHistogram ) {
 		
 		long timeIni = System.currentTimeMillis();
-		System.out.println( "=====> START RANDOM BYTES="+size );
+		System.out.println( "=====> START ONE BIT DISTINCT="+size );
 		
 		System.out.println( "===> FUNCION="+funcionHash.toString() );
 		TablaHash tablaHash = new TablaHash( funcionHash, capacityOfTable );
@@ -153,8 +165,8 @@ public class Main {
 		byte biteAnt;
 		int total = 0;
 		for( int index=0; index<bites.length; index++ ) {
-			//System.out.println( "BITES="+ Integer.toBinaryString( bites[index] & 0xFF ) );			
-			for( int offset=0; offset<8; offset++ ) {
+			//System.out.println( "BITES="+ Integer.toBinaryString( bites[index] & 0xFF ) );
+			for( int offset=7; offset>=0; offset-- ) {
 				biteAnt = bites[index];
 				
 				bites[index] ^= (1 << offset); // Toogle bit.
@@ -164,6 +176,68 @@ public class Main {
 				bites[index] = biteAnt;
 				total++;
 			}
+		}
+
+		int sizeTable = tablaHash.size();
+		int ocupadas = tablaHash.getCasillasOcupadas();
+		int porcentaje = ocupadas*100/total;
+		int maxCasillas = tablaHash.getMaxCasillas();
+		double promedioCasillas = tablaHash.getPromedioCasillas();
+		int colisiones = tablaHash.getColisiones();
+		
+		System.out.println( "TABLE SIZE="+sizeTable );
+		System.out.println( "CasillasOcupadas="+ocupadas+"-"+porcentaje+"%" );
+		System.out.println( "MAX Casillas="+maxCasillas );
+		System.out.println( "Promedio Casillas="+promedioCasillas );
+		System.out.println( "Colisiones=["+colisiones+"]" );
+		System.out.println( "TOTAL="+total );
+
+		long timeNow = System.currentTimeMillis() - timeIni;
+		System.out.println( "TIME = "+
+				"["+(timeNow/(1000.0))+"] secs,"+
+				"["+(timeNow/(1000.0*60.0))+"] mins." );
+		
+		if( withHistogram ) {
+			VentanaPrincipal window = new VentanaPrincipal();
+			PanelPrincipal panel = window.getPanelPrincipal();
+			panel.setCasillas( tablaHash.getCasillasToArray(), tablaHash.getMaxCasillas());
+			window.setVisible( true );
+		}
+	}	
+
+	/**
+	 * 
+	 * @param funcionHash
+	 * @param capacityOfTable
+	 * @param withHistogram
+	 */
+	public static void processBitesRandom( int size, FuncionHash funcionHash, int capacityOfTable, boolean withHistogram ) {
+		
+		long timeIni = System.currentTimeMillis();
+		System.out.println( "=====> START RANDOM BYTES="+size );
+		
+		System.out.println( "===> FUNCION="+funcionHash.toString() );
+		TablaHash tablaHash = new TablaHash( funcionHash, capacityOfTable );
+
+		/*
+		byte[] bitesA =  getRandomBitesFromFile( "/colisiones-java-1.txt", 8000 );
+		byte[] bitesB =  getRandomBitesFromFile( "/colisiones-java-2.txt", 8000 );
+		tablaHash.add( new String( bitesA) );
+		tablaHash.add( new String( bitesB) );
+		*/
+		
+		byte[] bites;  
+		System.out.println( "STARTING..." );
+		//System.out.println( "<"+Arrays.toString(bites)+">-["+bites.length+"]" );
+
+		int total = 0;
+		for( int i=0; i< size*8; i++ ) {
+			//System.out.println( "BITES="+ Integer.toBinaryString( bites[index] & 0xFF ) );
+			
+			bites = getRandomBites( size );
+			tablaHash.put( new String( bites),null );
+			total++;
+			
 		}
 
 		int sizeTable = tablaHash.size();
@@ -215,20 +289,20 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Main main = new Main();
-		
-		main.test( new HashJava() );
-		
-		System.out.print( "=====> CLEANING UP..." );
-		System.gc();
-		System.out.println( " DONE ==>");
-		
-		main.test( new HashSHA() );
+
+		main.test( new Java() );
 		
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
 		
-		main.test( new HashIterativeBoolean() );
+		main.test( new SHA() );
+		
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
+
+		main.test( new Azrael320() );
 	}
 
 }

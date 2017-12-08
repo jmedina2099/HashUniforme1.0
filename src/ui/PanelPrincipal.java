@@ -33,7 +33,7 @@ public class PanelPrincipal extends JPanel {
 		this._casillas = casillas;
 		this._maxCasilla = maxCasilla;
 		
-		boolean notEscaled = true;
+		boolean notEscaled = false;
 		if( notEscaled ) {
 			setPreferredSize( new Dimension( casillas.length + 80, 600));
 		} else {
