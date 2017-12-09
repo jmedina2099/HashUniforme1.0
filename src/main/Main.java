@@ -14,8 +14,8 @@ import java.util.Random;
 import hash.Azrael320;
 import hash.Azrael64;
 import hash.FuncionHash;
-import hash.SHA;
 import hash.Java;
+import hash.SHA;
 import table.TablaHash;
 import ui.PanelPrincipal;
 import ui.VentanaPrincipal;
@@ -27,10 +27,10 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = false;
+	private boolean useFiles = true;
 	private boolean useRockyou = false;
 	private boolean oneBitDistinct = true;
-	private boolean randomBites = false;
+	private boolean randomBites = true;
 	private boolean withHistogram = false;
 
 
@@ -55,9 +55,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 8000;
+			int size = 40000;
 			int sizePrime = 120031;
-			processBites( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBites( 5000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 		if( randomBites ) {
@@ -304,6 +304,12 @@ public class Main {
 		System.out.println( " DONE ==>");
 
 		main.test( new Azrael64(true) );
+
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
+
+		main.test( new Azrael320() );
 	}
 
 }
