@@ -189,7 +189,7 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64(16);
+		Azrael64 hash = new Azrael64(2);
 		BigInteger eval = hash.getHash( "" );
 		
 		System.out.println( "===> hashEval="+eval );

@@ -303,13 +303,24 @@ public class Main {
 		System.gc();
 		System.out.println( " DONE ==>");
 
-		main.test( new Azrael64() );
+		main.test( new Azrael64(1) );
 
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
 
-		main.test( new Azrael320() );
+		main.test( new Azrael64(2) );
+
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
+
+		main.test( new Azrael320(1) );
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
+
+		main.test( new Azrael320(2) );
 	}
 
 }
