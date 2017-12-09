@@ -25,12 +25,7 @@ public class SHA implements FuncionHash {
 			e.printStackTrace();
 		}
 		byte[] hash = digest.digest(o.getBytes(StandardCharsets.UTF_8));
-
-		BigInteger number = new BigInteger(hash);
-		if( number.compareTo( new BigInteger("0") ) < 0 ) {
-			number = number.multiply( new BigInteger("-1") );
-		}
-		return number;
+		return new BigInteger(hash);
 	}
 	
 	public String toString() {

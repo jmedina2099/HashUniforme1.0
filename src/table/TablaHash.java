@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import hash.Azrael64;
+import hash.Azrael320;
 import hash.FuncionHash;
 
 /**
@@ -236,15 +236,16 @@ public class TablaHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 funcionHash = new Azrael64(false);
+		FuncionHash funcionHash = new Azrael320();
 		TablaHash tablaHash = new TablaHash(funcionHash);
 		tablaHash.put("0", "cero");
 		tablaHash.put("1", "uno");
 		tablaHash.put("2", "dos");
 		
-		System.out.println( tablaHash.get("0") );
-		System.out.println( tablaHash.get("1") );
-		System.out.println( tablaHash.get("2") );
+		
+		//System.out.println( tablaHash.get("0") );
+		//System.out.println( tablaHash.get("1") );
+		//System.out.println( tablaHash.get("2") );
 	}
 
 }

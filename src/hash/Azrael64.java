@@ -14,33 +14,54 @@ import java.math.BigInteger;
 public class Azrael64 implements FuncionHash {
 
 	private static final boolean DEBUG_PARTIAL_HASH = false;
-	private static final boolean DEBUG_FIRST_HASH = false;
-	private static final boolean DEBUG_FINAL_HASH = false;
+	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
+
 	private int rounds = 0;
 
-	private boolean STRENGTH = false;
+	private int numIterations = 2;
+	private int iteration = 0;
 
-	private static final String EMPTY_STRING_SIMPLE =
+	private static final String EMPTY_STRING_1_IT =
 			"7709881500987057892";
 
-	private static final String EMPTY_STRING_STRENGTH = 
+	private static final String EMPTY_STRING_2_IT = 
 			"9121543017975456842";
 
 	/**
 	 * 
 	 */
-	public Azrael64( boolean twoIterations ) {
-		STRENGTH = twoIterations;
+	public Azrael64() {
+		this(1);
+	}
+	
+	/**
+	 * 
+	 */
+	public Azrael64( int numIterations ) {
+		this.numIterations = numIterations;
 	}
 
 	@Override
 	public BigInteger getHash(String o) {
-		rounds  = 0;
-		return new BigInteger(""+getHashEval( o.toString(), STRENGTH ));
+		this.rounds  = 0;
+		this.iteration  = 0;
+		
+		String eval = o;
+		for( ; iteration<numIterations; ) {
+			iteration++;
+			eval = ""+getHashEval( eval );
+			if( DEBUG_INTERMIDIATE_HASH ) { 
+				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
+				System.out.println( "**** OUTPUT ["+Long.BYTES+"] BYTES" );
+				printAverage( eval );
+			}
+		}
+		
+		return new BigInteger( eval );
 	}
 	
 
-	private long getHashEval( String o, boolean strength ) {
+	private long getHashEval( String o ) {
 		
 		o = pad(o);
 
@@ -64,19 +85,8 @@ public class Azrael64 implements FuncionHash {
 		sumaAnt2 += sumaAnt1;
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
-		char1 += sumaAnt1;
-		char2 += char3;
-		char3 += char4;
-		char4 += (long)o.charAt( 2 );
-		char5 += sumaAnt2;
-		sumaAnt5 += sumaAnt4;
-		sumaAnt4 += sumaAnt3;
-		sumaAnt3 += sumaAnt2;
-		sumaAnt2 += sumaAnt1;
-		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
-
 		// Main Loop.
-		for( int i=2; i<o.length()-2; i++ ) {
+		for( int i=1; i<o.length()-1; i++ ) {
 			char1 += sumaAnt1;
 			char2 += char3;
 			char3 += char4;
@@ -88,17 +98,6 @@ public class Azrael64 implements FuncionHash {
 			sumaAnt2 += sumaAnt1;
 			sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		}
-
-		char1 += sumaAnt1;
-		char2 += char3;
-		char3 += char4;
-		char4 += (long)o.charAt( o.length()-1 );
-		char5 += sumaAnt2;
-		sumaAnt5 += sumaAnt4;
-		sumaAnt4 += sumaAnt3;
-		sumaAnt3 += sumaAnt2;
-		sumaAnt2 += sumaAnt1;
-		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
 		char1 += sumaAnt1;
 		char2 += char3;
@@ -128,23 +127,10 @@ public class Azrael64 implements FuncionHash {
 					
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** END APILACION 1x64:" );
+			System.out.println( "**** hash = "+hash );
 		}
 
-		String input = ""+(hash<0?-hash:hash);
-		if( strength ) { 
-			if( DEBUG_FIRST_HASH ) {
-				System.out.println( "**** FIRST HASH ("+input.length()+") chars = "+input );
-				printAverage( input );
-			}	
-			return getHashEval( input, false );
-		} else {
-			if( DEBUG_FINAL_HASH ) {
-				System.out.println( "**** FINAL HASH ("+input.length()+") chars = "+input );
-				System.out.println( "**** OUTPUT [8] BYTES" );
-				printAverage( input );
-			}
-			return hash;
-		}
+		return hash;
 	}
 	
 	private String pad(String o) {
@@ -180,11 +166,13 @@ public class Azrael64 implements FuncionHash {
 	}
 	
 	public String toString() {
-		return "Azrael64 "+(STRENGTH? "2x": "1x");
+		return "Azrael64 "+numIterations+"x";
 	}
 
 	private static void printAverage( String cad ) {
 		int promedio = 0;
+		
+		cad = cad.replace( "-", "");
 		
 		int digit;
 		for( int i=0; i<cad.length(); i++ ) {
@@ -201,7 +189,7 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64( true );
+		Azrael64 hash = new Azrael64(16);
 		BigInteger eval = hash.getHash( "" );
 		
 		System.out.println( "===> hashEval="+eval );

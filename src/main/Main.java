@@ -27,10 +27,10 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = true;
+	private boolean useFiles = false;
 	private boolean useRockyou = false;
 	private boolean oneBitDistinct = true;
-	private boolean randomBites = true;
+	private boolean randomBites = false;
 	private boolean withHistogram = false;
 
 
@@ -55,9 +55,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 40000;
+			int size = 120000;
 			int sizePrime = 120031;
-			processBites( 5000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBites( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 		if( randomBites ) {
@@ -303,7 +303,7 @@ public class Main {
 		System.gc();
 		System.out.println( " DONE ==>");
 
-		main.test( new Azrael64(true) );
+		main.test( new Azrael64() );
 
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();

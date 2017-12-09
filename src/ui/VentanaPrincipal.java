@@ -69,7 +69,7 @@ public class VentanaPrincipal extends JFrame {
 		funcionHash = new SHA();
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram); //174848
 
-		funcionHash = new Azrael64(false);
+		funcionHash = new Azrael64();
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram);
 		
 	}

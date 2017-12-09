@@ -19,11 +19,7 @@ public class Java implements FuncionHash {
 	
 	@Override
 	public BigInteger getHash(String o) {
-		int hashCode = o.hashCode();
-		if( hashCode < 0 ) {
-			hashCode = hashCode*-1;
-		}
-		return new BigInteger( ""+hashCode );
+		return new BigInteger( ""+o.hashCode() );
 	}
 	
 	public String toString() {

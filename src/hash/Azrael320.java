@@ -15,22 +15,25 @@ import java.nio.ByteBuffer;
 public class Azrael320 implements FuncionHash {
 
 	private static final boolean DEBUG_PARTIAL_HASH = false;
-	private static final boolean DEBUG_FIRST_HASH = false;
-	private static final boolean DEBUG_FINAL_HASH = false;
+	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
+
 	private int rounds = 0;
+
 	private int numIterations = 2;
 	private int iteration = 0;
+
 
 	private static final String EMPTY_STRING_1_IT = 
 			"718777247607317870787894476530805951864841878713858974752094668676818935779713243250736700001737";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"618859893713819939263680862886336840176644572712426084611269903744680867405892463307787482179747";
+			"-618859893713819939210543925046241094947406811336175710579676853400023575369739118060005627254621";
 
 	/**
 	 * 
 	 */
 	public Azrael320() {
+		this(2);
 	}
 
 	/**
@@ -43,8 +46,24 @@ public class Azrael320 implements FuncionHash {
 	@Override
 	public BigInteger getHash(String o) {
 		this.rounds  = 0;
-		this.iteration = 0;
-		return new BigInteger( getHashEval( o) );
+		this.iteration  = 0;
+		
+		String eval = o;
+		BigInteger out = null;
+		byte[] bites = null;
+		for( ; iteration<numIterations; ) {
+			iteration++;
+			bites = getHashEval( eval );
+			out = new BigInteger(bites);
+			eval = out.toString();
+			if( DEBUG_INTERMIDIATE_HASH ) {
+				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
+				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
+				printAverage( eval );
+			}
+		}
+		
+		return out;
 	}
 
 	/**
@@ -54,7 +73,6 @@ public class Azrael320 implements FuncionHash {
 	 * @return 40 bytes / 320 bits
 	 */
 	public byte[] getHashEval( String o ) {
-		this.iteration++;
 		
 		o = pad(o);
 
@@ -187,32 +205,11 @@ public class Azrael320 implements FuncionHash {
 				System.out.println( "**** hash1 END = "+hash1 );
 			}
 			
-		byte[] bites = longToBytes( new long[]{ hash1<0?-hash1:hash1,
-												hash2,
-												hash3,
-												hash4,
-												hash5+rounds} );
-		
-		String input = new BigInteger(bites).toString();
-
-		
-		if( iteration == numIterations ) {
-			if( DEBUG_FINAL_HASH ) {
-				System.out.println( "**** ["+iteration+"] FINAL HASH ("+input.length()+") chars = "+input );
-				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
-				printAverage( input );
-			}
-			return bites;
-		} else {
-			
-			if( DEBUG_FIRST_HASH ) {
-				System.out.println( "**** ["+iteration+"] HASH ("+input.length()+") chars = "+input );
-				printAverage( input );
-			}
-			
-			return getHashEval( input );
-		}
-
+		return longToBytes( new long[]{ hash1,
+										hash2,
+										hash3,
+										hash4,
+										hash5+rounds} );
 	}
 	
 	public byte[] longToBytes(long[] x) {
@@ -262,6 +259,8 @@ public class Azrael320 implements FuncionHash {
 	private static void printAverage( String cad ) {
 		int promedio = 0;
 		
+		cad = cad.replace( "-", "");
+
 		int digit;
 		for( int i=0; i<cad.length(); i++ ) {
 			digit = Integer.parseInt( ""+cad.charAt(i) );
