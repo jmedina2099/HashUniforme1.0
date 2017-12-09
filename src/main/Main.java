@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 import hash.Azrael320;
+import hash.Azrael64;
 import hash.FuncionHash;
 import hash.SHA;
 import hash.Java;
@@ -302,7 +303,7 @@ public class Main {
 		System.gc();
 		System.out.println( " DONE ==>");
 
-		main.test( new Azrael320() );
+		main.test( new Azrael64(true) );
 	}
 
 }
