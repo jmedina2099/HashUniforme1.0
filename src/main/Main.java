@@ -27,9 +27,9 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = false;
+	private boolean useFiles = true;
 	private boolean useRockyou = false;
-	private boolean oneBitDistinct = true;
+	private boolean oneBitDistinct = false;
 	private boolean randomBites = false;
 	private boolean withHistogram = false;
 
@@ -116,7 +116,7 @@ public class Main {
 		
 		int sizeTable = tablaHash.size();
 		int ocupadas = tablaHash.getCasillasOcupadas();
-		int porcentaje = ocupadas*100/total;
+		double porcentaje = ocupadas*100/(double)total;
 		int maxCasillas = tablaHash.getMaxCasillas();
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
@@ -289,7 +289,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 10000;
+		int iterations = 500;
 		
 		Main main = new Main();
 
