@@ -65,7 +65,7 @@ public class Java implements FuncionHash {
 		double total = 0d;
 		double avg;
 		
-		int length = 100000;
+		int length = 1000000;
 		
 		BigInteger eval = null;
 		FuncionHash hash = null;

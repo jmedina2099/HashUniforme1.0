@@ -267,7 +267,7 @@ public class Azrael320 implements FuncionHash {
 		double total = 0d;
 		double avg;
 		
-		int length = 100000;
+		int length = 1000000;
 		
 		BigInteger eval = null;
 		Azrael320 hash = null;
