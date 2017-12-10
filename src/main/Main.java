@@ -289,7 +289,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 1000;
+		int iterations = 10000;
 		
 		Main main = new Main();
 
