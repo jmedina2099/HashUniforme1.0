@@ -7,6 +7,8 @@ package hash;
 
 import java.math.BigInteger;
 
+import misc.Statistics;
+
 /**
  * @author jmedina
  *
@@ -53,7 +55,7 @@ public class Azrael64 implements FuncionHash {
 			if( DEBUG_INTERMIDIATE_HASH ) { 
 				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
 				System.out.println( "**** OUTPUT ["+Long.BYTES+"] BYTES" );
-				printAverage( eval );
+				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
 			}
 		}
 		
@@ -169,30 +171,35 @@ public class Azrael64 implements FuncionHash {
 		return "Azrael64 "+numIterations+"x";
 	}
 
-	private static void printAverage( String cad ) {
-		int promedio = 0;
-		
-		cad = cad.replace( "-", "");
-		
-		int digit;
-		for( int i=0; i<cad.length(); i++ ) {
-			digit = Integer.parseInt( ""+cad.charAt(i) );
-			promedio += digit;
-		}
-		
-		double avg = promedio/(double)cad.length();
-		System.out.println( "===> avg="+avg );
-	}
-
 	/**
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64(2);
-		BigInteger eval = hash.getHash( "" );
+		double total = 0d;
+		double avg;
 		
+		int length = 100000;
+		
+		BigInteger eval = null;
+		FuncionHash hash = null;
+		for( int i=1; i<=length; i++ ) {
+			hash = new Azrael64(i);
+			eval = hash.getHash( "" );
+	
+			//System.out.println( "===> hashEval="+eval );
+			avg = Statistics.getAverage( eval.toString() );
+			total += avg;
+			if( i % 500 == 0) {
+				System.out.println( "===> ["+i+"]="+(float)avg+"\t promedio="+total/(double)i );
+			}
+		}
+		
+		total = total/(double)length;
+		System.out.println( "===> AVG="+total );
+
 		System.out.println( "===> hashEval="+eval );
-		printAverage( eval.toString() );
+		avg = Statistics.getAverage( eval.toString() );
+		System.out.println( "===> avg="+(float)avg );
 	}
 }

@@ -55,9 +55,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 120000;
+			int size = 8000;
 			int sizePrime = 120031;
-			processBites( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBites( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 		if( randomBites ) {
@@ -289,38 +289,29 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
+		int iterations = 1000;
+		
 		Main main = new Main();
 
-		main.test( new Java() );
+		main.test( new Java(iterations) );
 		
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
 		
-		main.test( new SHA() );
+		main.test( new SHA(iterations) );
 		
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
 
-		main.test( new Azrael64(1) );
+		main.test( new Azrael64(iterations) );
 
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
 
-		main.test( new Azrael64(2) );
-
-		System.out.print( "=====> CLEANING UP..." );
-		System.gc();
-		System.out.println( " DONE ==>");
-
-		main.test( new Azrael320(1) );
-		System.out.print( "=====> CLEANING UP..." );
-		System.gc();
-		System.out.println( " DONE ==>");
-
-		main.test( new Azrael320(2) );
+		main.test( new Azrael320(iterations) );
 	}
 
 }
