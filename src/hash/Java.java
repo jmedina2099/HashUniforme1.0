@@ -69,7 +69,7 @@ public class Java implements FuncionHash {
 		
 		BigInteger eval = null;
 		FuncionHash hash = null;
-		for( int i=1; i<=length; i++ ) {
+		for( int i=length; i<=length; i++ ) {
 			hash = new Java(4);
 			eval = hash.getHash( "" );
 	

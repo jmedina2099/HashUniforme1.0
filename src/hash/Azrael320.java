@@ -269,10 +269,11 @@ public class Azrael320 implements FuncionHash {
 		
 		int length = 100000;
 		
+		BigInteger eval = null;
 		Azrael320 hash = null;
-		for( int i=1; i<=length; i++ ) {
+		for( int i=length; i<=length; i++ ) {
 			hash = new Azrael320(i);
-			BigInteger eval = hash.getHash( "" );
+			eval = hash.getHash( "" );
 	
 			//System.out.println( "===> hashEval="+eval );
 			avg = Statistics.getAverage( eval.toString() );
@@ -284,5 +285,9 @@ public class Azrael320 implements FuncionHash {
 		
 		total = total/(double)length;
 		System.out.println( "===> AVG="+total );
+
+		System.out.println( "===> hashEval="+eval );
+		avg = Statistics.getAverage( eval.toString() );
+		System.out.println( "===> avg="+(float)avg );
 	}
 }

@@ -87,7 +87,7 @@ public class SHA implements FuncionHash {
 		
 		BigInteger eval = null;
 		FuncionHash hash = null;
-		for( int i=1; i<=length; i++ ) {
+		for( int i=length; i<=length; i++ ) {
 			hash = new SHA(i);
 			eval = hash.getHash( "" );
 	
@@ -104,7 +104,7 @@ public class SHA implements FuncionHash {
 
 		System.out.println( "===> hashEval="+eval );
 		avg = Statistics.getAverage( eval.toString() );
-		System.out.println( "===> ["+length+"]="+(float)avg );
+		System.out.println( "===> avg="+(float)avg );
 	}
 
 }
