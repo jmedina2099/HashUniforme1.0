@@ -236,7 +236,7 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64(1000000);
+		Azrael64 hash = new Azrael64();
 
 		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
 

@@ -134,7 +134,7 @@ public class Java implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Java hash = new Java(100000);
+		Java hash = new Java();
 
 		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
 

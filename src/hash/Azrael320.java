@@ -313,7 +313,7 @@ public class Azrael320 implements FuncionHash {
 	 */
 	public static void main(String[] args) {
 
-		Azrael320 hash = new Azrael320(1000000);
+		Azrael320 hash = new Azrael320();
 
 		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
 

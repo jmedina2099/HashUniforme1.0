@@ -28,10 +28,10 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = false;
-	private boolean useRockyou = false;
+	private boolean useFiles = true;
+	private boolean useRockyou = true;
 	private boolean oneBitDistinct = false;
-	private boolean randomBites = true;
+	private boolean randomBites = false;
 	private boolean withHistogram = false;
 	
 
@@ -40,7 +40,7 @@ public class Main {
 		String[] arrayNames = new String[]{ "/esp.txt", "/en.txt", "/words.txt", "/rockyou.txt" };
 		String[] charsetNames = new String[]{ "ISO-8859-1", "UTF-8", "UTF-8", "UTF-8" };
 		//int[] sizes = new int[]{ 174848,194433,466544,14344389 };
-		int[] sizes = new int[]{ 200000,200000,500000,14500000 };
+		int[] sizes = new int[]{ 174848,194433,466544,14344389 };
 		int[] sizesPrimes = new int[]{ 174851,194483,466547,14344403 };
 		if( useFiles) {
 			processFile( funcionHash, arrayNames[0], charsetNames[0], usePrime? sizesPrimes[0]: sizes[0], withHistogram );
@@ -106,7 +106,7 @@ public class Main {
 			while( (word=reader.readLine() )!=null ) {
 				if( word.length() > 0 ) {
 					//System.out.println( "TOT="+total );
-					tablaHash.put( word.getBytes(charset),null );
+					tablaHash.put( word.getBytes(StandardCharsets.UTF_8),null );
 					total++;
 				}
 			}
@@ -291,7 +291,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 1000;
+		int iterations = 500;
 		
 		Main main = new Main();
 
