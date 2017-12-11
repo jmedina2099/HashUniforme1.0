@@ -125,7 +125,7 @@ public class SHA implements FuncionHash {
 	 */
 	public static void main(String[] args) {
 
-		SHA hash = new SHA();
+		SHA hash = new SHA(1000000);
 
 		BigInteger out = hash.getHash("");
 

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import hash.Azrael320;
@@ -27,9 +28,9 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = true;
+	private boolean useFiles = false;
 	private boolean useRockyou = false;
-	private boolean oneBitDistinct = false;
+	private boolean oneBitDistinct = true;
 	private boolean randomBites = false;
 	private boolean withHistogram = false;
 	
@@ -56,9 +57,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 120000;
+			int size = 8000;
 			int sizePrime = 120031;
-			processBites( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBites( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 		if( randomBites ) {
@@ -66,9 +67,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 120000;
+			int size = 8000;
 			int sizePrime = 120031;
-			processBitesRandom( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBitesRandom( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 	}
@@ -237,7 +238,7 @@ public class Main {
 			//System.out.println( "BITES="+ Integer.toBinaryString( bites[index] & 0xFF ) );
 			
 			bites = getRandomBites( size );
-			tablaHash.put( new String( bites),null );
+			tablaHash.put( new String( bites, StandardCharsets.UTF_8),null );
 			total++;
 			
 		}
@@ -290,11 +291,11 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 10;
+		int iterations = 1000;
 		
 		Main main = new Main();
 
-		main.test( new Java(iterations) );
+		//main.test( new Java(iterations) );
 		
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
