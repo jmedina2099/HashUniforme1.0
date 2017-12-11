@@ -236,10 +236,10 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64();
+		Azrael64 hash = new Azrael64(2);
 
 		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
-
+		
 		String cad = out.toString();
 		System.out.println( "===> hashEval="+cad );
 		

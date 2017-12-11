@@ -57,9 +57,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 8000;
+			int size = 120000;
 			int sizePrime = 120031;
-			processBites( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBites( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 		if( randomBites ) {
@@ -67,9 +67,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 8000;
+			int size = 120000;
 			int sizePrime = 120031;
-			processBitesRandom( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBitesRandom( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 	}
@@ -291,7 +291,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 2;
+		int iterations = 20;
 		
 		Main main = new Main();
 

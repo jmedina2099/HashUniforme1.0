@@ -64,7 +64,7 @@ public class Java implements FuncionHash {
 	}
 	
 	public byte[] getHashEval( byte[] bites ) {
-		bites = pad(bites);
+		//bites = pad(bites);
 		return intToBytes( new String(bites,StandardCharsets.UTF_8).hashCode() );
 	}
 	

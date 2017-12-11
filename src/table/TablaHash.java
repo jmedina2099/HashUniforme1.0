@@ -186,7 +186,9 @@ public class TablaHash {
 			if( hashValue.equals( celdas[2] ) ) {
 				colisiones++;
 				if( debugColisiones  ) {
-					System.out.println( colisiones+") HASH COLISION!!! ("+key+","+celdas[0]+")-["+hashValue+"]"+(this._numberOfElements+1)+","+celdas[3] );
+					System.out.println( colisiones+") HASH COLISION!!! ("+
+							new String(key)+","+
+							new String((byte[])celdas[0])+")-["+hashValue+"]"+(this._numberOfElements+1)+","+celdas[3] );
 				}
 			}
 			if( key.equals(celdas[0]) ) {

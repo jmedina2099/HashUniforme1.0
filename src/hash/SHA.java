@@ -65,9 +65,9 @@ public class SHA implements FuncionHash {
 			if( DEBUG_INTERMIDIATE_HASH ) {
 				eval = new BigInteger(input).toString();
 				avg = Statistics.getAverage( eval );
-				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				System.out.println( "**** OUTPUT ["+input.length+"] BYTES" );
-				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
+				//System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
+				//System.out.println( "**** OUTPUT ["+input.length+"] BYTES" );
+				//System.out.println( "===> avg="+Statistics.getAverage( eval ) );
 				promedio += avg;
 			}
 		}
