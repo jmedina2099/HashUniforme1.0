@@ -97,7 +97,7 @@ public class Java implements FuncionHash {
 		
 		Java hash = null;
 		BigInteger eval = null;
-		for( int i=length; i<=length; i++ ) {
+		for( int i=1; i<=length; i++ ) {
 			hash = new Java(i);
 			eval = hash.getHash( "" );
 	
