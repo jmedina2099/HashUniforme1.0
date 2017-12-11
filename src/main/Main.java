@@ -30,8 +30,8 @@ public class Main {
 	private boolean usePrime = false;
 	private boolean useFiles = false;
 	private boolean useRockyou = false;
-	private boolean oneBitDistinct = true;
-	private boolean randomBites = false;
+	private boolean oneBitDistinct = false;
+	private boolean randomBites = true;
 	private boolean withHistogram = false;
 	
 
@@ -291,7 +291,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 100000;
+		int iterations = 1000;
 		
 		Main main = new Main();
 
