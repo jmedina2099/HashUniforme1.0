@@ -29,9 +29,9 @@ public class Main {
 	
 	private boolean usePrime = false;
 	private boolean useFiles = true;
-	private boolean useRockyou = true;
-	private boolean oneBitDistinct = false;
-	private boolean randomBites = false;
+	private boolean useRockyou = false;
+	private boolean oneBitDistinct = true;
+	private boolean randomBites = true;
 	private boolean withHistogram = false;
 	
 
@@ -149,7 +149,7 @@ public class Main {
 	public static void processBites( int size, FuncionHash funcionHash, int capacityOfTable, boolean withHistogram ) {
 		
 		long timeIni = System.currentTimeMillis();
-		System.out.println( "=====> START ONE BIT DISTINCT="+size );
+		System.out.println( "=====> START TWO BIT DISTINCT="+size );
 		
 		System.out.println( "===> FUNCION="+funcionHash.toString() );
 		TablaHash tablaHash = new TablaHash( funcionHash, capacityOfTable );
@@ -291,7 +291,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 500;
+		int iterations = 2;
 		
 		Main main = new Main();
 
