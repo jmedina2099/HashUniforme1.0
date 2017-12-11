@@ -38,6 +38,9 @@ public class Java implements FuncionHash {
 	public BigInteger getHash(String o) {
 		this.iteration  = 0;
 		
+		double avg = 0;
+		double promedio = 0;
+		
 		String eval = null;
 		byte[] bites = o.getBytes(StandardCharsets.UTF_8);
 		for( ; iteration<numIterations; ) {
@@ -45,10 +48,17 @@ public class Java implements FuncionHash {
 			bites = getHashEval( bites );
 			if( DEBUG_INTERMIDIATE_HASH ) {
 				eval = new BigInteger( bites ).toString();
-				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
-				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
+				avg = Statistics.getAverage( eval );
+				//System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
+				//System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
+				//System.out.println( "===> avg="+Statistics.getAverage( eval ) );
+				promedio += avg;
 			}
+		}
+		
+		if( DEBUG_INTERMIDIATE_HASH ) {
+			promedio = promedio/(double)numIterations;
+			System.out.println( "===> promedio ["+numIterations+"]="+promedio );
 		}
 		
 		return new BigInteger( bites );
@@ -125,7 +135,7 @@ public class Java implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Java hash = new Java();
+		Java hash = new Java(100000);
 
 		BigInteger out = hash.getHash("");
 
@@ -135,7 +145,7 @@ public class Java implements FuncionHash {
 		double avg = Statistics.getAverage( cad );
 		System.out.println( "===> avg="+(float)avg );
 		
-		itera();
+		//itera();
 	}
 
 }

@@ -27,8 +27,8 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = false;
-	private boolean useRockyou = true;
+	private boolean useFiles = true;
+	private boolean useRockyou = false;
 	private boolean oneBitDistinct = false;
 	private boolean randomBites = false;
 	private boolean withHistogram = false;

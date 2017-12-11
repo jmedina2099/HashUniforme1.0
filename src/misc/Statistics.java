@@ -23,4 +23,5 @@ public class Statistics {
 
 		return promedio/(double)cad.length();
 	}
+
 }
