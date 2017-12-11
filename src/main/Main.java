@@ -103,10 +103,10 @@ public class Main {
 		
 		String word = null;
 		try {
-			while( (word=reader.readLine())!=null ) {
+			while( (word=reader.readLine() )!=null ) {
 				if( word.length() > 0 ) {
 					//System.out.println( "TOT="+total );
-					tablaHash.put( word,null );
+					tablaHash.put( word.getBytes(charset),null );
 					total++;
 				}
 			}
@@ -175,7 +175,7 @@ public class Main {
 				bites[index] ^= (1 << offset); // Toogle bit.
 				//System.out.println( Integer.toBinaryString( bites[index] & 0xFF ) );
 
-				tablaHash.put( new String( bites),null ); // Add next string, 2 bits different to all entries.
+				tablaHash.put( bites.clone(),null ); // Add next string, 2 bits different to all entries.
 				bites[index] = biteAnt;
 				total++;
 			}
@@ -238,7 +238,7 @@ public class Main {
 			//System.out.println( "BITES="+ Integer.toBinaryString( bites[index] & 0xFF ) );
 			
 			bites = getRandomBites( size );
-			tablaHash.put( new String( bites, StandardCharsets.UTF_8),null );
+			tablaHash.put( bites,null );
 			total++;
 			
 		}
@@ -291,7 +291,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 1000;
+		int iterations = 100000;
 		
 		Main main = new Main();
 

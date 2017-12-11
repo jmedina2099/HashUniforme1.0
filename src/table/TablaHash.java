@@ -1,6 +1,7 @@
 package table;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -128,7 +129,7 @@ public class TablaHash {
 	/**
 	 * 
 	 */
-	public Object get( String key ) {
+	public Object get( byte[] key ) {
 		if( key == null ) {
 			return null;
 		}
@@ -156,7 +157,7 @@ public class TablaHash {
 	/**
 	 * 
 	 */
-	public Object put( String key, Object value ) {
+	public Object put( byte[] key, Object value ) {
 		if( key == null ) {
 			return null;
 		}
@@ -227,7 +228,7 @@ public class TablaHash {
 			Iterator<Object[]> iterator = casillas.iterator();
 			while( iterator.hasNext() ) {
 				celdas = (Object[])iterator.next();
-				put( (String)celdas[0], celdas[1] );
+				put( (byte[])celdas[0], celdas[1] );
 			}
 		}
 	}
@@ -238,9 +239,9 @@ public class TablaHash {
 	public static void main(String[] args) {
 		FuncionHash funcionHash = new Azrael320();
 		TablaHash tablaHash = new TablaHash(funcionHash);
-		tablaHash.put("0", "cero");
-		tablaHash.put("1", "uno");
-		tablaHash.put("2", "dos");
+		tablaHash.put("0".getBytes(StandardCharsets.UTF_8), "cero");
+		tablaHash.put("1".getBytes(StandardCharsets.UTF_8), "uno");
+		tablaHash.put("2".getBytes(StandardCharsets.UTF_8), "dos");
 		
 		
 		//System.out.println( tablaHash.get("0") );

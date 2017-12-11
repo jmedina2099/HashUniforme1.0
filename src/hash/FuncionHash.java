@@ -11,7 +11,7 @@ import java.math.BigInteger;
  */
 public interface FuncionHash {
 
-	public BigInteger getHash(String o);
+	public BigInteger getHash( byte[] o);
 	public String toString();
 	
 }

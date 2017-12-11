@@ -47,7 +47,7 @@ public class Azrael320 implements FuncionHash {
 	}
 	
 	@Override
-	public BigInteger getHash(String o) {
+	public BigInteger getHash(byte[] input) {
 		this.rounds  = 0;
 		this.iteration  = 0;
 
@@ -55,17 +55,15 @@ public class Azrael320 implements FuncionHash {
 		double promedio = 0;
 		
 		String eval = null;
-		byte[] bites = o.getBytes( StandardCharsets.UTF_8 );
-
 		for( ; iteration<numIterations; ) {
 			iteration++;
-			bites = getHashEval( bites );
+			input = getHashEval( input );
 			if( DEBUG_INTERMIDIATE_HASH ) {
-				eval = new BigInteger( bites ).toString();
+				eval = new BigInteger( input ).toString();
 				avg = Statistics.getAverage( eval );
-				//System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				//System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
-				//System.out.println( "===> avg="+avg );
+				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
+				System.out.println( "**** OUTPUT ["+input.length+"] BYTES" );
+				System.out.println( "===> avg="+avg );
 				promedio += avg;
 			}
 		}
@@ -75,7 +73,7 @@ public class Azrael320 implements FuncionHash {
 			System.out.println( "===> promedio ["+numIterations+"]="+promedio );
 		}
 		
-		return new BigInteger( bites );
+		return new BigInteger( input );
 	}
 
 	/**
@@ -291,7 +289,7 @@ public class Azrael320 implements FuncionHash {
 		BigInteger eval = null;
 		for( int i=1; i<=length; i++ ) {
 			hash = new Azrael320(i);
-			eval = hash.getHash( "" );
+			eval = hash.getHash( "".getBytes(StandardCharsets.UTF_8) );
 	
 			//System.out.println( "===> hashEval="+eval );
 			avg = Statistics.getAverage( eval.toString() );
@@ -317,7 +315,7 @@ public class Azrael320 implements FuncionHash {
 
 		Azrael320 hash = new Azrael320(1000000);
 
-		BigInteger out = hash.getHash("");
+		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
 
 		String cad = out.toString();
 		System.out.println( "===> hashEval="+cad );
