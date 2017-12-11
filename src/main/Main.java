@@ -27,11 +27,12 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = true;
-	private boolean useRockyou = false;
+	private boolean useFiles = false;
+	private boolean useRockyou = true;
 	private boolean oneBitDistinct = false;
 	private boolean randomBites = false;
 	private boolean withHistogram = false;
+	
 
 
 	private void test( FuncionHash funcionHash ) {
@@ -55,9 +56,9 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 8000;
+			int size = 120000;
 			int sizePrime = 120031;
-			processBites( 1000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			processBites( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 		if( randomBites ) {
@@ -181,7 +182,7 @@ public class Main {
 
 		int sizeTable = tablaHash.size();
 		int ocupadas = tablaHash.getCasillasOcupadas();
-		int porcentaje = ocupadas*100/total;
+		double porcentaje = ocupadas*100/(double)total;
 		int maxCasillas = tablaHash.getMaxCasillas();
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
@@ -243,7 +244,7 @@ public class Main {
 
 		int sizeTable = tablaHash.size();
 		int ocupadas = tablaHash.getCasillasOcupadas();
-		int porcentaje = ocupadas*100/total;
+		double porcentaje = ocupadas*100/(double)total;
 		int maxCasillas = tablaHash.getMaxCasillas();
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
@@ -289,7 +290,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 500;
+		int iterations = 10;
 		
 		Main main = new Main();
 
@@ -300,7 +301,7 @@ public class Main {
 		System.out.println( " DONE ==>");
 		
 		main.test( new SHA(iterations) );
-		
+
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");

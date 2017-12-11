@@ -4,6 +4,8 @@
 package hash;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import misc.Statistics;
 
@@ -36,41 +38,67 @@ public class Java implements FuncionHash {
 	public BigInteger getHash(String o) {
 		this.iteration  = 0;
 		
-		String eval = o;
+		String eval = null;
+		byte[] bites = o.getBytes(StandardCharsets.UTF_8);
 		for( ; iteration<numIterations; ) {
 			iteration++;
-			eval = ""+getHashEval( eval );
-			if( DEBUG_INTERMIDIATE_HASH ) { 
+			bites = getHashEval( bites );
+			if( DEBUG_INTERMIDIATE_HASH ) {
+				eval = new BigInteger( bites ).toString();
 				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				System.out.println( "**** OUTPUT ["+Long.BYTES+"] BYTES" );
+				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
 				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
 			}
 		}
 		
-		return new BigInteger( eval );
+		return new BigInteger( bites );
 	}
 	
-	public int getHashEval(String o) {
-		return o.hashCode();
+	public byte[] getHashEval( byte[] bites ) {
+		bites = pad(bites);
+		return intToBytes( new String(bites,StandardCharsets.UTF_8).hashCode() );
 	}
 	
-	public String toString() {
-		return "HashJava "+numIterations+"x";
+	public byte[] intToBytes(int x) {
+	    ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
+	    buffer.putInt(x);
+	    return buffer.array();
 	}
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	private byte[] pad(byte[] data) {
+        int length = data.length;
+        int tail = length % 64;
+        int padding;
+
+        if ((64 - tail >= 9)) {
+            padding = 64 - tail;
+        } else {
+            padding = 128 - tail;
+        }
+
+        byte[] pad = new byte[padding];
+        pad[0] = (byte) 0x80;
+        long bits = length * 8;
+        for (int i = 0; i < 8; i++) {
+            pad[pad.length - 1 - i] = (byte) ((bits >>> (8 * i)) & 0xFF);
+        }
+
+        byte[] output = new byte[length + padding];
+        System.arraycopy(data, 0, output, 0, length);
+        System.arraycopy(pad, 0, output, length, pad.length);
+
+        return output;
+    }
+	private static void itera() {
 		double total = 0d;
-		double avg;
 		
 		int length = 1000000;
+		double avg = 0;
 		
+		Java hash = null;
 		BigInteger eval = null;
-		FuncionHash hash = null;
 		for( int i=length; i<=length; i++ ) {
-			hash = new Java(4);
+			hash = new Java(i);
 			eval = hash.getHash( "" );
 	
 			//System.out.println( "===> hashEval="+eval );
@@ -85,8 +113,29 @@ public class Java implements FuncionHash {
 		System.out.println( "===> AVG="+total );
 
 		System.out.println( "===> hashEval="+eval );
-		Statistics.getAverage( eval.toString() );
+		avg = Statistics.getAverage( eval.toString() );
+		System.out.println( "===> avg="+(float)avg );
+	}
+
+	public String toString() {
+		return "HashJava "+numIterations+"x";
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Java hash = new Java();
+
+		BigInteger out = hash.getHash("");
+
+		String cad = out.toString();
+		System.out.println( "===> hashEval="+cad );
 		
+		double avg = Statistics.getAverage( cad );
+		System.out.println( "===> avg="+(float)avg );
+		
+		itera();
 	}
 
 }

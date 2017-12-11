@@ -4,6 +4,7 @@
 package hash;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,6 +24,8 @@ public class SHA implements FuncionHash {
 
 	private int numIterations = 1;
 	private int iteration = 0;
+
+	private MessageDigest digest = null;
 	
 	/**
 	 * 
@@ -36,6 +39,16 @@ public class SHA implements FuncionHash {
 	 */
 	public SHA( int numIterations ) {
 		this.numIterations = numIterations;
+		init();
+	}
+
+	private void init() {
+		this.digest = null;
+		try {
+			this.digest = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public BigInteger getHash(String o ) {
@@ -43,50 +56,34 @@ public class SHA implements FuncionHash {
 		this.iteration   = 0;
 		
 		String eval = o;
-		BigInteger out = null;
-		byte[] bites = null;
+		byte[] bites = o.getBytes(StandardCharsets.UTF_8);
 		for( ; iteration<numIterations; ) {
 			iteration++;
-			bites = getHashEval( eval );
-			out = new BigInteger(bites);
-			eval = out.toString();
+			bites = getHashEval( bites );
 			if( DEBUG_INTERMIDIATE_HASH ) {
+				eval = new BigInteger(bites).toString();
 				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
 				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
 				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
 			}
 		}
 		
-		return out;
+		return new BigInteger(bites);
 	}
 	
-	public byte[] getHashEval(String o ) {
-		MessageDigest digest = null;
-		try {
-			digest = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return digest.digest(o.getBytes(StandardCharsets.UTF_8));
-	}
-	
-	public String toString() {
-		return "HashSHA "+numIterations+"x";
+	public byte[] getHashEval(byte[] bites ) {
+		digest.reset();
+		return digest.digest( bites );
 	}
 
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
+	private static void itera() {
 		double total = 0d;
-		double avg;
 		
 		int length = 1000000;
+		double avg = 0;
 		
+		SHA hash = null;
 		BigInteger eval = null;
-		FuncionHash hash = null;
 		for( int i=length; i<=length; i++ ) {
 			hash = new SHA(i);
 			eval = hash.getHash( "" );
@@ -105,6 +102,29 @@ public class SHA implements FuncionHash {
 		System.out.println( "===> hashEval="+eval );
 		avg = Statistics.getAverage( eval.toString() );
 		System.out.println( "===> avg="+(float)avg );
+	}
+	
+	public String toString() {
+		return "HashSHA "+numIterations+"x";
+	}
+
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		SHA hash = new SHA();
+
+		BigInteger out = hash.getHash("");
+
+		String cad = out.toString();
+		System.out.println( "===> hashEval="+cad );
+		
+		double avg = Statistics.getAverage( cad );
+		System.out.println( "===> avg="+(float)avg );
+		
+		//itera();
 	}
 
 }

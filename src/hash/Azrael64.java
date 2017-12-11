@@ -6,6 +6,8 @@
 package hash;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import misc.Statistics;
 
@@ -24,10 +26,10 @@ public class Azrael64 implements FuncionHash {
 	private int iteration = 0;
 
 	private static final String EMPTY_STRING_1_IT =
-			"7709881500987057892";
+			"-10346949897525184";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"9121543017975456842";
+			"-1613582014970097038";
 
 	/**
 	 * 
@@ -48,38 +50,40 @@ public class Azrael64 implements FuncionHash {
 		this.rounds  = 0;
 		this.iteration  = 0;
 		
-		String eval = o;
+		String eval = null;
+		byte[] bites = o.getBytes( StandardCharsets.UTF_8 );
 		for( ; iteration<numIterations; ) {
 			iteration++;
-			eval = ""+getHashEval( eval );
-			if( DEBUG_INTERMIDIATE_HASH ) { 
+			bites = getHashEval( bites );
+			if( DEBUG_INTERMIDIATE_HASH ) {
+				eval = new BigInteger( bites ).toString();
 				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				System.out.println( "**** OUTPUT ["+Long.BYTES+"] BYTES" );
+				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
 				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
 			}
 		}
 		
-		return new BigInteger( eval );
+		return new BigInteger( bites );
 	}
 	
 
-	private long getHashEval( String o ) {
+	private byte[] getHashEval( byte[] input ) {
 		
-		o = pad(o);
+		input = pad(input);
 
 		long hash = 0;
 		long char1=0,char2=0,char3=0,char4=0,char5=0;
 		
-		long sumaAnt1 = (long)o.charAt( o.length()-2 );
-		long sumaAnt2 = (long)o.charAt( 2 );
+		long sumaAnt1 = (long)input[ input.length-2 ];
+		long sumaAnt2 = (long)input[ 2 ];
 		long sumaAnt3 = 0;
 		long sumaAnt4 = 0;
 		long sumaAnt5 = 0;
 
 		char1 += sumaAnt1;
-		char2 += (long)o.charAt( o.length()-1 );
-		char3 += (long)o.charAt( 0 );
-		char4 += (long)o.charAt( 1 );
+		char2 += (long)input[ input.length-1 ];
+		char3 += (long)input[ 0 ];
+		char4 += (long)input[ 1 ];
 		char5 += sumaAnt2;
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
@@ -88,11 +92,11 @@ public class Azrael64 implements FuncionHash {
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
 		// Main Loop.
-		for( int i=1; i<o.length()-1; i++ ) {
+		for( int i=1; i<input.length-1; i++ ) {
 			char1 += sumaAnt1;
 			char2 += char3;
 			char3 += char4;
-			char4 += (long)o.charAt( i+1 );
+			char4 += (long)input[ i+1 ];
 			char5 += sumaAnt2;
 			sumaAnt5 += sumaAnt4;
 			sumaAnt4 += sumaAnt3;
@@ -104,7 +108,7 @@ public class Azrael64 implements FuncionHash {
 		char1 += sumaAnt1;
 		char2 += char3;
 		char3 += char4;
-		char4 += (long)o.charAt( 0 );
+		char4 += (long)input[ 0 ];
 		char5 += sumaAnt2;
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
@@ -132,20 +136,39 @@ public class Azrael64 implements FuncionHash {
 			System.out.println( "**** hash = "+hash );
 		}
 
-		return hash;
+		return longToBytes(hash);
 	}
 	
-	private String pad(String o) {
-		int size = o.length();
-		
-		if( size < 3 ) {
-			for( int i=0; i<3-size; i++ ) {
-				o += "0";
-			}
-		}
-		
-		return o+size;
+	public byte[] longToBytes(long x) {
+	    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+	    buffer.putLong(x);
+	    return buffer.array();
 	}
+
+	private byte[] pad(byte[] data) {
+        int length = data.length;
+        int tail = length % 64;
+        int padding;
+
+        if ((64 - tail >= 9)) {
+            padding = 64 - tail;
+        } else {
+            padding = 128 - tail;
+        }
+
+        byte[] pad = new byte[padding];
+        pad[0] = (byte) 0x80;
+        long bits = length * 8;
+        for (int i = 0; i < 8; i++) {
+            pad[pad.length - 1 - i] = (byte) ((bits >>> (8 * i)) & 0xFF);
+        }
+
+        byte[] output = new byte[length + padding];
+        System.arraycopy(data, 0, output, 0, length);
+        System.arraycopy(pad, 0, output, length, pad.length);
+
+        return output;
+    }
 	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
 		rounds++;
@@ -166,23 +189,15 @@ public class Azrael64 implements FuncionHash {
 			   (( char1 + char2 ) ^ ( char3 + char4 ) ^ char5) +
 			   (( char1 + char2 ) & ( char3 + char4 ) + char5);
 	}
-	
-	public String toString() {
-		return "Azrael64 "+numIterations+"x";
-	}
 
-	/**
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	private static void itera() {
 		double total = 0d;
-		double avg;
 		
-		int length = 1000000;
+		int length = 2000000;
+		double avg = 0;
 		
+		Azrael64 hash = null;
 		BigInteger eval = null;
-		FuncionHash hash = null;
 		for( int i=1; i<=length; i++ ) {
 			hash = new Azrael64(i);
 			eval = hash.getHash( "" );
@@ -201,5 +216,27 @@ public class Azrael64 implements FuncionHash {
 		System.out.println( "===> hashEval="+eval );
 		avg = Statistics.getAverage( eval.toString() );
 		System.out.println( "===> avg="+(float)avg );
+	}
+
+	public String toString() {
+		return "Azrael64 "+numIterations+"x";
+	}
+
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Azrael64 hash = new Azrael64(2);
+
+		BigInteger out = hash.getHash("");
+
+		String cad = out.toString();
+		System.out.println( "===> hashEval="+cad );
+		
+		double avg = Statistics.getAverage( cad );
+		System.out.println( "===> avg="+(float)avg );
+		
+		itera();
 	}
 }

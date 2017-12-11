@@ -7,6 +7,7 @@ package hash;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import misc.Statistics;
 
@@ -26,10 +27,10 @@ public class Azrael320 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"718777247607317870787894476530805951864841878713858974752094668676818935779713243250736700001737";
+			"-627277315191390235940789440215439439324534235220350993358900696794980670260475751337677187537924";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"-618859893713819939210543925046241094947406811336175710579676853400023575369739118060005627254621";
+			"-430582002577382478205708536629329591455672661905183236698410908785849449112827509800523924172481";
 
 	/**
 	 * 
@@ -50,22 +51,20 @@ public class Azrael320 implements FuncionHash {
 		this.rounds  = 0;
 		this.iteration  = 0;
 		
-		String eval = o;
-		BigInteger out = null;
-		byte[] bites = null;
+		String eval = null;
+		byte[] bites = o.getBytes( StandardCharsets.UTF_8 );
 		for( ; iteration<numIterations; ) {
 			iteration++;
-			bites = getHashEval( eval );
-			out = new BigInteger(bites);
-			eval = out.toString();
+			bites = getHashEval( bites );
 			if( DEBUG_INTERMIDIATE_HASH ) {
+				eval = new BigInteger( bites ).toString();
 				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
 				System.out.println( "**** OUTPUT ["+bites.length+"] BYTES" );
 				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
 			}
 		}
 		
-		return out;
+		return new BigInteger( bites );
 	}
 
 	/**
@@ -74,9 +73,9 @@ public class Azrael320 implements FuncionHash {
 	 * @param inmediate
 	 * @return 40 bytes / 320 bits
 	 */
-	public byte[] getHashEval( String o ) {
+	public byte[] getHashEval( byte[] input ) {
 		
-		o = pad(o);
+		input = pad(input);
 
 		// fractional part of sqrt(2) and sqrt(3)
 		long IV1 = 0x6a09e667bb67ae85l;
@@ -102,11 +101,11 @@ public class Azrael320 implements FuncionHash {
 		long sumaAnt4 = IV9;
 		long sumaAnt5 = IV10;
 
-		char1 += (long)o.charAt( o.length()-2 );
-		char2 += (long)o.charAt( o.length()-1 );
-		char3 += (long)o.charAt( 0 );
-		char4 += (long)o.charAt( 1 );
-		char5 += (long)o.charAt( 2 );
+		char1 += (long)input[ input.length-2 ];
+		char2 += (long)input[ input.length-1 ];
+		char3 += (long)input[ 0 ];
+		char4 += (long)input[ 1 ];
+		char5 += (long)input[ 2 ];
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
 		sumaAnt3 += sumaAnt2;
@@ -114,11 +113,11 @@ public class Azrael320 implements FuncionHash {
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
 		// Main Loop.
-		for( int i=1; i<o.length()-1; i++ ) {
+		for( int i=1; i<input.length-1; i++ ) {
 			char1 += sumaAnt1;
 			char2 += char3;
 			char3 += char4;
-			char4 += (long)o.charAt( i+1 );
+			char4 += (long)input[ i+1 ];
 			char5 += sumaAnt2;
 			sumaAnt5 += sumaAnt4;
 			sumaAnt4 += sumaAnt3;
@@ -130,7 +129,7 @@ public class Azrael320 implements FuncionHash {
 		char1 += sumaAnt1;
 		char2 += char3;
 		char3 += char4;
-		char4 += (long)o.charAt( 0 );
+		char4 += (long)input[ 0 ];
 		char5 += sumaAnt2;
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
@@ -222,17 +221,30 @@ public class Azrael320 implements FuncionHash {
 	    return buffer.array();
 	}
 	
-	private String pad(String o) {
-		int size = o.length();
-		
-		if( size < 3 ) {
-			for( int i=0; i<3-size; i++ ) {
-				o += "0";
-			}
-		}
-		
-		return o+size;
-	}
+	private byte[] pad(byte[] data) {
+        int length = data.length;
+        int tail = length % 64;
+        int padding;
+
+        if ((64 - tail >= 9)) {
+            padding = 64 - tail;
+        } else {
+            padding = 128 - tail;
+        }
+
+        byte[] pad = new byte[padding];
+        pad[0] = (byte) 0x80;
+        long bits = length * 8;
+        for (int i = 0; i < 8; i++) {
+            pad[pad.length - 1 - i] = (byte) ((bits >>> (8 * i)) & 0xFF);
+        }
+
+        byte[] output = new byte[length + padding];
+        System.arraycopy(data, 0, output, 0, length);
+        System.arraycopy(pad, 0, output, length, pad.length);
+
+        return output;
+    }
 	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
 		rounds++;
@@ -258,20 +270,15 @@ public class Azrael320 implements FuncionHash {
 		return "Azrael320 "+numIterations+"x";
 	}
 
-	/**
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
+	private static void itera() {
 		double total = 0d;
-		double avg;
 		
 		int length = 1000000;
+		double avg = 0;
 		
-		BigInteger eval = null;
 		Azrael320 hash = null;
-		for( int i=length; i<=length; i++ ) {
+		BigInteger eval = null;
+		for( int i=1; i<=length; i++ ) {
 			hash = new Azrael320(i);
 			eval = hash.getHash( "" );
 	
@@ -289,5 +296,25 @@ public class Azrael320 implements FuncionHash {
 		System.out.println( "===> hashEval="+eval );
 		avg = Statistics.getAverage( eval.toString() );
 		System.out.println( "===> avg="+(float)avg );
+	}
+	
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		Azrael320 hash = new Azrael320();
+
+		BigInteger out = hash.getHash("");
+
+		String cad = out.toString();
+		System.out.println( "===> hashEval="+cad );
+		
+		double avg = Statistics.getAverage( cad );
+		System.out.println( "===> avg="+(float)avg );
+		
+		itera();
+		
 	}
 }
