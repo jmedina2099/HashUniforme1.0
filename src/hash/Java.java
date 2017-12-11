@@ -127,7 +127,7 @@ public class Java implements FuncionHash {
 	}
 
 	public String toString() {
-		return "HashJava "+numIterations+"x";
+		return "Java "+numIterations+"x";
 	}
 	
 	/**

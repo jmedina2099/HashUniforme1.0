@@ -115,7 +115,7 @@ public class SHA implements FuncionHash {
 	}
 	
 	public String toString() {
-		return "HashSHA "+numIterations+"x";
+		return "SHA-256 "+numIterations+"x";
 	}
 
 
