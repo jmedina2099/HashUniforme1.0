@@ -28,9 +28,9 @@ import ui.VentanaPrincipal;
 public class Main {
 	
 	private boolean usePrime = false;
-	private boolean useFiles = true;
+	private boolean useFiles = false;
 	private boolean useRockyou = false;
-	private boolean oneBitDistinct = true;
+	private boolean oneBitDistinct = false;
 	private boolean randomBites = true;
 	private boolean withHistogram = false;
 	
@@ -291,11 +291,12 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		int iterations = 20;
+		int iterations = 2;
 		
 		Main main = new Main();
 
-		//main.test( new Java(iterations) );
+		/*
+		main.test( new Java(iterations) );
 		
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
@@ -312,6 +313,7 @@ public class Main {
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
+		*/
 
 		main.test( new Azrael320(iterations) );
 	}

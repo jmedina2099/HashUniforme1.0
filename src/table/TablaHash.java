@@ -24,7 +24,7 @@ public class TablaHash {
 	
 	private boolean doRehash = true;
 
-	private boolean debugColisiones = false;
+	private boolean debugColisiones = true;
 
 	/**
 	 * 

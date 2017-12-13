@@ -1,0 +1,178 @@
+=====> CLEANING UP... DONE ==>
+=====> START FILE=/esp.txt
+===> FUNCION=SHA-256 2x
+TABLE SIZE=174848
+CasillasOcupadas=110538-63.21948206442167%
+MAX Casillas=8
+Promedio Casillas=1.5817908773453473
+Colisiones=[0]
+TOTAL=174848
+TIME = [0.651] secs,[0.01085] mins.
+=====> START FILE=/en.txt
+===> FUNCION=SHA-256 2x
+TABLE SIZE=194433
+CasillasOcupadas=123001-63.26138052696816%
+MAX Casillas=7
+Promedio Casillas=1.58074324598987
+Colisiones=[0]
+TOTAL=194433
+TIME = [0.365] secs,[0.006083333333333333] mins.
+=====> START FILE=/words.txt
+===> FUNCION=SHA-256 2x
+TABLE SIZE=466544
+CasillasOcupadas=295137-63.2602712713056%
+MAX Casillas=8
+Promedio Casillas=1.580770963992993
+Colisiones=[0]
+TOTAL=466544
+TIME = [0.769] secs,[0.012816666666666667] mins.
+=====> START FILE=/rockyou.txt
+===> FUNCION=SHA-256 2x
+TABLE SIZE=14344389
+CasillasOcupadas=9067668-63.21404139277037%
+MAX Casillas=10
+Promedio Casillas=1.5819270180602112
+Colisiones=[0]
+TOTAL=14344389
+TIME = [31.003] secs,[0.5167166666666667] mins.
+=====> CLEANING UP... DONE ==>
+=====> START TWO BIT DISTINCT=1000
+===> FUNCION=SHA-256 2x
+STARTING...
+TABLE SIZE=8000
+CasillasOcupadas=5063-63.2875%
+MAX Casillas=6
+Promedio Casillas=1.5800908552241755
+Colisiones=[0]
+TOTAL=8000
+TIME = [0.065] secs,[0.0010833333333333333] mins.
+=====> CLEANING UP... DONE ==>
+=====> START RANDOM BYTES=1000
+===> FUNCION=SHA-256 2x
+STARTING...
+TABLE SIZE=8000
+CasillasOcupadas=5077-63.4625%
+MAX Casillas=5
+Promedio Casillas=1.5757337010045303
+Colisiones=[0]
+TOTAL=8000
+TIME = [0.165] secs,[0.00275] mins.
+=====> CLEANING UP... DONE ==>
+=====> START FILE=/esp.txt
+===> FUNCION=Azrael64 2x
+TABLE SIZE=174848
+CasillasOcupadas=109838-62.819134333821374%
+MAX Casillas=8
+Promedio Casillas=1.5918716655438008
+Colisiones=[0]
+TOTAL=174848
+TIME = [0.992] secs,[0.016533333333333334] mins.
+=====> START FILE=/en.txt
+===> FUNCION=Azrael64 2x
+TABLE SIZE=194433
+CasillasOcupadas=123039-63.280924534415455%
+MAX Casillas=8
+Promedio Casillas=1.5802550410845342
+Colisiones=[0]
+TOTAL=194433
+TIME = [0.986] secs,[0.016433333333333335] mins.
+=====> START FILE=/words.txt
+===> FUNCION=Azrael64 2x
+TABLE SIZE=466544
+CasillasOcupadas=293213-62.84787715628108%
+MAX Casillas=8
+Promedio Casillas=1.5911436396067022
+Colisiones=[0]
+TOTAL=466544
+TIME = [2.404] secs,[0.04006666666666667] mins.
+=====> START FILE=/rockyou.txt
+===> FUNCION=Azrael64 2x
+TABLE SIZE=14344389
+CasillasOcupadas=9068764-63.22168201099399%
+MAX Casillas=9
+Promedio Casillas=1.5817358352251751
+Colisiones=[0]
+TOTAL=14344389
+TIME = [78.386] secs,[1.3064333333333333] mins.
+=====> CLEANING UP... DONE ==>
+=====> START TWO BIT DISTINCT=1000
+===> FUNCION=Azrael64 2x
+STARTING...
+TABLE SIZE=8000
+CasillasOcupadas=5023-62.7875%
+MAX Casillas=6
+Promedio Casillas=1.5926737009755128
+Colisiones=[0]
+TOTAL=8000
+TIME = [0.322] secs,[0.005366666666666666] mins.
+=====> CLEANING UP... DONE ==>
+=====> START RANDOM BYTES=1000
+===> FUNCION=Azrael64 2x
+STARTING...
+TABLE SIZE=8000
+CasillasOcupadas=5084-63.55%
+MAX Casillas=6
+Promedio Casillas=1.5735641227380015
+Colisiones=[0]
+TOTAL=8000
+TIME = [0.453] secs,[0.00755] mins.
+=====> CLEANING UP... DONE ==>
+=====> START FILE=/esp.txt
+===> FUNCION=Azrael320 2x
+TABLE SIZE=174848
+CasillasOcupadas=110517-63.20747163250366%
+MAX Casillas=8
+Promedio Casillas=1.5820914429454291
+Colisiones=[0]
+TOTAL=174848
+TIME = [1.206] secs,[0.0201] mins.
+=====> START FILE=/en.txt
+===> FUNCION=Azrael320 2x
+TABLE SIZE=194433
+CasillasOcupadas=122839-63.17806133732442%
+MAX Casillas=8
+Promedio Casillas=1.5828279292407135
+Colisiones=[0]
+TOTAL=194433
+TIME = [1.136] secs,[0.018933333333333333] mins.
+=====> START FILE=/words.txt
+===> FUNCION=Azrael320 2x
+TABLE SIZE=466544
+CasillasOcupadas=294574-63.13959669398813%
+MAX Casillas=8
+Promedio Casillas=1.5837921880410355
+Colisiones=[0]
+TOTAL=466544
+TIME = [2.851] secs,[0.047516666666666665] mins.
+=====> START FILE=/rockyou.txt
+===> FUNCION=Azrael320 2x
+TABLE SIZE=14344389
+CasillasOcupadas=9069256-63.22511192355422%
+MAX Casillas=9
+Promedio Casillas=1.5816500273010268
+Colisiones=[0]
+TOTAL=14344389
+TIME = [95.133] secs,[1.58555] mins.
+=====> CLEANING UP... DONE ==>
+=====> START TWO BIT DISTINCT=1000
+===> FUNCION=Azrael320 2x
+STARTING...
+TABLE SIZE=8000
+CasillasOcupadas=5068-63.35%
+MAX Casillas=6
+Promedio Casillas=1.5785319652722967
+Colisiones=[0]
+TOTAL=8000
+TIME = [0.315] secs,[0.00525] mins.
+=====> CLEANING UP... DONE ==>
+=====> START RANDOM BYTES=1000
+===> FUNCION=Azrael320 2x
+STARTING...
+TABLE SIZE=8000
+CasillasOcupadas=5049-63.1125%
+MAX Casillas=7
+Promedio Casillas=1.5844721727074669
+Colisiones=[0]
+TOTAL=8000
+TIME = [0.443] secs,[0.007383333333333334] mins.
+

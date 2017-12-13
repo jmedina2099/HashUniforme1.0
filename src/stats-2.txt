@@ -1,0 +1,10 @@
+=====> START FILE=/rockyou.txt
+===> FUNCION=Azrael320 1000x
+TABLE SIZE=14344389
+CasillasOcupadas=9069540-63.22709179178005%
+MAX Casillas=9
+Promedio Casillas=1.5816005001356188
+Colisiones=[0]
+TOTAL=14344389
+TIME = [36107.841] secs,[601.79735] mins.
+
