@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.codec.binary.Hex;
+
 import misc.Statistics;
 
 /**
@@ -236,15 +238,10 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64(2);
-
-		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
+		Azrael64 hash = new Azrael64(1);
 		
-		String cad = out.toString();
-		System.out.println( "===> hashEval="+cad );
-		
-		double avg = Statistics.getAverage( cad );
-		System.out.println( "===> avg="+(float)avg );
+		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
+		System.out.println( "===> hashEval="+Hex.encodeHexString(cript) );
 		
 		//itera();
 	}

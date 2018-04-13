@@ -315,13 +315,10 @@ public class Azrael320 implements FuncionHash {
 	 */
 	public static void main(String[] args) {
 
-		Azrael320 hash = new Azrael320(2);
+		Azrael320 hash = new Azrael320(1);
 
 		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
 		System.out.println( "===> hashEval="+Hex.encodeHexString(cript) );
-		
-		//double avg = Statistics.getAverage(  );
-		//System.out.println( "===> avg="+(float)avg );
 		
 		//itera();
 		
