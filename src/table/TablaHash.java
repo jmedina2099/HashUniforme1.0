@@ -195,7 +195,7 @@ public class TablaHash {
 				celdas[0] = key;
 				valueAnt = celdas[1];
 				celdas[1] = value;
-				this._numberOfElements++;
+				//this._numberOfElements++;
 				return valueAnt;
 			}
 		}
