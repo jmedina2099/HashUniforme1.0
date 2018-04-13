@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.codec.binary.Hex;
+
 import misc.Statistics;
 
 /**
@@ -126,6 +128,9 @@ public class SHA implements FuncionHash {
 
 		SHA hash = new SHA();
 
+		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
+		System.out.println( "===> hashEval="+Hex.encodeHexString(cript) );
+		
 		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
 
 		String cad = out.toString();

@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.codec.binary.Hex;
+
 import misc.Statistics;
 
 /**
@@ -315,13 +317,11 @@ public class Azrael320 implements FuncionHash {
 
 		Azrael320 hash = new Azrael320(2);
 
-		BigInteger out = hash.getHash("".getBytes(StandardCharsets.UTF_8));
-
-		String cad = out.toString();
-		System.out.println( "===> hashEval="+cad );
+		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
+		System.out.println( "===> hashEval="+Hex.encodeHexString(cript) );
 		
-		double avg = Statistics.getAverage( cad );
-		System.out.println( "===> avg="+(float)avg );
+		//double avg = Statistics.getAverage(  );
+		//System.out.println( "===> avg="+(float)avg );
 		
 		//itera();
 		

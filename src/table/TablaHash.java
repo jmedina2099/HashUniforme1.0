@@ -191,7 +191,7 @@ public class TablaHash {
 							new String((byte[])celdas[0])+")-["+hashValue+"]"+(this._numberOfElements+1)+","+celdas[3] );
 				}
 			}
-			if( java.util.Arrays.equals(key, celdas[0]) ) {
+			if( java.util.Arrays.equals(key, (byte[])celdas[0]) ) {
 				//celdas[0] = key;
 				valueAnt = celdas[1];
 				celdas[1] = value;
