@@ -28,10 +28,10 @@ public class Azrael64 implements FuncionHash {
 	private int iteration = 0;
 
 	private static final String EMPTY_STRING_1_IT =
-			"-10346949897525184";
+			"ffdb3d80fed96840";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"-1613582014970097038";
+			"e99b67b4ddbf9272";
 
 	/**
 	 * 
@@ -52,26 +52,12 @@ public class Azrael64 implements FuncionHash {
 		this.rounds  = 0;
 		this.iteration  = 0;
 
-		double avg = 0;
-		double promedio = 0;
-
-		String eval = null;
 		for( ; iteration<numIterations; ) {
 			iteration++;
 			input = getHashEval( input );
 			if( DEBUG_INTERMIDIATE_HASH ) {
-				eval = new BigInteger( input ).toString();
-				avg = Statistics.getAverage( eval );
-				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				System.out.println( "**** OUTPUT ["+input.length+"] BYTES" );
-				System.out.println( "===> avg="+Statistics.getAverage( eval ) );
-				promedio += avg;
+				System.out.println( Hex.encodeHexString(input) );
 			}
-		}
-		
-		if( DEBUG_INTERMIDIATE_HASH ) {
-			promedio = promedio/(double)numIterations;
-			System.out.println( "===> promedio ["+numIterations+"]="+promedio );
 		}
 		
 		return new BigInteger( input );
@@ -201,34 +187,6 @@ public class Azrael64 implements FuncionHash {
 			   (( char1 + char2 ) & ( char3 + char4 ) + char5);
 	}
 
-	private static void itera() {
-		double total = 0d;
-		
-		int length = 2000000;
-		double avg = 0;
-		
-		Azrael64 hash = null;
-		BigInteger eval = null;
-		for( int i=1; i<=length; i++ ) {
-			hash = new Azrael64(i);
-			eval = hash.getHash( "".getBytes(StandardCharsets.UTF_8) );
-	
-			//System.out.println( "===> hashEval="+eval );
-			avg = Statistics.getAverage( eval.toString() );
-			total += avg;
-			if( i % 500 == 0) {
-				System.out.println( "===> ["+i+"]="+(float)avg+"\t promedio="+total/(double)i );
-			}
-		}
-		
-		total = total/(double)length;
-		System.out.println( "===> AVG="+total );
-
-		System.out.println( "===> hashEval="+eval );
-		avg = Statistics.getAverage( eval.toString() );
-		System.out.println( "===> avg="+(float)avg );
-	}
-
 	public String toString() {
 		return "Azrael64 "+numIterations+"x";
 	}
@@ -238,11 +196,9 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64(1);
+		Azrael64 hash = new Azrael64(2);
 		
-		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
-		System.out.println( "===> hashEval="+Hex.encodeHexString(cript) );
-		
-		//itera();
+		BigInteger cript = hash.getHash("".getBytes(StandardCharsets.UTF_8));
+		System.out.println( Hex.encodeHexString( cript.toByteArray() ) );
 	}
 }

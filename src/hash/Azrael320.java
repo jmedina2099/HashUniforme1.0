@@ -29,10 +29,10 @@ public class Azrael320 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"-627277315191390235940789440215439439324534235220350993358900696794980670260475751337677187537924";
+			"b4d1fb3fec8b03e2966772855feaa41bfaf26ed6d2a21452040a819378b5ccce86a0400155d2a3fc";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"-430582002577382478205708536629329591455672661905183236698410908785849449112827509800523924172481";
+			"cc64f453ea71fb7b94928a6d1aae8999e665cf7e709ee46c0012a3c4ea5f938bea5d4405b225113f";
 
 	/**
 	 * 
@@ -53,28 +53,14 @@ public class Azrael320 implements FuncionHash {
 		this.rounds  = 0;
 		this.iteration  = 0;
 
-		double avg = 0;
-		double promedio = 0;
-		
-		String eval = null;
 		for( ; iteration<numIterations; ) {
 			iteration++;
 			input = getHashEval( input );
 			if( DEBUG_INTERMIDIATE_HASH ) {
-				eval = new BigInteger( input ).toString();
-				avg = Statistics.getAverage( eval );
-				System.out.println( "**** ["+iteration+"] HASH ("+eval.length()+") chars = "+eval );
-				System.out.println( "**** OUTPUT ["+input.length+"] BYTES" );
-				System.out.println( "===> avg="+avg );
-				promedio += avg;
+				System.out.println( Hex.encodeHexString(input) );
 			}
 		}
 
-		if( DEBUG_INTERMIDIATE_HASH ) {
-			promedio = promedio/(double)numIterations;
-			System.out.println( "===> promedio ["+numIterations+"]="+promedio );
-		}
-		
 		return new BigInteger( input );
 	}
 
@@ -280,34 +266,6 @@ public class Azrael320 implements FuncionHash {
 	public String toString() {
 		return "Azrael320 "+numIterations+"x";
 	}
-
-	private static void itera() {
-		double total = 0d;
-		
-		int length = 1000000;
-		double avg = 0;
-		
-		Azrael320 hash = null;
-		BigInteger eval = null;
-		for( int i=1; i<=length; i++ ) {
-			hash = new Azrael320(i);
-			eval = hash.getHash( "".getBytes(StandardCharsets.UTF_8) );
-	
-			//System.out.println( "===> hashEval="+eval );
-			avg = Statistics.getAverage( eval.toString() );
-			total += avg;
-			if( i % 500 == 0) {
-				System.out.println( "===> ["+i+"]="+(float)avg+"\t promedio="+total/(double)i );
-			}
-		}
-		
-		total = total/(double)length;
-		System.out.println( "===> AVG="+total );
-
-		System.out.println( "===> hashEval="+eval );
-		avg = Statistics.getAverage( eval.toString() );
-		System.out.println( "===> avg="+(float)avg );
-	}
 	
 	/**
 	 * 
@@ -315,12 +273,9 @@ public class Azrael320 implements FuncionHash {
 	 */
 	public static void main(String[] args) {
 
-		Azrael320 hash = new Azrael320(1);
+		Azrael320 hash = new Azrael320(2);
 
-		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
-		System.out.println( "===> hashEval="+Hex.encodeHexString(cript) );
-		
-		//itera();
-		
+		BigInteger cript = hash.getHash("".getBytes(StandardCharsets.UTF_8));
+		System.out.println( Hex.encodeHexString( cript.toByteArray() ) );
 	}
 }
