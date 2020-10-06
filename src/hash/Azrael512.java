@@ -1,7 +1,7 @@
 /* Copyright (C) 2007-2020 - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jorge Medina <medinarosas.jorge@gmail.com>, October 2020
+ * Written by Jorge Medina <medinarosas.jorgealberto@gmail.com>, October 5th, 2020
  */
 package hash;
 
