@@ -6,6 +6,7 @@ package main;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_1;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_512;
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA3_512;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -34,22 +35,23 @@ import ui.VentanaPrincipal;
  */
 public class Main {
 	
-	private boolean usePrime = false;
-	private boolean useFiles = false;
+	private boolean usePrime = true;
+	private boolean useFiles = true;
 	private boolean useRockyou = false;
-	private boolean oneBitDistinct = false;
+	private boolean useClean = false;
+	private boolean oneBitDistinct = true;
 	private boolean randomBites = true;
-	private boolean withHistogram = true;
+	private boolean withHistogram = false;
 	
 
 
 	private void test( FuncionHash funcionHash ) {
-		String[] arrayNames = new String[]{ "/esp.txt", "/en.txt", "/words.txt", "/rockyou.txt" };
-		String[] charsetNames = new String[]{ "ISO-8859-1", "UTF-8", "UTF-8", "UTF-8" };
+		String[] arrayNames = new String[]{ "/esp.txt", "/en.txt", "/words.txt", "/rockyou.txt", "/clean.txt" };
+		String[] charsetNames = new String[]{ "ISO-8859-1", "UTF-8", "UTF-8", "UTF-8", "UTF-8"  };
 		//int[] sizes = new int[]{ 174848,194433,466544,14344389 };
 		//int[] sizes = new int[]{ 174848,194433,466544,14344389 };
-		int[] sizes = new int[]{ 174848,194433,466544,20000000 };
-		int[] sizesPrimes = new int[]{ 174851,194483,466547,14344403 };
+		int[] sizes = new int[]{ 174848,194433,466544,20000000,1370684 };
+		int[] sizesPrimes = new int[]{ 174851,194483,466547,14344403,1370687 };
 		if( useFiles) {
 			processFile( funcionHash, arrayNames[0], charsetNames[0], usePrime? sizesPrimes[0]: sizes[0], withHistogram );
 			processFile( funcionHash, arrayNames[1], charsetNames[1], usePrime? sizesPrimes[1]: sizes[1], withHistogram );
@@ -58,6 +60,10 @@ public class Main {
 		
 		if( useRockyou ) {
 			processFile( funcionHash, arrayNames[3], charsetNames[3], usePrime? sizesPrimes[3]: sizes[3], withHistogram );
+		}
+		
+		if( useClean ) {
+			processFile( funcionHash, arrayNames[4], charsetNames[4], usePrime? sizesPrimes[4]: sizes[4], withHistogram );
 		}
 		
 		if( oneBitDistinct ) {
@@ -126,14 +132,16 @@ public class Main {
 		
 		int sizeTable = tablaHash.size();
 		int ocupadas = tablaHash.getCasillasOcupadas();
-		double porcentaje = ocupadas*100/(double)total;
+		int vacias = sizeTable - ocupadas;
+		double porcentaje = vacias<=0? 100: ocupadas*100/(double)sizeTable;
+		double porcentajeVacias = vacias<=0? 0: vacias*100/(double)sizeTable;
 		int maxCasillas = tablaHash.getMaxCasillas();
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
 		
 		System.out.println( "TABLE SIZE="+sizeTable );
-		System.out.println( "CasillasOcupadas="+ocupadas+"-"+porcentaje+"%" );
-		System.out.println( "MAX Casillas="+maxCasillas );
+		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
+		System.out.println( "MAX Encadenamiento="+maxCasillas );
 		System.out.println( "Promedio Casillas="+promedioCasillas );
 		System.out.println( "Colisiones=["+colisiones+"]" );
 		System.out.println( "TOTAL="+total );
@@ -191,14 +199,16 @@ public class Main {
 
 		int sizeTable = tablaHash.size();
 		int ocupadas = tablaHash.getCasillasOcupadas();
-		double porcentaje = ocupadas*100/(double)total;
+		int vacias = sizeTable - ocupadas;
+		double porcentaje = vacias<=0? 100: ocupadas*100/(double)sizeTable;
+		double porcentajeVacias = vacias<=0? 0: vacias*100/(double)sizeTable;
 		int maxCasillas = tablaHash.getMaxCasillas();
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
 		
 		System.out.println( "TABLE SIZE="+sizeTable );
-		System.out.println( "CasillasOcupadas="+ocupadas+"-"+porcentaje+"%" );
-		System.out.println( "MAX Casillas="+maxCasillas );
+		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
+		System.out.println( "MAX Encadenamiento="+maxCasillas );
 		System.out.println( "Promedio Casillas="+promedioCasillas );
 		System.out.println( "Colisiones=["+colisiones+"]" );
 		System.out.println( "TOTAL="+total );
@@ -253,14 +263,16 @@ public class Main {
 
 		int sizeTable = tablaHash.size();
 		int ocupadas = tablaHash.getCasillasOcupadas();
-		double porcentaje = ocupadas*100/(double)total;
+		int vacias = sizeTable - ocupadas;
+		double porcentaje = vacias<=0? 100: ocupadas*100/(double)sizeTable;
+		double porcentajeVacias = vacias<=0? 0: vacias*100/(double)sizeTable;
 		int maxCasillas = tablaHash.getMaxCasillas();
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
 		
 		System.out.println( "TABLE SIZE="+sizeTable );
-		System.out.println( "CasillasOcupadas="+ocupadas+"-"+porcentaje+"%" );
-		System.out.println( "MAX Casillas="+maxCasillas );
+		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
+		System.out.println( "MAX Encadenamiento="+maxCasillas );
 		System.out.println( "Promedio Casillas="+promedioCasillas );
 		System.out.println( "Colisiones=["+colisiones+"]" );
 		System.out.println( "TOTAL="+total );
@@ -297,7 +309,7 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	public static void main2(String[] args) {
+	public static void main(String[] args) {
 		
 		int iterations = 1;
 		
@@ -336,7 +348,7 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main1(String[] args) {
 		// TODO Auto-generated method stub
 		
 		String stringValue = "";
@@ -350,7 +362,8 @@ public class Main {
 		byte[] hash3 = new DigestUtils(SHA_256).digest(bites);
 		byte[] hash4 = new Azrael320(1).getHashEval( bites );
 		byte[] hash5 = new DigestUtils(SHA_512).digest(bites);
-		byte[] hash6 = new Azrael512(1).getHashEval( bites );
+		byte[] hash6 = new DigestUtils(SHA3_512).digest(bites);
+		byte[] hash7 = new Azrael512(1).getHashEval( bites );
 
 		System.out.println( "Starting.. hashing the empty string" );
 
@@ -359,14 +372,16 @@ public class Main {
 		System.out.println( "   sha256(Base64)= "+ Base64.getEncoder().encodeToString(hash3) );
 		System.out.println( "azrael320(Base64)= "+ Base64.getEncoder().encodeToString(hash4) );
 		System.out.println( "   sha512(Base64)= "+ Base64.getEncoder().encodeToString(hash5) );
-		System.out.println( "azrael512(Base64)= "+ Base64.getEncoder().encodeToString(hash6) );
+		System.out.println( " sha3_512(Base64)= "+ Base64.getEncoder().encodeToString(hash6) );
+		System.out.println( "azrael512(Base64)= "+ Base64.getEncoder().encodeToString(hash7) );
 		
 		System.out.println( " azrael64(Hex   )= "+ Hex.encodeHexString( hash1 ) );
 		System.out.println( "   sha160(Hex   )= "+ Hex.encodeHexString( hash2 ) );
 		System.out.println( "   sha256(Hex   )= "+ Hex.encodeHexString( hash3 ) );
 		System.out.println( "azrael320(Hex   )= "+ Hex.encodeHexString( hash4 ) );
 		System.out.println( "   sha512(Hex   )= "+ Hex.encodeHexString( hash5 ) );
-		System.out.println( "azrael512(Hex   )= "+ Hex.encodeHexString( hash6 ) );
+		System.out.println( " sha3_512(Hex   )= "+ Hex.encodeHexString( hash6 ) );
+		System.out.println( "azrael512(Hex   )= "+ Hex.encodeHexString( hash7 ) );
 
 		//String hdigest = new DigestUtils(SHA_1).digestAsHex(new File("pom.xml"));
 
