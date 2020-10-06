@@ -11,8 +11,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.binary.Hex;
 
-import misc.Statistics;
-
 /**
  * @author jmedina
  *
@@ -64,7 +62,7 @@ public class Azrael64 implements FuncionHash {
 	}
 	
 
-	private byte[] getHashEval( byte[] input ) {
+	public byte[] getHashEval( byte[] input ) {
 		
 		input = pad(input);
 
@@ -196,9 +194,9 @@ public class Azrael64 implements FuncionHash {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Azrael64 hash = new Azrael64(2);
+		Azrael64 hash = new Azrael64(1000000);
 		
 		BigInteger cript = hash.getHash("".getBytes(StandardCharsets.UTF_8));
-		System.out.println( Hex.encodeHexString( cript.toByteArray() ) );
+		//System.out.println( Hex.encodeHexString( cript.toByteArray() ) );
 	}
 }

@@ -1,7 +1,7 @@
-/* Copyright (C) 2007-2017 - All Rights Reserved
+/* Copyright (C) 2007-2020 - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jorge Medina <medinarosas.jorge@gmail.com>, December 2017
+ * Written by Jorge Medina <medinarosas.jorge@gmail.com>, October 2020
  */
 package hash;
 
@@ -15,7 +15,7 @@ import org.apache.commons.codec.binary.Hex;
  * @author jmedina
  *
  */ 
-public class Azrael320 implements FuncionHash {
+public class Azrael512 implements FuncionHash {
 
 	private static final boolean DEBUG_PARTIAL_HASH = false;
 	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
@@ -27,22 +27,22 @@ public class Azrael320 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"b4d1fb3fec8b03e2966772855feaa41bfaf26ed6d2a21452040a819378b5ccce86a0400155d2a3fc";
+			"b4d1fb3fffb8b7a496677285b03e5c7dfaf26eda834dab12040a81923eb1081086a03ff930128bc8c2cbd29e3637fd13b911297c89d5a855fadd4393eb442683";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"cc64f453ea71fb7b94928a6d1aae8999e665cf7e709ee46c0012a3c4ea5f938bea5d4405b225113f";
-
+			"5dcf99680277388bf44fefb9bfa9e700584218257e404f28db053884d144e1f441626d7979dd3daa65cc7be3b99acf8f512ee06bc70bb05558414c13167be37e";
+	
 	/**
 	 * 
 	 */
-	public Azrael320() {
+	public Azrael512() {
 		this(2);
 	}
 
 	/**
 	 *
 	 */
-	public Azrael320( int numIterations ) {
+	public Azrael512( int numIterations ) {
 		this.numIterations  = numIterations;
 	}
 	
@@ -112,9 +112,8 @@ public class Azrael320 implements FuncionHash {
 
 	/**
 	 * 
-	 * @param o
-	 * @param inmediate
-	 * @return 40 bytes / 320 bits
+	 * @param input
+	 * @return 64 bytes / 512 bits
 	 */
 	public byte[] getHashEval( byte[] input ) {
 		
@@ -143,12 +142,19 @@ public class Azrael320 implements FuncionHash {
 		long sumaAnt3 = IV8;
 		long sumaAnt4 = IV9;
 		long sumaAnt5 = IV10;
-
+		long sumaAnt6 = IV1;
+		long sumaAnt7 = IV3;
+		long sumaAnt8 = IV8;
+		
 		char1 += (long)input[ input.length-2 ];
 		char2 += (long)input[ input.length-1 ];
 		char3 += (long)input[ 0 ];
 		char4 += (long)input[ 1 ];
 		char5 += (long)input[ 2 ];
+
+		sumaAnt8 += sumaAnt7;
+		sumaAnt7 += sumaAnt6;
+		sumaAnt6 += sumaAnt5;
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
 		sumaAnt3 += sumaAnt2;
@@ -162,6 +168,9 @@ public class Azrael320 implements FuncionHash {
 			char3 += char4;
 			char4 += (long)input[ i+1 ];
 			char5 += sumaAnt2;
+			sumaAnt8 += sumaAnt7;
+			sumaAnt7 += sumaAnt6;
+			sumaAnt6 += sumaAnt5;
 			sumaAnt5 += sumaAnt4;
 			sumaAnt4 += sumaAnt3;
 			sumaAnt3 += sumaAnt2;
@@ -174,6 +183,9 @@ public class Azrael320 implements FuncionHash {
 		char3 += char4;
 		char4 += (long)input[ 0 ];
 		char5 += sumaAnt2;
+		sumaAnt8 += sumaAnt7;
+		sumaAnt7 += sumaAnt6;
+		sumaAnt6 += sumaAnt5;
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
 		sumaAnt3 += sumaAnt2;
@@ -181,7 +193,10 @@ public class Azrael320 implements FuncionHash {
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END ACUMULACION 5x64: ("+rounds+") rounds" );
+			System.out.println( "**** END ACUMULACION 8x64: ("+rounds+") rounds" );
+			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
+			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
+			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
 			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
 			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
 			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
@@ -194,9 +209,15 @@ public class Azrael320 implements FuncionHash {
 		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
 		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
 		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV5;
+		sumaAnt6 += evaluaFuncBool( sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6) + IV6;
+		sumaAnt7 += evaluaFuncBool( sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7) + IV7;
+		sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV8;
 
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END DISPERSION 5x64: ("+rounds+") rounds" );
+			System.out.println( "**** END DISPERSION 8x64: ("+rounds+") rounds" );
+			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
+			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
+			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
 			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
 			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
 			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
@@ -207,26 +228,41 @@ public class Azrael320 implements FuncionHash {
 			long hash1 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt2 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
-	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL);
+	               ((sumaAnt3+sumaAnt4+sumaAnt5+sumaAnt6) & 0xffffffffL);
 			long hash2 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt3 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt2+sumaAnt3+sumaAnt4 << 16) & 0xffffffffL) |
-	               ((sumaAnt4+sumaAnt5+sumaAnt1) & 0xffffffffL);
+	               ((sumaAnt4+sumaAnt5+sumaAnt1+sumaAnt7) & 0xffffffffL);
 			long hash3 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt4 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt3+sumaAnt4+sumaAnt5 << 16) & 0xffffffffL) |
-	               ((sumaAnt5+sumaAnt1+sumaAnt2) & 0xffffffffL);
+	               ((sumaAnt5+sumaAnt1+sumaAnt2+sumaAnt8) & 0xffffffffL);
 			long hash4 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt5 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt4+sumaAnt5+sumaAnt1 << 16) & 0xffffffffL) |
-	               ((sumaAnt1+sumaAnt2+sumaAnt3) & 0xffffffffL);
+	               ((sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt6) & 0xffffffffL);
 			long hash5 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt1 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt5+sumaAnt1+sumaAnt2 << 16) & 0xffffffffL) |
-	               ((sumaAnt2+sumaAnt3+sumaAnt4) & 0xffffffffL);
+	               ((sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt7) & 0xffffffffL);
+			long hash6 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+		           ((sumaAnt1+sumaAnt4 << 32) & 0xffffffffffffffffL ) |
+		           ((sumaAnt2+sumaAnt4+sumaAnt5 << 16) & 0xffffffffL) |
+		           ((sumaAnt3+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
+			long hash7 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+		           ((sumaAnt1+sumaAnt5 << 32) & 0xffffffffffffffffL ) |
+		           ((sumaAnt4+sumaAnt5+sumaAnt6 << 16) & 0xffffffffL) |
+		           ((sumaAnt7+sumaAnt8+sumaAnt1+sumaAnt2) & 0xffffffffL);
+			long hash8 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+		           ((sumaAnt1+sumaAnt6 << 32) & 0xffffffffffffffffL ) |
+		           ((sumaAnt7+sumaAnt1+sumaAnt2 << 16) & 0xffffffffL) |
+		           ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
 
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END APILACION 5x64:" );
+				System.out.println( "**** END APILACION 8x64:" );
+				System.out.println( "**** hash8 = "+hash8 );
+				System.out.println( "**** hash7 = "+hash7 );
+				System.out.println( "**** hash6 = "+hash6 );
 				System.out.println( "**** hash5 = "+hash5 );
 				System.out.println( "**** hash4 = "+hash4 );
 				System.out.println( "**** hash3 = "+hash3 );
@@ -239,9 +275,15 @@ public class Azrael320 implements FuncionHash {
 			hash3 += evaluaFuncBool( hash3,hash3,hash3,hash3,hash3) + IV8;
 			hash4 += evaluaFuncBool( hash4,hash4,hash4,hash4,hash4) + IV9;
 			hash5 += evaluaFuncBool( hash5,hash5,hash5,hash5,hash5) + IV10;
+			hash6 += evaluaFuncBool( hash6,hash6,hash6,hash6,hash6) + IV1;
+			hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV3;
+			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV8;
 		
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END DISPERSION FINAL 5x64: ("+rounds+") rounds" );
+				System.out.println( "**** END DISPERSION FINAL 8x64: ("+rounds+") rounds" );
+				System.out.println( "**** hash8 END = "+hash8 );
+				System.out.println( "**** hash7 END = "+hash7 );
+				System.out.println( "**** hash6 END = "+hash6 );
 				System.out.println( "**** hash5 END = "+hash5 );
 				System.out.println( "**** hash4 END = "+hash4 );
 				System.out.println( "**** hash3 END = "+hash3 );
@@ -253,7 +295,10 @@ public class Azrael320 implements FuncionHash {
 										hash2,
 										hash3,
 										hash4,
-										hash5+rounds} );
+										hash5,
+										hash6,
+										hash7,
+										hash8+rounds} );
 	}
 	
 	public byte[] longToBytes(long[] x) {
@@ -310,7 +355,7 @@ public class Azrael320 implements FuncionHash {
 	}
 	
 	public String toString() {
-		return "Azrael320 "+numIterations+"x";
+		return "Azrael512 "+numIterations+"x";
 	}
 	
 	/**
@@ -319,10 +364,11 @@ public class Azrael320 implements FuncionHash {
 	 */
 	public static void main(String[] args) {
 		
-		int tope = 1000000;
-		
 		String hex1, hex2;
-		Azrael320 hash = new Azrael320(tope);
+		
+		/*
+		int tope = 100000000;
+		Azrael512 hash = new Azrael512(tope);
 		
 		long timeIni = System.currentTimeMillis();
 		System.out.println( "=====> INIT ("+tope+")-"+timeIni );
@@ -333,8 +379,9 @@ public class Azrael320 implements FuncionHash {
 		System.out.println( "TIME = "+
 				"["+(timeNow/(1000.0))+"] secs,"+
 				"["+(timeNow/(1000.0*60.0))+"] mins." );
-		
-		/*
+		*/
+
+		Azrael512 hash = new Azrael512();
 		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
 		hex1 = Hex.encodeHexString( hash1 );
 		
@@ -347,7 +394,5 @@ public class Azrael320 implements FuncionHash {
 		
 		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );
 		System.out.println( "EMPTY 2 => "+(hex2.equals(EMPTY_STRING_2_IT)) );
-		*/
-		
 	}
 }

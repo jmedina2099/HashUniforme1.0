@@ -3,6 +3,10 @@
  */
 package main;
 
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_1;
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_512;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,13 +14,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Random;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import hash.Azrael320;
+import hash.Azrael512;
 import hash.Azrael64;
 import hash.FuncionHash;
-import hash.Java;
-import hash.SHA;
 import table.TablaHash;
 import ui.PanelPrincipal;
 import ui.VentanaPrincipal;
@@ -32,7 +39,7 @@ public class Main {
 	private boolean useRockyou = false;
 	private boolean oneBitDistinct = false;
 	private boolean randomBites = true;
-	private boolean withHistogram = false;
+	private boolean withHistogram = true;
 	
 
 
@@ -40,7 +47,8 @@ public class Main {
 		String[] arrayNames = new String[]{ "/esp.txt", "/en.txt", "/words.txt", "/rockyou.txt" };
 		String[] charsetNames = new String[]{ "ISO-8859-1", "UTF-8", "UTF-8", "UTF-8" };
 		//int[] sizes = new int[]{ 174848,194433,466544,14344389 };
-		int[] sizes = new int[]{ 174848,194433,466544,14344389 };
+		//int[] sizes = new int[]{ 174848,194433,466544,14344389 };
+		int[] sizes = new int[]{ 174848,194433,466544,20000000 };
 		int[] sizesPrimes = new int[]{ 174851,194483,466547,14344403 };
 		if( useFiles) {
 			processFile( funcionHash, arrayNames[0], charsetNames[0], usePrime? sizesPrimes[0]: sizes[0], withHistogram );
@@ -82,7 +90,7 @@ public class Main {
 	public void processFile( FuncionHash funcionHash, String fileName, String charset, int sizeOfTable, boolean withHistogram ) {
 
 		long timeIni = System.currentTimeMillis();
-		System.out.println( "=====> START FILE="+fileName );
+		System.out.println( "=====> START FILE="+fileName+"-"+sizeOfTable );
 
 		int total = 0;
 		
@@ -289,11 +297,17 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		
-		int iterations = 2;
+		int iterations = 1;
 		
 		Main main = new Main();
+
+		main.test( new Azrael512(iterations) );
+		
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
 
 		/*
 		main.test( new Java(iterations) );
@@ -315,7 +329,49 @@ public class Main {
 		System.out.println( " DONE ==>");
 		*/
 
-		main.test( new Azrael320(iterations) );
+		//main.test( new Azrael320(iterations) );
+		
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		String stringValue = "";
+		byte[] bites = stringValue.getBytes(StandardCharsets.UTF_8);
+		
+		//String hashedVal = Base64.getEncoder().encodeToString(DigestUtils.sha1(bites));
+		//System.out.println( hashedVal );
+		
+		byte[] hash1 = new Azrael64(1).getHashEval( bites );
+		byte[] hash2 = new DigestUtils(SHA_1).digest(bites);
+		byte[] hash3 = new DigestUtils(SHA_256).digest(bites);
+		byte[] hash4 = new Azrael320(1).getHashEval( bites );
+		byte[] hash5 = new DigestUtils(SHA_512).digest(bites);
+		byte[] hash6 = new Azrael512(1).getHashEval( bites );
+
+		System.out.println( "Starting.. hashing the empty string" );
+
+		System.out.println( " azrael64(Base64)= "+ Base64.getEncoder().encodeToString(hash1) );
+		System.out.println( "   sha160(Base64)= "+ Base64.getEncoder().encodeToString(hash2) );
+		System.out.println( "   sha256(Base64)= "+ Base64.getEncoder().encodeToString(hash3) );
+		System.out.println( "azrael320(Base64)= "+ Base64.getEncoder().encodeToString(hash4) );
+		System.out.println( "   sha512(Base64)= "+ Base64.getEncoder().encodeToString(hash5) );
+		System.out.println( "azrael512(Base64)= "+ Base64.getEncoder().encodeToString(hash6) );
+		
+		System.out.println( " azrael64(Hex   )= "+ Hex.encodeHexString( hash1 ) );
+		System.out.println( "   sha160(Hex   )= "+ Hex.encodeHexString( hash2 ) );
+		System.out.println( "   sha256(Hex   )= "+ Hex.encodeHexString( hash3 ) );
+		System.out.println( "azrael320(Hex   )= "+ Hex.encodeHexString( hash4 ) );
+		System.out.println( "   sha512(Hex   )= "+ Hex.encodeHexString( hash5 ) );
+		System.out.println( "azrael512(Hex   )= "+ Hex.encodeHexString( hash6 ) );
+
+		//String hdigest = new DigestUtils(SHA_1).digestAsHex(new File("pom.xml"));
+
+		System.out.println( "END" );
+
 	}
 
 }
