@@ -13,7 +13,9 @@ static int rounds = 0;
 static int iteration = 0;
 static int iteraciones = 0;
 
+#ifdef PRINT_HASH
 static int numMostrar = 20;
+#endif
 
 static const signed long long IV1  = 0x6a09e667bb67ae85;
 static const signed long long IV2  = 0x3c6ef372a54ff53a;
