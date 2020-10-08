@@ -1,33 +1,40 @@
+/* Copyright (C) 2007-2020 - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jorge Medina <medinarosas.jorgealberto@gmail.com>, October 7th, 2020
+ */
+
 #include <stdio.h>
 #include <string.h>
 
 int DEBUG_PARTIAL_HASH = 0;
 
 int rounds = 0;
+int iteration = 0;
 
 signed long long evaluaFuncBool( signed long long char1,
-								 signed long long char2,
-								 signed long long char3,
-								 signed long long char4,
-								 signed long long char5 ) {
+		 		 signed long long char2,
+				 signed long long char3,
+				 signed long long char4,
+				 signed long long char5 ) {
 
 	rounds++;
   	return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
-			   ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
-			   ((( char1 ^ char2 ) + ( char3 + char4 )) ^ char5) +
-			   ((( char1 ^ char2 ) ^ ( char3 + char4 )) ^ char5) +
-			   ((( char1 & char2 ) + ( char3 + char4 )) + char5) +
-			   ((( char1 & char2 ) + ( char3 + char4 )) ^ char5) +
-			   ((( char1 ^ char2 ) ^ ( char3 + char4 )) ^ char5) +
-			   ((( char1 | char2 ) ^ ( char3 + char4 )) ^ char5) +
-			   (( char1 | char2 ) | (( char3 + char4 ) ^ char5)) +
-			   ((( char1 + char2 ) + ( char3 + char4 )) ^ char5) +
-			   ((( char1 + char2 ) & ( char3 + char4 )) ^ char5) +
-			   ((( char1 ^ char2 ) + ( char3 ^ char4 )) ^ char5) +
-			   ((( char1 | char2 ) ^ ( char3 ^ char4 )) ^ char5) +
-			   ((( char1 + char2 ) + ( char3 ^ char4 )) ^ char5) +
-			   ((( char1 + char2 ) ^ ( char3 + char4 )) ^ char5) +
-			   (( char1 + char2 ) & (( char3 + char4 ) + char5));
+	       ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
+	       ((( char1 ^ char2 ) + ( char3 + char4 )) ^ char5) +
+	       ((( char1 ^ char2 ) ^ ( char3 + char4 )) ^ char5) +
+	       ((( char1 & char2 ) + ( char3 + char4 )) + char5) +
+	       ((( char1 & char2 ) + ( char3 + char4 )) ^ char5) +
+	       ((( char1 ^ char2 ) ^ ( char3 + char4 )) ^ char5) +
+	       ((( char1 | char2 ) ^ ( char3 + char4 )) ^ char5) +
+	       (( char1 | char2 ) | (( char3 + char4 ) ^ char5)) +
+	       ((( char1 + char2 ) + ( char3 + char4 )) ^ char5) +
+	       ((( char1 + char2 ) & ( char3 + char4 )) ^ char5) +
+	       ((( char1 ^ char2 ) + ( char3 ^ char4 )) ^ char5) +
+	       ((( char1 | char2 ) ^ ( char3 ^ char4 )) ^ char5) +
+	       ((( char1 + char2 ) + ( char3 ^ char4 )) ^ char5) +
+	       ((( char1 + char2 ) ^ ( char3 + char4 )) ^ char5) +
+	       (( char1 + char2 ) & (( char3 + char4 ) + char5));
 
  }
 
@@ -58,9 +65,8 @@ char* pad( char* data, unsigned long length, int padding, char* output ) {
   return output;
 }
 
-char* eval_hash( char* input, char* val ) {
+char* eval_hash( char* input, char* val, unsigned long inputLength, int printHash ) {
 
-  unsigned long inputLength = strlen(input);
   int tail = inputLength % 64;
   int padding;
 
@@ -149,7 +155,7 @@ char* eval_hash( char* input, char* val ) {
   sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
   if( DEBUG_PARTIAL_HASH ) {
-	  printf("END ACUMULACION\n" );
+	  printf("END ACUMULACION (%d)\n", rounds );
 	  printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
 	  printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
 	  printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
@@ -170,7 +176,7 @@ char* eval_hash( char* input, char* val ) {
   sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV8;
 
   if( DEBUG_PARTIAL_HASH ) {
-	  printf("END DISPERSION\n" );
+	  printf("END DISPERSION (%d)\n", rounds );
 	  printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
 	  printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
 	  printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
@@ -215,7 +221,7 @@ char* eval_hash( char* input, char* val ) {
          ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
 
   if( DEBUG_PARTIAL_HASH ) {
-	  printf("END APILACION\n" );
+	  printf("END APILACION (%d)\n", rounds );
 	  printf("hash8 = [%lld]!\n",hash8 );
 	  printf("hash7 = [%lld]!\n",hash7 );
 	  printf("hash6 = [%lld]!\n",hash6 );
@@ -247,17 +253,136 @@ char* eval_hash( char* input, char* val ) {
 	  printf("hash1 = [%lld]!\n\n",hash1 );
   }
 
+  if( printHash ) {
+	  char hex[129];
+	  sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash1,hash2,hash3,hash4,hash5,hash6,hash7,(hash8+rounds) );
+	  printf( "%s\n", hex );
+  }
 
-  sprintf(val,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash1,hash2,hash3,hash4,hash5,hash6,hash7,hash8+rounds );
+  /*
+  int str_len = 128;
+  int j;
+  for (j = 0; j < (str_len / 2); j++) {
+    sscanf(hex + 2*j, "%02x", &val[j]);
+    printf( "(val)[%d]=%d\n",j,val[j]);
+  }
+  */
+
+  val[7] = hash1;
+  val[6] = hash1 >> 8;
+  val[5] = hash1 >> 16;
+  val[4] = hash1 >> 24;
+  val[3] = hash1 >> 32;
+  val[2] = hash1 >> 40;
+  val[1] = hash1 >> 48;
+  val[0] = hash1 >> 56;
+
+  val[15] = hash2;
+  val[14] = hash2 >> 8;
+  val[13] = hash2 >> 16;
+  val[12] = hash2 >> 24;
+  val[11] = hash2 >> 32;
+  val[10] = hash2 >> 40;
+  val[9] = hash2 >> 48;
+  val[8] = hash2 >> 56;
+
+  val[23] = hash3;
+  val[22] = hash3 >> 8;
+  val[21] = hash3 >> 16;
+  val[20] = hash3 >> 24;
+  val[19] = hash3 >> 32;
+  val[18] = hash3 >> 40;
+  val[17] = hash3 >> 48;
+  val[16] = hash3 >> 56;
+
+  val[31] = hash4;
+  val[30] = hash4 >> 8;
+  val[29] = hash4 >> 16;
+  val[28] = hash4 >> 24;
+  val[27] = hash4 >> 32;
+  val[26] = hash4 >> 40;
+  val[25] = hash4 >> 48;
+  val[24] = hash4 >> 56;
+
+  val[39] = hash5;
+  val[38] = hash5 >> 8;
+  val[37] = hash5 >> 16;
+  val[36] = hash5 >> 24;
+  val[35] = hash5 >> 32;
+  val[34] = hash5 >> 40;
+  val[33] = hash5 >> 48;
+  val[32] = hash5 >> 56;
+
+  val[47] = hash6;
+  val[46] = hash6 >> 8;
+  val[45] = hash6 >> 16;
+  val[44] = hash6 >> 24;
+  val[43] = hash6 >> 32;
+  val[42] = hash6 >> 40;
+  val[41] = hash6 >> 48;
+  val[40] = hash6 >> 56;
+
+  val[55] = hash7;
+  val[54] = hash7 >> 8;
+  val[53] = hash7 >> 16;
+  val[52] = hash7 >> 24;
+  val[51] = hash7 >> 32;
+  val[50] = hash7 >> 40;
+  val[49] = hash7 >> 48;
+  val[48] = hash7 >> 56;
+
+  hash8 += rounds;
+  val[63] = hash8;
+  val[62] = hash8 >> 8;
+  val[61] = hash8 >> 16;
+  val[60] = hash8 >> 24;
+  val[59] = hash8 >> 32;
+  val[58] = hash8 >> 40;
+  val[57] = hash8 >> 48;
+  val[56] = hash8 >> 56;
 
   return val;
 }
 
+void printValues( char* val1, char* val2 ) {
+  printf("[%s]=[%s]\n",val1, val2 );
+}
+
+char* getHash( int numIterations, char* val1, char* val2, unsigned int size, int printHash ) {
+
+  rounds  = 0;
+  iteration  = 0;
+
+  for( ; iteration<numIterations; ) {
+    iteration++;
+    val2 = eval_hash( val1, val2, size, printHash );
+    size = 64;
+
+    int j=0;
+    for( ;j<64 ;j++ ) {
+    	val1[j] = val2[j];
+    }
+
+    j=0;
+    for( ;j<64;j++ ) {
+    	val2[j] = 0;
+    }
+
+
+  }
+
+  return val2;
+}
+
 int main(int argc, char *argv[]) {
 
-  // printf() displays the string inside quotation
-  char val[128];
-  printf("[%s]=[%s]\n",argv[1],eval_hash( argv[1], val ) );
+
+  char* val1 = argv[1];
+  unsigned int size = strlen(val1);
+  char val2[64];
+
+  getHash( 1, val1,val2, size, 1 );
+  //printValues( argv[1],val2 );
 
   return 0;
 }
