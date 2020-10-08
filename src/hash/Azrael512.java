@@ -258,7 +258,7 @@ public class Azrael512 implements FuncionHash {
 		           ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
 
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END APILACION 8x64:" );
+				System.out.println( "**** END APILACION 8x64: ("+rounds+") rounds" );
 				System.out.println( "**** hash8 = "+hash8 );
 				System.out.println( "**** hash7 = "+hash7 );
 				System.out.println( "**** hash6 = "+hash6 );
