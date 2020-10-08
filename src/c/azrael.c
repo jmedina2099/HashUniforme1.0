@@ -6,17 +6,29 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int DEBUG_PARTIAL_HASH = 0;
 
 int rounds = 0;
 int iteration = 0;
 
-signed long long evaluaFuncBool( signed long long char1,
-		 		 signed long long char2,
-				 signed long long char3,
-				 signed long long char4,
-				 signed long long char5 ) {
+static signed long long IV1  = 0x6a09e667bb67ae85;
+static signed long long IV2  = 0x3c6ef372a54ff53a;
+static signed long long IV3  = 0x510e527f9b05688c;
+static signed long long IV4  = 0x1f83d9ab5be0cd19;
+static signed long long IV5  = 0x428a2f9871374491;
+static signed long long IV6  = 0xb5c0fbcfe9b5dba5;
+static signed long long IV7  = 0x3956c25b59f111f1;
+static signed long long IV8  = 0x923f82a4ab1c5ed5;
+static signed long long IV9  = 0xd807aa9812835b01;
+static signed long long IV10 = 0x243185be550c7dc3;
+
+static inline signed long long evaluaFuncBool( const signed long long char1,
+		const signed long long char2,
+		const signed long long char3,
+		const signed long long char4,
+		const signed long long char5 ) {
 
 	rounds++;
   	return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
@@ -35,10 +47,9 @@ signed long long evaluaFuncBool( signed long long char1,
 	       ((( char1 + char2 ) + ( char3 ^ char4 )) ^ char5) +
 	       ((( char1 + char2 ) ^ ( char3 + char4 )) ^ char5) +
 	       (( char1 + char2 ) & (( char3 + char4 ) + char5));
-
  }
 
-char* pad( char* data, unsigned long length, int padding, char* output ) {
+char* pad( const char* data, unsigned long length, int padding, char* output ) {
 
   char pad[padding];
   pad[0] = (char) 0x80;
@@ -81,31 +92,20 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   input = pad(input,inputLength,padding,output);
   inputLength = inputLength+padding;
 
-  signed long long IV1  = 0x6a09e667bb67ae85;
-  signed long long IV2  = 0x3c6ef372a54ff53a;
-  signed long long IV3  = 0x510e527f9b05688c;
-  signed long long IV4  = 0x1f83d9ab5be0cd19;
-  signed long long IV5  = 0x428a2f9871374491;
-  signed long long IV6  = 0xb5c0fbcfe9b5dba5;
-  signed long long IV7  = 0x3956c25b59f111f1;
-  signed long long IV8  = 0x923f82a4ab1c5ed5;
-  signed long long IV9  = 0xd807aa9812835b01;
-  signed long long IV10 = 0x243185be550c7dc3;
-
-  signed long long char1=IV1;
-  signed long long char2=IV2;
-  signed long long char3=IV3;
-  signed long long char4=IV4;
-  signed long long char5=IV5;
+  register signed long long char1=IV1;
+  register signed long long char2=IV2;
+  register signed long long char3=IV3;
+  register signed long long char4=IV4;
+  register signed long long char5=IV5;
 		
-  signed long long sumaAnt1 = IV6;
-  signed long long sumaAnt2 = IV7;
-  signed long long sumaAnt3 = IV8;
-  signed long long sumaAnt4 = IV9;
-  signed long long sumaAnt5 = IV10;
-  signed long long sumaAnt6 = IV1;
-  signed long long sumaAnt7 = IV3;
-  signed long long sumaAnt8 = IV8;
+  register signed long long sumaAnt1 = IV6;
+  register signed long long sumaAnt2 = IV7;
+  register signed long long sumaAnt3 = IV8;
+  register signed long long sumaAnt4 = IV9;
+  register signed long long sumaAnt5 = IV10;
+  register signed long long sumaAnt6 = IV1;
+  register signed long long sumaAnt7 = IV3;
+  register signed long long sumaAnt8 = IV8;
   
   char1 += (signed long long)input[ inputLength-2 ];
   char2 += (signed long long)input[ inputLength-1 ];
@@ -187,35 +187,35 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
 	  printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
   }
 
-  signed long long hash1 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash1 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt2) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt2+sumaAnt3) << 16) & 0xffffffffL) |
          ((sumaAnt3+sumaAnt4+sumaAnt5+sumaAnt6) & 0xffffffffL);
-  signed long long hash2 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash2 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt3) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt2+sumaAnt3+sumaAnt4) << 16) & 0xffffffffL) |
          ((sumaAnt4+sumaAnt5+sumaAnt1+sumaAnt7) & 0xffffffffL);
-  signed long long hash3 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash3 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt3+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
          ((sumaAnt5+sumaAnt1+sumaAnt2+sumaAnt8) & 0xffffffffL);
-  signed long long hash4 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash4 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt4+sumaAnt5+sumaAnt1) << 16) & 0xffffffffL) |
          ((sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt6) & 0xffffffffL);
-  signed long long hash5 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash5 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt1) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt5+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
          ((sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt7) & 0xffffffffL);
-  signed long long hash6 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash6 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt2+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
          ((sumaAnt3+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
-  signed long long hash7 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash7 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt4+sumaAnt5+sumaAnt6) << 16) & 0xffffffffL) |
          ((sumaAnt7+sumaAnt8+sumaAnt1+sumaAnt2) & 0xffffffffL);
-  signed long long hash8 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+  register signed long long hash8 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt6) << 32) & 0xffffffffffffffffL ) |
          (((sumaAnt7+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
          ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
@@ -348,7 +348,7 @@ void printValues( char* val1, char* val2 ) {
   printf("[%s]=[%s]\n",val1, val2 );
 }
 
-char* getHash( int numIterations, char* val1, char* val2, unsigned int size, int printHash ) {
+static inline char* getHash( int numIterations, char* val1, char* val2, unsigned int size, int printHash ) {
 
   rounds  = 0;
   iteration  = 0;
@@ -381,7 +381,7 @@ int main(int argc, char *argv[]) {
   unsigned int size = strlen(val1);
   char val2[64];
 
-  getHash( 1, val1,val2, size, 1 );
+  getHash( atoi(argv[2]), val1,val2, size, atoi(argv[3]) );
   //printValues( argv[1],val2 );
 
   return 0;
