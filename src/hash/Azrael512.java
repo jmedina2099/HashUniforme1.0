@@ -22,7 +22,7 @@ public class Azrael512 implements FuncionHash {
 
 	private int rounds = 0;
 
-	private int numIterations = 2;
+	private int numIterations = 1;
 	private int iteration = 0;
 
 
@@ -36,7 +36,7 @@ public class Azrael512 implements FuncionHash {
 	 * 
 	 */
 	public Azrael512() {
-		this(2);
+		this(1);
 	}
 
 	/**
@@ -84,8 +84,7 @@ public class Azrael512 implements FuncionHash {
 				if( iteration > this.numIterations - 100 ) {
 					promedioPro += promedio;
 					
-					sb.append( iteration )
-					  .append( "]==>[hash]=[" )
+					sb.append( "[" )
 					  .append( value )
 					  .append( "]-[bits]=[" )
 					  .append( input.length*8 )
@@ -336,22 +335,22 @@ public class Azrael512 implements FuncionHash {
 	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
 		rounds++;
-		return (( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5) +
-			   (( char1 & char2 ) ^ ( char3 + char4 ) ^ char5) +
-			   (( char1 ^ char2 ) + ( char3 + char4 ) ^ char5) +
-			   (( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5) +
-			   (( char1 & char2 ) + ( char3 + char4 ) + char5) +
-			   (( char1 & char2 ) + ( char3 + char4 ) ^ char5) +
-			   (( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5) +
-			   (( char1 | char2 ) ^ ( char3 + char4 ) ^ char5) +
-			   (( char1 | char2 ) | ( char3 + char4 ) ^ char5) +
-			   (( char1 + char2 ) + ( char3 + char4 ) ^ char5) +
-			   (( char1 + char2 ) & ( char3 + char4 ) ^ char5) +
-			   (( char1 ^ char2 ) + ( char3 ^ char4 ) ^ char5) +
-			   (( char1 | char2 ) ^ ( char3 ^ char4 ) ^ char5) +
-			   (( char1 + char2 ) + ( char3 ^ char4 ) ^ char5) +
-			   (( char1 + char2 ) ^ ( char3 + char4 ) ^ char5) +
-			   (( char1 + char2 ) & ( char3 + char4 ) + char5);
+		return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
+			   ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
+			   ((( char1 ^ char2 ) + ( char3 + char4 )) ^ char5) +
+			   ((( char1 ^ char2 ) ^ ( char3 + char4 )) ^ char5) +
+			   ((( char1 & char2 ) + ( char3 + char4 )) + char5) +
+			   ((( char1 & char2 ) + ( char3 + char4 )) ^ char5) +
+			   ((( char1 ^ char2 ) ^ ( char3 + char4 )) ^ char5) +
+			   ((( char1 | char2 ) ^ ( char3 + char4 )) ^ char5) +
+			   (( char1 | char2 ) | (( char3 + char4 ) ^ char5)) +
+			   ((( char1 + char2 ) + ( char3 + char4 )) ^ char5) +
+			   ((( char1 + char2 ) & ( char3 + char4 )) ^ char5) +
+			   ((( char1 ^ char2 ) + ( char3 ^ char4 )) ^ char5) +
+			   ((( char1 | char2 ) ^ ( char3 ^ char4 )) ^ char5) +
+			   ((( char1 + char2 ) + ( char3 ^ char4 )) ^ char5) +
+			   ((( char1 + char2 ) ^ ( char3 + char4 )) ^ char5) +
+			   (( char1 + char2 ) & (( char3 + char4 ) + char5));
 	}
 	
 	public String toString() {
@@ -367,7 +366,7 @@ public class Azrael512 implements FuncionHash {
 		String hex1, hex2;
 		
 		/*
-		int tope = 100000000;
+		int tope = 10000000;
 		Azrael512 hash = new Azrael512(tope);
 		
 		long timeIni = System.currentTimeMillis();
@@ -381,18 +380,34 @@ public class Azrael512 implements FuncionHash {
 				"["+(timeNow/(1000.0*60.0))+"] mins." );
 		*/
 
-		Azrael512 hash = new Azrael512();
-		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
+		/*
+		String cadena = "";
+		
+		Azrael512 hash = new Azrael512(1);
+		byte[] hash1 = hash.getHashEval( cadena.getBytes(StandardCharsets.UTF_8) );
 		hex1 = Hex.encodeHexString( hash1 );
+		System.out.println( "["+cadena+"]=["+hex1+"]" );
+		*/
 		
-		System.out.println( "1 => "+hex1 );
-		
+		Azrael512 hash = new Azrael512(1);
+		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
 		byte[] hash2 = hash.getHashEval( hash1 );
+		hex1 = Hex.encodeHexString( hash1 );
 		hex2 = Hex.encodeHexString( hash2 );
 		
-		System.out.println( "2 => "+hex2 );
+		System.out.println( hex1+" == EMPTY (1) ="+hex1.equals(EMPTY_STRING_1_IT) );
+		System.out.println( hex2+" == EMPTY (2) ="+hex2.equals(EMPTY_STRING_2_IT) );
 		
-		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );
-		System.out.println( "EMPTY 2 => "+(hex2.equals(EMPTY_STRING_2_IT)) );
+		String input = null;
+		input = "Azrael512";
+		System.out.println( getHash(input,hash)+" == "+input );
+		input = "Jorge Alberto Medina Rosas";
+		System.out.println( getHash(input,hash)+" == "+input );
+	}
+	
+	public static String getHash( String input, Azrael512 hash ) {
+		byte[] hashEval = hash.getHashEval( input.getBytes(StandardCharsets.UTF_8) );
+		String hexVal = Hex.encodeHexString( hashEval );
+		return hexVal;
 	}
 }
