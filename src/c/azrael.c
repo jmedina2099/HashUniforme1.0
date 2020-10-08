@@ -7,22 +7,24 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
-int DEBUG_PARTIAL_HASH = 0;
+static int rounds = 0;
+static int iteration = 0;
+static int iteraciones = 0;
 
-int rounds = 0;
-int iteration = 0;
+static int numMostrar = 20;
 
-static signed long long IV1  = 0x6a09e667bb67ae85;
-static signed long long IV2  = 0x3c6ef372a54ff53a;
-static signed long long IV3  = 0x510e527f9b05688c;
-static signed long long IV4  = 0x1f83d9ab5be0cd19;
-static signed long long IV5  = 0x428a2f9871374491;
-static signed long long IV6  = 0xb5c0fbcfe9b5dba5;
-static signed long long IV7  = 0x3956c25b59f111f1;
-static signed long long IV8  = 0x923f82a4ab1c5ed5;
-static signed long long IV9  = 0xd807aa9812835b01;
-static signed long long IV10 = 0x243185be550c7dc3;
+static const signed long long IV1  = 0x6a09e667bb67ae85;
+static const signed long long IV2  = 0x3c6ef372a54ff53a;
+static const signed long long IV3  = 0x510e527f9b05688c;
+static const signed long long IV4  = 0x1f83d9ab5be0cd19;
+static const signed long long IV5  = 0x428a2f9871374491;
+static const signed long long IV6  = 0xb5c0fbcfe9b5dba5;
+static const signed long long IV7  = 0x3956c25b59f111f1;
+static const signed long long IV8  = 0x923f82a4ab1c5ed5;
+static const signed long long IV9  = 0xd807aa9812835b01;
+static const signed long long IV10 = 0x243185be550c7dc3;
 
 static inline signed long long evaluaFuncBool( const signed long long char1,
 		const signed long long char2,
@@ -49,36 +51,31 @@ static inline signed long long evaluaFuncBool( const signed long long char1,
 	       (( char1 + char2 ) & (( char3 + char4 ) + char5));
  }
 
-char* pad( const char* data, unsigned long length, int padding, char* output ) {
+char* pad( const char* data, int length, int padding, char* output ) {
 
   char pad[padding];
   pad[0] = (char) 0x80;
-  signed long long bits = length * 8;
-  int i=0;
-  for( ; i < 8; i++ ) {
+
+  const signed long long bits = length * 8;
+
+  int i;
+  for( i=0; i < 8; i++ ) {
 	 pad[padding - 1 - i] = (char) ((bits >> (8 * i)) & 0xFF);
   }
-  i=1;
-  for( ; i<=padding-1-8; i++ ) {
+  for( i=1; i<=padding-1-8; i++ ) {
 	 pad[i] = (char)0;
   }
-
-  i=0;
-  for( ; i<length; i++ ) {
-	  output[i] = data[i];
-  }
-
-  i=0;
-  for( ; i<padding; i++ ) {
+  memcpy(output,data,length);
+  for( i=0; i<padding; i++ ) {
 	  output[length+i] = pad[i];
   }
 
   return output;
 }
 
-char* eval_hash( char* input, char* val, unsigned long inputLength, int printHash ) {
+char* eval_hash( char* input, char* val, int inputLength ) {
 
-  int tail = inputLength % 64;
+  const int tail = inputLength % 64;
   int padding;
 
   if ((64 - tail >= 9)) {
@@ -90,7 +87,7 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   char output[inputLength+padding];
 
   input = pad(input,inputLength,padding,output);
-  inputLength = inputLength+padding;
+  inputLength += padding;
 
   register signed long long char1=IV1;
   register signed long long char2=IV2;
@@ -123,8 +120,7 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
   
   // Main Loop.
-  int i=1;
-  for( ;  i<inputLength-1 ; i++ ) {
+  for( int i=1; i<inputLength-1 ; i++ ) {
     char1 += sumaAnt1;
 	char2 += char3;
 	char3 += char4;
@@ -154,17 +150,17 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   sumaAnt2 += sumaAnt1;
   sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
-  if( DEBUG_PARTIAL_HASH ) {
-	  printf("END ACUMULACION (%d)\n", rounds );
-	  printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
-	  printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
-	  printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
-	  printf("sumaAnt5 = [%lld]!\n",sumaAnt5 );
-	  printf("sumaAnt4 = [%lld]!\n",sumaAnt4 );
-	  printf("sumaAnt3 = [%lld]!\n",sumaAnt3 );
-	  printf("sumaAnt2 = [%lld]!\n",sumaAnt2 );
-	  printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
-  }
+#ifdef DEBUG_PARTIAL_HASH
+    printf("(1) END ACUMULACION (%d)\n", rounds );
+    printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
+    printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
+    printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
+    printf("sumaAnt5 = [%lld]!\n",sumaAnt5 );
+    printf("sumaAnt4 = [%lld]!\n",sumaAnt4 );
+    printf("sumaAnt3 = [%lld]!\n",sumaAnt3 );
+    printf("sumaAnt2 = [%lld]!\n",sumaAnt2 );
+    printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
+#endif
 
   sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV1;
   sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
@@ -175,17 +171,17 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   sumaAnt7 += evaluaFuncBool( sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7) + IV7;
   sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV8;
 
-  if( DEBUG_PARTIAL_HASH ) {
-	  printf("END DISPERSION (%d)\n", rounds );
-	  printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
-	  printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
-	  printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
-	  printf("sumaAnt5 = [%lld]!\n",sumaAnt5 );
-	  printf("sumaAnt4 = [%lld]!\n",sumaAnt4 );
-	  printf("sumaAnt3 = [%lld]!\n",sumaAnt3 );
-	  printf("sumaAnt2 = [%lld]!\n",sumaAnt2 );
-	  printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
-  }
+#ifdef DEBUG_PARTIAL_HASH
+    printf("(2) END DISPERSION (%d)\n", rounds );
+    printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
+    printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
+    printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
+    printf("sumaAnt5 = [%lld]!\n",sumaAnt5 );
+    printf("sumaAnt4 = [%lld]!\n",sumaAnt4 );
+    printf("sumaAnt3 = [%lld]!\n",sumaAnt3 );
+    printf("sumaAnt2 = [%lld]!\n",sumaAnt2 );
+    printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
+#endif
 
   register signed long long hash1 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
          (((sumaAnt1+sumaAnt2) << 32) & 0xffffffffffffffffL ) |
@@ -220,17 +216,17 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
          (((sumaAnt7+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
          ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
 
-  if( DEBUG_PARTIAL_HASH ) {
-	  printf("END APILACION (%d)\n", rounds );
-	  printf("hash8 = [%lld]!\n",hash8 );
-	  printf("hash7 = [%lld]!\n",hash7 );
-	  printf("hash6 = [%lld]!\n",hash6 );
-	  printf("hash5 = [%lld]!\n",hash5 );
-	  printf("hash4 = [%lld]!\n",hash4 );
-	  printf("hash3 = [%lld]!\n",hash3 );
-	  printf("hash2 = [%lld]!\n",hash2 );
-	  printf("hash1 = [%lld]!\n",hash1 );
-  }
+#ifdef DEBUG_PARTIAL_HASH
+    printf("(3) END APILACION (%d)\n", rounds );
+    printf("hash8 = [%lld]!\n",hash8 );
+    printf("hash7 = [%lld]!\n",hash7 );
+    printf("hash6 = [%lld]!\n",hash6 );
+    printf("hash5 = [%lld]!\n",hash5 );
+    printf("hash4 = [%lld]!\n",hash4 );
+    printf("hash3 = [%lld]!\n",hash3 );
+    printf("hash2 = [%lld]!\n",hash2 );
+    printf("hash1 = [%lld]!\n",hash1 );
+#endif
 
   hash1 += evaluaFuncBool( hash1,hash1,hash1,hash1,hash1) + IV6;
   hash2 += evaluaFuncBool( hash2,hash2,hash2,hash2,hash2) + IV7;
@@ -241,32 +237,25 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV3;
   hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV8;
 
-  if( DEBUG_PARTIAL_HASH ) {
-	  printf("END DISPERSION FINAL (%d) \n",rounds );
-	  printf("hash8 = [%lld]!\n",hash8 );
-	  printf("hash7 = [%lld]!\n",hash7 );
-	  printf("hash6 = [%lld]!\n",hash6 );
-	  printf("hash5 = [%lld]!\n",hash5 );
-	  printf("hash4 = [%lld]!\n",hash4 );
-	  printf("hash3 = [%lld]!\n",hash3 );
-	  printf("hash2 = [%lld]!\n",hash2 );
-	  printf("hash1 = [%lld]!\n\n",hash1 );
-  }
+#ifdef DEBUG_PARTIAL_HASH
+    printf("(4) END DISPERSION FINAL (%d) \n",rounds );
+    printf("hash8 = [%lld]!\n",hash8 );
+    printf("hash7 = [%lld]!\n",hash7 );
+    printf("hash6 = [%lld]!\n",hash6 );
+    printf("hash5 = [%lld]!\n",hash5 );
+    printf("hash4 = [%lld]!\n",hash4 );
+    printf("hash3 = [%lld]!\n",hash3 );
+    printf("hash2 = [%lld]!\n",hash2 );
+    printf("hash1 = [%lld]!\n\n",hash1 );
+#endif
 
-  if( printHash ) {
-	  char hex[129];
-	  sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash1,hash2,hash3,hash4,hash5,hash6,hash7,(hash8+rounds) );
-	  printf( "%s\n", hex );
+#ifdef PRINT_HASH
+  if( iteration > iteraciones - numMostrar ) {
+    char hex[129];
+    sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash1,hash2,hash3,hash4,hash5,hash6,hash7,(hash8+rounds) );
+    printf( "%s\n", hex );
   }
-
-  /*
-  int str_len = 128;
-  int j;
-  for (j = 0; j < (str_len / 2); j++) {
-    sscanf(hex + 2*j, "%02x", &val[j]);
-    printf( "(val)[%d]=%d\n",j,val[j]);
-  }
-  */
+#endif
 
   val[7] = hash1;
   val[6] = hash1 >> 8;
@@ -283,8 +272,8 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   val[12] = hash2 >> 24;
   val[11] = hash2 >> 32;
   val[10] = hash2 >> 40;
-  val[9] = hash2 >> 48;
-  val[8] = hash2 >> 56;
+  val[9]  = hash2 >> 48;
+  val[8]  = hash2 >> 56;
 
   val[23] = hash3;
   val[22] = hash3 >> 8;
@@ -344,31 +333,15 @@ char* eval_hash( char* input, char* val, unsigned long inputLength, int printHas
   return val;
 }
 
-void printValues( char* val1, char* val2 ) {
-  printf("[%s]=[%s]\n",val1, val2 );
-}
+static inline char* getHash( int numIterations, char* val1, char* val2, int size ) {
 
-static inline char* getHash( int numIterations, char* val1, char* val2, unsigned int size, int printHash ) {
-
+  iteraciones = numIterations;
   rounds  = 0;
-  iteration  = 0;
 
-  for( ; iteration<numIterations; ) {
-    iteration++;
-    val2 = eval_hash( val1, val2, size, printHash );
+  for( iteration = 0; iteration<numIterations; iteration++ ) {
+    val2 = eval_hash( val1, val2, size );
     size = 64;
-
-    int j=0;
-    for( ;j<64 ;j++ ) {
-    	val1[j] = val2[j];
-    }
-
-    j=0;
-    for( ;j<64;j++ ) {
-    	val2[j] = 0;
-    }
-
-
+    memcpy(val1,val2,size);
   }
 
   return val2;
@@ -376,13 +349,21 @@ static inline char* getHash( int numIterations, char* val1, char* val2, unsigned
 
 int main(int argc, char *argv[]) {
 
+  int iter = 0;
+  if( argc < 2 ) {
+	  printf( "Error: need one argument to hash!\n" );
+	  return 1;
+  } else if( argc == 2 ) {
+	  iter = 1;
+  } else {
+	  iter = atoi(argv[2]);
+  }
 
-  char* val1 = argv[1];
-  unsigned int size = strlen(val1);
-  char val2[64];
+  char val2[64]; // output 64 bytes/512 bits.
+  char* val1 = argv[1]; // input
+  int size = strlen(val1);
 
-  getHash( atoi(argv[2]), val1,val2, size, atoi(argv[3]) );
-  //printValues( argv[1],val2 );
+  getHash( iter, val1, val2, size );
 
   return 0;
 }
