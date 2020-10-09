@@ -112,7 +112,8 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
   
   // Main Loop.
-  for( int i=1; i<inputLength-1 ; i++ ) {
+  int i;
+  for( i=1; i<inputLength-1; i++ ) {
     char1 += sumaAnt1;
     char2 += char3;
     char3 += char4;
@@ -175,152 +176,91 @@ char* eval_hash( char* input, char* val, int inputLength ) {
     printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
 #endif
 
-  register signed long long hash1 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt2) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt2+sumaAnt3) << 16) & 0xffffffffL) |
-         ((sumaAnt3+sumaAnt4+sumaAnt5+sumaAnt6) & 0xffffffffL);
-  register signed long long hash2 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt3) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt2+sumaAnt3+sumaAnt4) << 16) & 0xffffffffL) |
-         ((sumaAnt4+sumaAnt5+sumaAnt1+sumaAnt7) & 0xffffffffL);
-  register signed long long hash3 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt3+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
-         ((sumaAnt5+sumaAnt1+sumaAnt2+sumaAnt8) & 0xffffffffL);
-  register signed long long hash4 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt4+sumaAnt5+sumaAnt1) << 16) & 0xffffffffL) |
-         ((sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt6) & 0xffffffffL);
-  register signed long long hash5 = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt1) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt5+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
-         ((sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt7) & 0xffffffffL);
-  register signed long long hash6 = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt2+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
-         ((sumaAnt3+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
-  register signed long long hash7 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt4+sumaAnt5+sumaAnt6) << 16) & 0xffffffffL) |
-         ((sumaAnt7+sumaAnt8+sumaAnt1+sumaAnt2) & 0xffffffffL);
-  register signed long long hash8 = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
-         (((sumaAnt1+sumaAnt6) << 32) & 0xffffffffffffffffL ) |
-         (((sumaAnt7+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
-         ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
+  signed long long hash[8];
+  hash[0] = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt2) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt2+sumaAnt3) << 16) & 0xffffffffL) |
+            ((sumaAnt3+sumaAnt4+sumaAnt5+sumaAnt6) & 0xffffffffL);
+  hash[1] = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt3) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt2+sumaAnt3+sumaAnt4) << 16) & 0xffffffffL) |
+            ((sumaAnt4+sumaAnt5+sumaAnt1+sumaAnt7) & 0xffffffffL);
+  hash[2] = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt3+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
+            ((sumaAnt5+sumaAnt1+sumaAnt2+sumaAnt8) & 0xffffffffL);
+  hash[3] = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt4+sumaAnt5+sumaAnt1) << 16) & 0xffffffffL) |
+            ((sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt6) & 0xffffffffL);
+  hash[4] = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt1) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt5+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
+            ((sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt7) & 0xffffffffL);
+  hash[5] = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt2+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
+            ((sumaAnt3+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
+  hash[6] = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt4+sumaAnt5+sumaAnt6) << 16) & 0xffffffffL) |
+            ((sumaAnt7+sumaAnt8+sumaAnt1+sumaAnt2) & 0xffffffffL);
+  hash[7] = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
+            (((sumaAnt1+sumaAnt6) << 32) & 0xffffffffffffffffL ) |
+            (((sumaAnt7+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
+            ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(3) END APILACION (%d)\n", rounds );
-    printf("hash8 = [%lld]!\n",hash8 );
-    printf("hash7 = [%lld]!\n",hash7 );
-    printf("hash6 = [%lld]!\n",hash6 );
-    printf("hash5 = [%lld]!\n",hash5 );
-    printf("hash4 = [%lld]!\n",hash4 );
-    printf("hash3 = [%lld]!\n",hash3 );
-    printf("hash2 = [%lld]!\n",hash2 );
-    printf("hash1 = [%lld]!\n",hash1 );
+    printf("hash[7] = [%lld]!\n",hash[7] );
+    printf("hash[6] = [%lld]!\n",hash[6] );
+    printf("hash[5] = [%lld]!\n",hash[5] );
+    printf("hash[4] = [%lld]!\n",hash[4] );
+    printf("hash[3] = [%lld]!\n",hash[3] );
+    printf("hash[2] = [%lld]!\n",hash[2] );
+    printf("hash[1] = [%lld]!\n",hash[1] );
+    printf("hash[0] = [%lld]!\n",hash[0] );
 #endif
 
-  hash1 += evaluaFuncBool( hash1,hash1,hash1,hash1,hash1) + IV6;
-  hash2 += evaluaFuncBool( hash2,hash2,hash2,hash2,hash2) + IV7;
-  hash3 += evaluaFuncBool( hash3,hash3,hash3,hash3,hash3) + IV8;
-  hash4 += evaluaFuncBool( hash4,hash4,hash4,hash4,hash4) + IV9;
-  hash5 += evaluaFuncBool( hash5,hash5,hash5,hash5,hash5) + IV10;
-  hash6 += evaluaFuncBool( hash6,hash6,hash6,hash6,hash6) + IV1;
-  hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV3;
-  hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV8;
+  hash[0] += evaluaFuncBool( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV6;
+  hash[1] += evaluaFuncBool( hash[1],hash[1],hash[1],hash[1],hash[1]) + IV7;
+  hash[2] += evaluaFuncBool( hash[2],hash[2],hash[2],hash[2],hash[2]) + IV8;
+  hash[3] += evaluaFuncBool( hash[3],hash[3],hash[3],hash[3],hash[3]) + IV9;
+  hash[4] += evaluaFuncBool( hash[4],hash[4],hash[4],hash[4],hash[4]) + IV10;
+  hash[5] += evaluaFuncBool( hash[5],hash[5],hash[5],hash[5],hash[5]) + IV1;
+  hash[6] += evaluaFuncBool( hash[6],hash[6],hash[6],hash[6],hash[6]) + IV3;
+  hash[7] += evaluaFuncBool( hash[7],hash[7],hash[7],hash[7],hash[7]) + IV8;
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(4) END DISPERSION FINAL (%d) \n",rounds );
-    printf("hash8 = [%lld]!\n",hash8 );
-    printf("hash7 = [%lld]!\n",hash7 );
-    printf("hash6 = [%lld]!\n",hash6 );
-    printf("hash5 = [%lld]!\n",hash5 );
-    printf("hash4 = [%lld]!\n",hash4 );
-    printf("hash3 = [%lld]!\n",hash3 );
-    printf("hash2 = [%lld]!\n",hash2 );
-    printf("hash1 = [%lld]!\n\n",hash1 );
+    printf("hash[7] = [%lld]!\n",hash[7] );
+    printf("hash[6] = [%lld]!\n",hash[6] );
+    printf("hash[5] = [%lld]!\n",hash[5] );
+    printf("hash[4] = [%lld]!\n",hash[4] );
+    printf("hash[3] = [%lld]!\n",hash[3] );
+    printf("hash[2] = [%lld]!\n",hash[2] );
+    printf("hash[1] = [%lld]!\n",hash[1] );
+    printf("hash[0] = [%lld]!\n",hash[0] );
 #endif
+
+  // We add the number of rounds to output.
+  hash[7] += rounds;
 
 #ifdef PRINT_HASH
   if( iteration >= iteraciones - numMostrar ) {
     char hex[129];
-    sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash1,hash2,hash3,hash4,hash5,hash6,hash7,(hash8+rounds) );
+    sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
     printf( "%s\n", hex );
   }
 #endif
 
-  val[7] = hash1;
-  val[6] = hash1 >> 8;
-  val[5] = hash1 >> 16;
-  val[4] = hash1 >> 24;
-  val[3] = hash1 >> 32;
-  val[2] = hash1 >> 40;
-  val[1] = hash1 >> 48;
-  val[0] = hash1 >> 56;
-
-  val[15] = hash2;
-  val[14] = hash2 >> 8;
-  val[13] = hash2 >> 16;
-  val[12] = hash2 >> 24;
-  val[11] = hash2 >> 32;
-  val[10] = hash2 >> 40;
-  val[9]  = hash2 >> 48;
-  val[8]  = hash2 >> 56;
-
-  val[23] = hash3;
-  val[22] = hash3 >> 8;
-  val[21] = hash3 >> 16;
-  val[20] = hash3 >> 24;
-  val[19] = hash3 >> 32;
-  val[18] = hash3 >> 40;
-  val[17] = hash3 >> 48;
-  val[16] = hash3 >> 56;
-
-  val[31] = hash4;
-  val[30] = hash4 >> 8;
-  val[29] = hash4 >> 16;
-  val[28] = hash4 >> 24;
-  val[27] = hash4 >> 32;
-  val[26] = hash4 >> 40;
-  val[25] = hash4 >> 48;
-  val[24] = hash4 >> 56;
-
-  val[39] = hash5;
-  val[38] = hash5 >> 8;
-  val[37] = hash5 >> 16;
-  val[36] = hash5 >> 24;
-  val[35] = hash5 >> 32;
-  val[34] = hash5 >> 40;
-  val[33] = hash5 >> 48;
-  val[32] = hash5 >> 56;
-
-  val[47] = hash6;
-  val[46] = hash6 >> 8;
-  val[45] = hash6 >> 16;
-  val[44] = hash6 >> 24;
-  val[43] = hash6 >> 32;
-  val[42] = hash6 >> 40;
-  val[41] = hash6 >> 48;
-  val[40] = hash6 >> 56;
-
-  val[55] = hash7;
-  val[54] = hash7 >> 8;
-  val[53] = hash7 >> 16;
-  val[52] = hash7 >> 24;
-  val[51] = hash7 >> 32;
-  val[50] = hash7 >> 40;
-  val[49] = hash7 >> 48;
-  val[48] = hash7 >> 56;
-
-  hash8 += rounds;
-  val[63] = hash8;
-  val[62] = hash8 >> 8;
-  val[61] = hash8 >> 16;
-  val[60] = hash8 >> 24;
-  val[59] = hash8 >> 32;
-  val[58] = hash8 >> 40;
-  val[57] = hash8 >> 48;
-  val[56] = hash8 >> 56;
+  // Do output val.
+  int j;
+  for(i=0; i<8; i++ ) {
+    for(j=0; j<8; j++ ) {
+      val[8*(i+1)-1-j] = hash[i] >> 8*j;
+    }
+  }
 
   return val;
 }
