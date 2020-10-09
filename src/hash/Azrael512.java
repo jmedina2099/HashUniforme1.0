@@ -18,7 +18,7 @@ import org.apache.commons.codec.binary.Hex;
 public class Azrael512 implements FuncionHash {
 
 	private static final boolean DEBUG_PARTIAL_HASH = false;
-	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
+	private static final boolean DEBUG_INTERMIDIATE_HASH = true;
 
 	private int rounds = 0;
 
@@ -365,8 +365,7 @@ public class Azrael512 implements FuncionHash {
 		
 		String hex1, hex2;
 		
-		/*
-		int tope = 10000000;
+		int tope = 10;
 		Azrael512 hash = new Azrael512(tope);
 		
 		long timeIni = System.currentTimeMillis();
@@ -378,7 +377,6 @@ public class Azrael512 implements FuncionHash {
 		System.out.println( "TIME = "+
 				"["+(timeNow/(1000.0))+"] secs,"+
 				"["+(timeNow/(1000.0*60.0))+"] mins." );
-		*/
 
 		/*
 		String cadena = "";
@@ -388,7 +386,8 @@ public class Azrael512 implements FuncionHash {
 		hex1 = Hex.encodeHexString( hash1 );
 		System.out.println( "["+cadena+"]=["+hex1+"]" );
 		*/
-		
+
+		/*
 		Azrael512 hash = new Azrael512(1);
 		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
 		byte[] hash2 = hash.getHashEval( hash1 );
@@ -403,6 +402,7 @@ public class Azrael512 implements FuncionHash {
 		System.out.println( getHash(input,hash)+" == "+input );
 		input = "Jorge Alberto Medina Rosas";
 		System.out.println( getHash(input,hash)+" == "+input );
+		*/
 	}
 	
 	public static String getHash( String input, Azrael512 hash ) {
