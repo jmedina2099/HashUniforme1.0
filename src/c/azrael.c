@@ -75,13 +75,7 @@ static inline char* pad( const char* data, int length, int padding, char* output
 char* eval_hash( char* input, char* val, int inputLength ) {
 
   const int tail = inputLength % 64;
-  int padding;
-
-  if ((64 - tail >= 9)) {
-    padding = 64 - tail;
-  } else {
-    padding = 128 - tail;
-  }
+  int padding = 64 - tail >= 9? 64 - tail: 128 - tail;
 
   char output[inputLength+padding];
   input = pad(input,inputLength,padding,output);
