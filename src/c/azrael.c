@@ -351,12 +351,12 @@ int main(int argc, char *argv[]) {
 
   int iter = 0;
   if( argc < 2 ) {
-	  printf( "Error: need one argument to hash!\n" );
-	  return 1;
+    printf( "Error: need one argument to hash!\n" );
+    return 1;
   } else if( argc == 2 ) {
-	  iter = 1;
+    iter = 1;
   } else {
-	  iter = atoi(argv[2]);
+    iter = atoi(argv[2]);
   }
 
   char val2[64]; // output 64 bytes/512 bits.
