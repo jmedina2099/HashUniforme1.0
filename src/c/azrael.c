@@ -30,11 +30,11 @@ static const signed long long IV[10] = {
 		0x243185be550c7dc3LL
 };
 
-static inline signed long long evaluaFuncBool( const signed long long char1,
-		const signed long long char2,
-		const signed long long char3,
-		const signed long long char4,
-		const signed long long char5 ) {
+static inline signed long long evaluaFuncBool( register const signed long long char1,
+		register const signed long long char2,
+		register const signed long long char3,
+		register const signed long long char4,
+		register const signed long long char5 ) {
 	rounds++;
   	return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
 	       ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
