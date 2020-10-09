@@ -348,7 +348,7 @@ int main(int argc, char *argv[]) {
     iter = 1;
   } else {
     iter = atoi(argv[2]);
-    if( iter == 0 ) {
+    if( iter <= 0 ) {
         printf( "Error: second argument need to be positive!\n" );
         return 1;
     }
