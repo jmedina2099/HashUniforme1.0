@@ -14,26 +14,25 @@ static int iteration = 0;
 static int iteraciones = 0;
 
 #ifdef PRINT_HASH
-  static int numMostrar = 20;
+  static const int numMostrar = 20;
 #endif
 
-static const signed long long IV1  = 0x6a09e667bb67ae85;
-static const signed long long IV2  = 0x3c6ef372a54ff53a;
-static const signed long long IV3  = 0x510e527f9b05688c;
-static const signed long long IV4  = 0x1f83d9ab5be0cd19;
-static const signed long long IV5  = 0x428a2f9871374491;
-static const signed long long IV6  = 0xb5c0fbcfe9b5dba5;
-static const signed long long IV7  = 0x3956c25b59f111f1;
-static const signed long long IV8  = 0x923f82a4ab1c5ed5;
-static const signed long long IV9  = 0xd807aa9812835b01;
-static const signed long long IV10 = 0x243185be550c7dc3;
+static const signed long long IV1  = 0x6a09e667bb67ae85LL;
+static const signed long long IV2  = 0x3c6ef372a54ff53aLL;
+static const signed long long IV3  = 0x510e527f9b05688cLL;
+static const signed long long IV4  = 0x1f83d9ab5be0cd19LL;
+static const signed long long IV5  = 0x428a2f9871374491LL;
+static const signed long long IV6  = 0xb5c0fbcfe9b5dba5LL;
+static const signed long long IV7  = 0x3956c25b59f111f1LL;
+static const signed long long IV8  = 0x923f82a4ab1c5ed5LL;
+static const signed long long IV9  = 0xd807aa9812835b01LL;
+static const signed long long IV10 = 0x243185be550c7dc3LL;
 
 static inline signed long long evaluaFuncBool( const signed long long char1,
 		const signed long long char2,
 		const signed long long char3,
 		const signed long long char4,
 		const signed long long char5 ) {
-
 	rounds++;
   	return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
 	       ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
@@ -57,7 +56,6 @@ char* pad( const char* data, int length, int padding, char* output ) {
 
   char pad[padding];
   pad[0] = (char) 0x80;
-
   const signed long long bits = length * 8;
 
   int i;
@@ -123,7 +121,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   
   // Main Loop.
   for( int i=1; i<inputLength-1 ; i++ ) {
-        char1 += sumaAnt1;
+	char1 += sumaAnt1;
 	char2 += char3;
 	char3 += char4;
 	char4 += (signed long long)input[i+1];
