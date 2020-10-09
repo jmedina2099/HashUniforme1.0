@@ -17,16 +17,18 @@ static int iteraciones = 0;
   static const int numMostrar = 20;
 #endif
 
-static const signed long long IV1  = 0x6a09e667bb67ae85LL;
-static const signed long long IV2  = 0x3c6ef372a54ff53aLL;
-static const signed long long IV3  = 0x510e527f9b05688cLL;
-static const signed long long IV4  = 0x1f83d9ab5be0cd19LL;
-static const signed long long IV5  = 0x428a2f9871374491LL;
-static const signed long long IV6  = 0xb5c0fbcfe9b5dba5LL;
-static const signed long long IV7  = 0x3956c25b59f111f1LL;
-static const signed long long IV8  = 0x923f82a4ab1c5ed5LL;
-static const signed long long IV9  = 0xd807aa9812835b01LL;
-static const signed long long IV10 = 0x243185be550c7dc3LL;
+static const signed long long IV[10] = {
+		0x6a09e667bb67ae85LL,
+		0x3c6ef372a54ff53aLL,
+		0x510e527f9b05688cLL,
+		0x1f83d9ab5be0cd19LL,
+		0x428a2f9871374491LL,
+		0xb5c0fbcfe9b5dba5LL,
+		0x3956c25b59f111f1LL,
+		0x923f82a4ab1c5ed5LL,
+		0xd807aa9812835b01LL,
+		0x243185be550c7dc3LL
+};
 
 static inline signed long long evaluaFuncBool( const signed long long char1,
 		const signed long long char2,
@@ -74,6 +76,7 @@ static inline char* pad( const char* data, int length, int padding, char* output
 
 char* eval_hash( char* input, char* val, int inputLength ) {
 
+  // Do padding.
   const int tail = inputLength % 64;
   int padding = 64 - tail >= 9? 64 - tail: 128 - tail;
 
@@ -81,134 +84,124 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   input = pad(input,inputLength,padding,output);
   inputLength += padding;
 
-  register signed long long char1=IV1;
-  register signed long long char2=IV2;
-  register signed long long char3=IV3;
-  register signed long long char4=IV4;
-  register signed long long char5=IV5;
-		
-  register signed long long sumaAnt1 = IV6;
-  register signed long long sumaAnt2 = IV7;
-  register signed long long sumaAnt3 = IV8;
-  register signed long long sumaAnt4 = IV9;
-  register signed long long sumaAnt5 = IV10;
-  register signed long long sumaAnt6 = IV1;
-  register signed long long sumaAnt7 = IV3;
-  register signed long long sumaAnt8 = IV8;
-  
-  char1 += (signed long long)input[ inputLength-2 ];
-  char2 += (signed long long)input[ inputLength-1 ];
-  char3 += (signed long long)input[ 0 ];
-  char4 += (signed long long)input[ 1 ]; 
-  char5 += (signed long long)input[ 2 ];
+  // Begin calculate..
+  int i,j;
+  signed long long cha[5] = {IV[0],IV[1],IV[2],IV[3],IV[4]};
+  signed long long carrier[8] = {IV[5],IV[6],IV[7],IV[8],IV[9],IV[0],IV[2],IV[7]};
+  signed long long hash[8];
 
-  sumaAnt8 += sumaAnt7;
-  sumaAnt7 += sumaAnt6;
-  sumaAnt6 += sumaAnt5;
-  sumaAnt5 += sumaAnt4;
-  sumaAnt4 += sumaAnt3;
-  sumaAnt3 += sumaAnt2;
-  sumaAnt2 += sumaAnt1;
-  sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
+  // First iteration.
+  cha[0] += (signed long long)input[ inputLength-2 ];
+  cha[1] += (signed long long)input[ inputLength-1 ];
+  cha[2] += (signed long long)input[ 0 ];
+  cha[3] += (signed long long)input[ 1 ];
+  cha[4] += (signed long long)input[ 2 ];
+  carrier[7] += carrier[6];
+  carrier[6] += carrier[5];
+  carrier[5] += carrier[4];
+  carrier[4] += carrier[3];
+  carrier[3] += carrier[2];
+  carrier[2] += carrier[1];
+  carrier[1] += carrier[0];
+  carrier[0] += evaluaFuncBool( cha[0],cha[1],cha[2],cha[3],cha[4]);
   
   // Main Loop.
-  int i;
   for( i=1; i<inputLength-1; i++ ) {
-    char1 += sumaAnt1;
-    char2 += char3;
-    char3 += char4;
-    char4 += (signed long long)input[i+1];
-    char5 += sumaAnt2;
-    sumaAnt8 += sumaAnt7;
-    sumaAnt7 += sumaAnt6;
-    sumaAnt6 += sumaAnt5;
-    sumaAnt5 += sumaAnt4;
-    sumaAnt4 += sumaAnt3;
-    sumaAnt3 += sumaAnt2;
-    sumaAnt2 += sumaAnt1;
-    sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
+    cha[0] += carrier[0];
+    cha[1] += cha[2];
+    cha[2] += cha[3];
+    cha[3] += (signed long long)input[i+1];
+    cha[4] += carrier[1];
+    carrier[7] += carrier[6];
+    carrier[6] += carrier[5];
+    carrier[5] += carrier[4];
+    carrier[4] += carrier[3];
+    carrier[3] += carrier[2];
+    carrier[2] += carrier[1];
+    carrier[1] += carrier[0];
+    carrier[0] += evaluaFuncBool( cha[0],cha[1],cha[2],cha[3],cha[4]);
   }
 
-  char1 += sumaAnt1;
-  char2 += char3;
-  char3 += char4;
-  char4 += (signed long long)input[ 0 ];
-  char5 += sumaAnt2;
-  sumaAnt8 += sumaAnt7;
-  sumaAnt7 += sumaAnt6;
-  sumaAnt6 += sumaAnt5;
-  sumaAnt5 += sumaAnt4;
-  sumaAnt4 += sumaAnt3;
-  sumaAnt3 += sumaAnt2;
-  sumaAnt2 += sumaAnt1;
-  sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
+  // Last iteration.
+  cha[0] += carrier[0];
+  cha[1] += cha[2];
+  cha[2] += cha[3];
+  cha[3] += (signed long long)input[ 0 ];
+  cha[4] += carrier[1];
+  carrier[7] += carrier[6];
+  carrier[6] += carrier[5];
+  carrier[5] += carrier[4];
+  carrier[4] += carrier[3];
+  carrier[3] += carrier[2];
+  carrier[2] += carrier[1];
+  carrier[1] += carrier[0];
+  carrier[0] += evaluaFuncBool( cha[0],cha[1],cha[2],cha[3],cha[4]);
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(1) END ACUMULACION (%d)\n", rounds );
-    printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
-    printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
-    printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
-    printf("sumaAnt5 = [%lld]!\n",sumaAnt5 );
-    printf("sumaAnt4 = [%lld]!\n",sumaAnt4 );
-    printf("sumaAnt3 = [%lld]!\n",sumaAnt3 );
-    printf("sumaAnt2 = [%lld]!\n",sumaAnt2 );
-    printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
+    printf("carrier[7] = [%lld]!\n",carrier[7] );
+    printf("carrier[6] = [%lld]!\n",carrier[6] );
+    printf("carrier[5] = [%lld]!\n",carrier[5] );
+    printf("carrier[4] = [%lld]!\n",carrier[4] );
+    printf("carrier[3] = [%lld]!\n",carrier[3] );
+    printf("carrier[2] = [%lld]!\n",carrier[2] );
+    printf("carrier[1] = [%lld]!\n",carrier[1] );
+    printf("carrier[0] = [%lld]!\n",carrier[0] );
 #endif
 
-  sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV1;
-  sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
-  sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
-  sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
-  sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV5;
-  sumaAnt6 += evaluaFuncBool( sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6) + IV6;
-  sumaAnt7 += evaluaFuncBool( sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7) + IV7;
-  sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV8;
+  carrier[0] += evaluaFuncBool( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0];
+  carrier[1] += evaluaFuncBool( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[1];
+  carrier[2] += evaluaFuncBool( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[2];
+  carrier[3] += evaluaFuncBool( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[3];
+  carrier[4] += evaluaFuncBool( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[4];
+  carrier[5] += evaluaFuncBool( carrier[5],carrier[5],carrier[5],carrier[5],carrier[5]) + IV[5];
+  carrier[6] += evaluaFuncBool( carrier[6],carrier[6],carrier[6],carrier[6],carrier[6]) + IV[6];
+  carrier[7] += evaluaFuncBool( carrier[7],carrier[7],carrier[7],carrier[7],carrier[7]) + IV[7];
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(2) END DISPERSION (%d)\n", rounds );
-    printf("sumaAnt8 = [%lld]!\n",sumaAnt8 );
-    printf("sumaAnt7 = [%lld]!\n",sumaAnt7 );
-    printf("sumaAnt6 = [%lld]!\n",sumaAnt6 );
-    printf("sumaAnt5 = [%lld]!\n",sumaAnt5 );
-    printf("sumaAnt4 = [%lld]!\n",sumaAnt4 );
-    printf("sumaAnt3 = [%lld]!\n",sumaAnt3 );
-    printf("sumaAnt2 = [%lld]!\n",sumaAnt2 );
-    printf("sumaAnt1 = [%lld]!\n",sumaAnt1 );
+    printf("carrier[7] = [%lld]!\n",carrier[7] );
+    printf("carrier[6] = [%lld]!\n",carrier[6] );
+    printf("carrier[5] = [%lld]!\n",carrier[5] );
+    printf("carrier[4] = [%lld]!\n",carrier[4] );
+    printf("carrier[3] = [%lld]!\n",carrier[3] );
+    printf("carrier[2] = [%lld]!\n",carrier[2] );
+    printf("carrier[1] = [%lld]!\n",carrier[1] );
+    printf("carrier[0] = [%lld]!\n",carrier[0] );
 #endif
 
-  signed long long hash[8];
-  hash[0] = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt2) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt2+sumaAnt3) << 16) & 0xffffffffL) |
-            ((sumaAnt3+sumaAnt4+sumaAnt5+sumaAnt6) & 0xffffffffL);
-  hash[1] = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt3) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt2+sumaAnt3+sumaAnt4) << 16) & 0xffffffffL) |
-            ((sumaAnt4+sumaAnt5+sumaAnt1+sumaAnt7) & 0xffffffffL);
-  hash[2] = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt3+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
-            ((sumaAnt5+sumaAnt1+sumaAnt2+sumaAnt8) & 0xffffffffL);
-  hash[3] = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt4+sumaAnt5+sumaAnt1) << 16) & 0xffffffffL) |
-            ((sumaAnt1+sumaAnt2+sumaAnt3+sumaAnt6) & 0xffffffffL);
-  hash[4] = ((sumaAnt2 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt1) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt5+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
-            ((sumaAnt2+sumaAnt3+sumaAnt4+sumaAnt7) & 0xffffffffL);
-  hash[5] = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt4) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt2+sumaAnt4+sumaAnt5) << 16) & 0xffffffffL) |
-            ((sumaAnt3+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
-  hash[6] = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt5) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt4+sumaAnt5+sumaAnt6) << 16) & 0xffffffffL) |
-            ((sumaAnt7+sumaAnt8+sumaAnt1+sumaAnt2) & 0xffffffffL);
-  hash[7] = ((sumaAnt3 << 48) & 0xffffffffffffffffL ) |
-            (((sumaAnt1+sumaAnt6) << 32) & 0xffffffffffffffffL ) |
-            (((sumaAnt7+sumaAnt1+sumaAnt2) << 16) & 0xffffffffL) |
-            ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
+  hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[1]+carrier[2]) << 16) & 0xffffffffL) |
+            ((carrier[2]+carrier[3]+carrier[4]+carrier[5]) & 0xffffffffL);
+  hash[1] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[2]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[1]+carrier[2]+carrier[3]) << 16) & 0xffffffffL) |
+            ((carrier[3]+carrier[4]+carrier[0]+carrier[6]) & 0xffffffffL);
+  hash[2] = ((carrier[2] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[3]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[2]+carrier[3]+carrier[4]) << 16) & 0xffffffffL) |
+            ((carrier[4]+carrier[0]+carrier[1]+carrier[7]) & 0xffffffffL);
+  hash[3] = ((carrier[1] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[4]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[3]+carrier[4]+carrier[0]) << 16) & 0xffffffffL) |
+            ((carrier[0]+carrier[1]+carrier[2]+carrier[5]) & 0xffffffffL);
+  hash[4] = ((carrier[1] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[0]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[4]+carrier[0]+carrier[1]) << 16) & 0xffffffffL) |
+            ((carrier[1]+carrier[2]+carrier[3]+carrier[6]) & 0xffffffffL);
+  hash[5] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[3]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[1]+carrier[3]+carrier[4]) << 16) & 0xffffffffL) |
+            ((carrier[2]+carrier[5]+carrier[6]+carrier[7]) & 0xffffffffL);
+  hash[6] = ((carrier[2] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[4]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[3]+carrier[4]+carrier[5]) << 16) & 0xffffffffL) |
+            ((carrier[6]+carrier[7]+carrier[0]+carrier[1]) & 0xffffffffL);
+  hash[7] = ((carrier[2] << 48) & 0xffffffffffffffffL ) |
+            (((carrier[0]+carrier[5]) << 32) & 0xffffffffffffffffL ) |
+            (((carrier[6]+carrier[0]+carrier[1]) << 16) & 0xffffffffL) |
+            ((carrier[4]+carrier[5]+carrier[6]+carrier[7]) & 0xffffffffL);
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(3) END APILACION (%d)\n", rounds );
@@ -222,14 +215,14 @@ char* eval_hash( char* input, char* val, int inputLength ) {
     printf("hash[0] = [%lld]!\n",hash[0] );
 #endif
 
-  hash[0] += evaluaFuncBool( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV6;
-  hash[1] += evaluaFuncBool( hash[1],hash[1],hash[1],hash[1],hash[1]) + IV7;
-  hash[2] += evaluaFuncBool( hash[2],hash[2],hash[2],hash[2],hash[2]) + IV8;
-  hash[3] += evaluaFuncBool( hash[3],hash[3],hash[3],hash[3],hash[3]) + IV9;
-  hash[4] += evaluaFuncBool( hash[4],hash[4],hash[4],hash[4],hash[4]) + IV10;
-  hash[5] += evaluaFuncBool( hash[5],hash[5],hash[5],hash[5],hash[5]) + IV1;
-  hash[6] += evaluaFuncBool( hash[6],hash[6],hash[6],hash[6],hash[6]) + IV3;
-  hash[7] += evaluaFuncBool( hash[7],hash[7],hash[7],hash[7],hash[7]) + IV8;
+  hash[0] += evaluaFuncBool( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[5];
+  hash[1] += evaluaFuncBool( hash[1],hash[1],hash[1],hash[1],hash[1]) + IV[6];
+  hash[2] += evaluaFuncBool( hash[2],hash[2],hash[2],hash[2],hash[2]) + IV[7];
+  hash[3] += evaluaFuncBool( hash[3],hash[3],hash[3],hash[3],hash[3]) + IV[8];
+  hash[4] += evaluaFuncBool( hash[4],hash[4],hash[4],hash[4],hash[4]) + IV[9];
+  hash[5] += evaluaFuncBool( hash[5],hash[5],hash[5],hash[5],hash[5]) + IV[0];
+  hash[6] += evaluaFuncBool( hash[6],hash[6],hash[6],hash[6],hash[6]) + IV[2];
+  hash[7] += evaluaFuncBool( hash[7],hash[7],hash[7],hash[7],hash[7]) + IV[7];
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(4) END DISPERSION FINAL (%d) \n",rounds );
@@ -255,7 +248,6 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 #endif
 
   // Do output val.
-  int j;
   for(i=0; i<8; i++ ) {
     for(j=0; j<8; j++ ) {
       val[8*(i+1)-1-j] = hash[i] >> 8*j;
