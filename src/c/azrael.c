@@ -14,7 +14,7 @@ static int iteration = 0;
 static int iteraciones = 0;
 
 #ifdef PRINT_HASH
-static int numMostrar = 20;
+  static int numMostrar = 20;
 #endif
 
 static const signed long long IV1  = 0x6a09e667bb67ae85;
@@ -123,7 +123,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   
   // Main Loop.
   for( int i=1; i<inputLength-1 ; i++ ) {
-    char1 += sumaAnt1;
+        char1 += sumaAnt1;
 	char2 += char3;
 	char3 += char4;
 	char4 += (signed long long)input[i+1];
