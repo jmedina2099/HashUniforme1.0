@@ -52,7 +52,7 @@ static inline signed long long evaluaFuncBool( const signed long long char1,
 	       (( char1 + char2 ) & (( char3 + char4 ) + char5));
  }
 
-char* pad( const char* data, int length, int padding, char* output ) {
+static inline char* pad( const char* data, int length, int padding, char* output ) {
 
   memcpy(output,data,length);
 
@@ -84,7 +84,6 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   }
 
   char output[inputLength+padding];
-
   input = pad(input,inputLength,padding,output);
   inputLength += padding;
 
@@ -120,19 +119,19 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   
   // Main Loop.
   for( int i=1; i<inputLength-1 ; i++ ) {
-	char1 += sumaAnt1;
-	char2 += char3;
-	char3 += char4;
-	char4 += (signed long long)input[i+1];
-	char5 += sumaAnt2;
-	sumaAnt8 += sumaAnt7;
-	sumaAnt7 += sumaAnt6;
-	sumaAnt6 += sumaAnt5;
-	sumaAnt5 += sumaAnt4;
-	sumaAnt4 += sumaAnt3;
-	sumaAnt3 += sumaAnt2;
-	sumaAnt2 += sumaAnt1;
-	sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
+    char1 += sumaAnt1;
+    char2 += char3;
+    char3 += char4;
+    char4 += (signed long long)input[i+1];
+    char5 += sumaAnt2;
+    sumaAnt8 += sumaAnt7;
+    sumaAnt7 += sumaAnt6;
+    sumaAnt6 += sumaAnt5;
+    sumaAnt5 += sumaAnt4;
+    sumaAnt4 += sumaAnt3;
+    sumaAnt3 += sumaAnt2;
+    sumaAnt2 += sumaAnt1;
+    sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
   }
 
   char1 += sumaAnt1;
@@ -249,7 +248,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 #endif
 
 #ifdef PRINT_HASH
-  if( iteration > iteraciones - numMostrar ) {
+  if( iteration >= iteraciones - numMostrar ) {
     char hex[129];
     sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash1,hash2,hash3,hash4,hash5,hash6,hash7,(hash8+rounds) );
     printf( "%s\n", hex );
@@ -337,10 +336,9 @@ static inline char* getHash( int numIterations, char* val1, char* val2, int size
   iteraciones = numIterations;
   rounds  = 0;
 
-  for( iteration = 0; iteration<numIterations; iteration++ ) {
-    val2 = eval_hash( val1, val2, size );
-    size = 64;
-    memcpy(val1,val2,size);
+  val1 = eval_hash( val1, val2, size );
+  for( iteration = 1; iteration<numIterations; iteration++ ) {
+    val1 = eval_hash( val1, val2, 64 );
   }
 
   return val2;
