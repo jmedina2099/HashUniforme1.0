@@ -54,21 +54,20 @@ static inline signed long long evaluaFuncBool( const signed long long char1,
 
 char* pad( const char* data, int length, int padding, char* output ) {
 
-  char pad[padding];
-  pad[0] = (char) 0x80;
-  const signed long long bits = length * 8;
+  memcpy(output,data,length);
 
   int i;
-  for( i=0; i < 8; i++ ) {
-	 pad[padding - 1 - i] = (char) ((bits >> (8 * i)) & 0xFF);
-  }
+  const signed long long bits = length * 8;
+
+  char pad[padding];
+  pad[0] = (char) 0x80;
   for( i=1; i<=padding-1-8; i++ ) {
 	 pad[i] = (char)0;
   }
-  memcpy(output,data,length);
-  for( i=0; i<padding; i++ ) {
-	  output[length+i] = pad[i];
+  for( i=0; i < 8; i++ ) {
+	 pad[padding - 1 - i] = (char) ((bits >> (8 * i)) & 0xFF);
   }
+  memcpy(output+length,pad,padding);
 
   return output;
 }
