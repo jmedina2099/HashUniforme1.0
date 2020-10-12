@@ -8,18 +8,23 @@ DFLAG=-DDEBUG_PARTIAL_HASH
 CPRINT=-DPRINT_HASH
 
 TARGET = azrael
+TARGET_64 = azrael64
 
-all: $(TARGET)
+all: $(TARGET) $(TARGET_64)
 
 dbg: debug
 
 $(TARGET): $(TARGET).c
 	$(CC) $(CPRINT) $(CFLAGS) $(COPT) $(CDELL) -o $(TARGET) $(TARGET).c
+
+$(TARGET_64): $(TARGET_64).c
+	$(CC) $(CPRINT) $(CFLAGS) $(COPT) $(CDELL) -o $(TARGET_64) $(TARGET_64).c
 	
 debug: $(TARGET).c
 	$(CC) $(DFLAG) $(CFLAGS) $(COPT) $(CDELL) -o $(TARGET) $(TARGET).c
      
 clean:
 	$(RM) $(TARGET)
+	$(RM) $(TARGET_64)
 
 	
