@@ -141,14 +141,14 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(1) END ACUMULACION (%d)\n", rounds );
-    printf("carrier[7] = [%lld]!\n",carrier[7] );
-    printf("carrier[6] = [%lld]!\n",carrier[6] );
-    printf("carrier[5] = [%lld]!\n",carrier[5] );
-    printf("carrier[4] = [%lld]!\n",carrier[4] );
-    printf("carrier[3] = [%lld]!\n",carrier[3] );
-    printf("carrier[2] = [%lld]!\n",carrier[2] );
-    printf("carrier[1] = [%lld]!\n",carrier[1] );
-    printf("carrier[0] = [%lld]!\n",carrier[0] );
+    printf("carrier[7] = [%016" PRId64 "]!\n",carrier[7] );
+    printf("carrier[6] = [%016" PRId64 "]!\n",carrier[6] );
+    printf("carrier[5] = [%016" PRId64 "]!\n",carrier[5] );
+    printf("carrier[4] = [%016" PRId64 "]!\n",carrier[4] );
+    printf("carrier[3] = [%016" PRId64 "]!\n",carrier[3] );
+    printf("carrier[2] = [%016" PRId64 "]!\n",carrier[2] );
+    printf("carrier[1] = [%016" PRId64 "]!\n",carrier[1] );
+    printf("carrier[0] = [%016" PRId64 "]!\n",carrier[0] );
 #endif
 
   carrier[0] += evaluaFuncBool( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0];
@@ -162,14 +162,14 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(2) END DISPERSION (%d)\n", rounds );
-    printf("carrier[7] = [%lld]!\n",carrier[7] );
-    printf("carrier[6] = [%lld]!\n",carrier[6] );
-    printf("carrier[5] = [%lld]!\n",carrier[5] );
-    printf("carrier[4] = [%lld]!\n",carrier[4] );
-    printf("carrier[3] = [%lld]!\n",carrier[3] );
-    printf("carrier[2] = [%lld]!\n",carrier[2] );
-    printf("carrier[1] = [%lld]!\n",carrier[1] );
-    printf("carrier[0] = [%lld]!\n",carrier[0] );
+    printf("carrier[7] = [%016" PRId64 "]!\n",carrier[7] );
+    printf("carrier[6] = [%016" PRId64 "]!\n",carrier[6] );
+    printf("carrier[5] = [%016" PRId64 "]!\n",carrier[5] );
+    printf("carrier[4] = [%016" PRId64 "]!\n",carrier[4] );
+    printf("carrier[3] = [%016" PRId64 "]!\n",carrier[3] );
+    printf("carrier[2] = [%016" PRId64 "]!\n",carrier[2] );
+    printf("carrier[1] = [%016" PRId64 "]!\n",carrier[1] );
+    printf("carrier[0] = [%016" PRId64 "]!\n",carrier[0] );
 #endif
 
   hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
@@ -207,14 +207,14 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(3) END APILACION (%d)\n", rounds );
-    printf("hash[7] = [%lld]!\n",hash[7] );
-    printf("hash[6] = [%lld]!\n",hash[6] );
-    printf("hash[5] = [%lld]!\n",hash[5] );
-    printf("hash[4] = [%lld]!\n",hash[4] );
-    printf("hash[3] = [%lld]!\n",hash[3] );
-    printf("hash[2] = [%lld]!\n",hash[2] );
-    printf("hash[1] = [%lld]!\n",hash[1] );
-    printf("hash[0] = [%lld]!\n",hash[0] );
+    printf("hash[7] = [%016" PRId64 "]!\n",hash[7] );
+    printf("hash[6] = [%016" PRId64 "]!\n",hash[6] );
+    printf("hash[5] = [%016" PRId64 "]!\n",hash[5] );
+    printf("hash[4] = [%016" PRId64 "]!\n",hash[4] );
+    printf("hash[3] = [%016" PRId64 "]!\n",hash[3] );
+    printf("hash[2] = [%016" PRId64 "]!\n",hash[2] );
+    printf("hash[1] = [%016" PRId64 "]!\n",hash[1] );
+    printf("hash[0] = [%016" PRId64 "]!\n",hash[0] );
 #endif
 
   hash[0] += evaluaFuncBool( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[5];
@@ -228,14 +228,14 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(4) END DISPERSION FINAL (%d) \n",rounds );
-    printf("hash[7] = [%lld]!\n",hash[7] );
-    printf("hash[6] = [%lld]!\n",hash[6] );
-    printf("hash[5] = [%lld]!\n",hash[5] );
-    printf("hash[4] = [%lld]!\n",hash[4] );
-    printf("hash[3] = [%lld]!\n",hash[3] );
-    printf("hash[2] = [%lld]!\n",hash[2] );
-    printf("hash[1] = [%lld]!\n",hash[1] );
-    printf("hash[0] = [%lld]!\n",hash[0] );
+    printf("hash[7] = [%016" PRId64 "]!\n",hash[7] );
+    printf("hash[6] = [%016" PRId64 "]!\n",hash[6] );
+    printf("hash[5] = [%016" PRId64 "]!\n",hash[5] );
+    printf("hash[4] = [%016" PRId64 "]!\n",hash[4] );
+    printf("hash[3] = [%016" PRId64 "]!\n",hash[3] );
+    printf("hash[2] = [%016" PRId64 "]!\n",hash[2] );
+    printf("hash[1] = [%016" PRId64 "]!\n",hash[1] );
+    printf("hash[0] = [%016" PRId64 "]!\n",hash[0] );
 #endif
 
   // We add the number of rounds to output.
