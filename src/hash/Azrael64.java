@@ -17,8 +17,8 @@ import org.apache.commons.codec.binary.Hex;
  */ 
 public class Azrael64 implements FuncionHash {
 
-	private static final boolean DEBUG_PARTIAL_HASH = true;
-	private static final boolean DEBUG_INTERMIDIATE_HASH = true;
+	private static final boolean DEBUG_PARTIAL_HASH = false;
+	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
 
 	private int rounds = 0;
 
@@ -64,11 +64,7 @@ public class Azrael64 implements FuncionHash {
 
 	public byte[] getHashEval( byte[] input ) {
 		
-		System.out.println( input.length );
-		
 		input = pad(input);
-		
-		System.out.println( input.length );
 
 		long hash = 0;
 		long char1=0,char2=0,char3=0,char4=0,char5=0;
