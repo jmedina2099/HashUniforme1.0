@@ -20,8 +20,9 @@ $(TARGET): $(TARGET).c
 $(TARGET_64): $(TARGET_64).c
 	$(CC) $(CPRINT) $(CFLAGS) $(COPT) $(CDELL) -o $(TARGET_64) $(TARGET_64).c
 	
-debug: $(TARGET).c
+debug: $(TARGET).c $(TARGET_64).c
 	$(CC) $(DFLAG) $(CPRINT) $(CFLAGS) $(COPT) $(CDELL) -o $(TARGET) $(TARGET).c
+	$(CC) $(DFLAG) $(CPRINT) $(CFLAGS) $(COPT) $(CDELL) -o $(TARGET_64) $(TARGET_64).c
      
 clean:
 	$(RM) $(TARGET)
