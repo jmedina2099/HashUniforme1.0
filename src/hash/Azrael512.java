@@ -18,7 +18,7 @@ import org.apache.commons.codec.binary.Hex;
 public class Azrael512 implements FuncionHash {
 
 	private static final boolean DEBUG_PARTIAL_HASH = false;
-	private static final boolean DEBUG_INTERMIDIATE_HASH = true;
+	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
 
 	private int rounds = 0;
 
