@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdint.h>
+#include <inttypes.h>
 
 static int rounds = 0;
 static int iteration = 0;
@@ -17,7 +19,7 @@ static int iteraciones = 0;
   static const int numMostrar = 20;
 #endif
 
-static const signed long long IV[10] = {
+static const uint64_t IV[10] = {
 		0x6a09e667bb67ae85LL,
 		0x3c6ef372a54ff53aLL,
 		0x510e527f9b05688cLL,
@@ -30,11 +32,11 @@ static const signed long long IV[10] = {
 		0x243185be550c7dc3LL
 };
 
-static inline signed long long evaluaFuncBool( register const signed long long char1,
-		register const signed long long char2,
-		register const signed long long char3,
-		register const signed long long char4,
-		register const signed long long char5 ) {
+static inline uint64_t evaluaFuncBool( register const uint64_t char1,
+		register const uint64_t char2,
+		register const uint64_t char3,
+		register const uint64_t char4,
+		register const uint64_t char5 ) {
 	rounds++;
   	return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
 	       ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
@@ -59,7 +61,7 @@ static inline char* pad( const char* data, int length, int padding, char* output
   memcpy(output,data,length);
 
   int i;
-  const signed long long bits = length * 8;
+  uint64_t bits = length * 8;
 
   char pad[padding];
   pad[0] = (char) 0x80;
@@ -86,16 +88,16 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 
   // Begin calculate..
   int i,j;
-  signed long long cha[5] = {IV[0],IV[1],IV[2],IV[3],IV[4]};
-  signed long long carrier[8] = {IV[5],IV[6],IV[7],IV[8],IV[9],IV[0],IV[2],IV[7]};
-  signed long long hash[8];
+  uint64_t cha[5] = {IV[0],IV[1],IV[2],IV[3],IV[4]};
+  uint64_t carrier[8] = {IV[5],IV[6],IV[7],IV[8],IV[9],IV[0],IV[2],IV[7]};
+  uint64_t hash[8];
 
   // First iteration.
-  cha[0] += (signed long long)input[ inputLength-2 ];
-  cha[1] += (signed long long)input[ inputLength-1 ];
-  cha[2] += (signed long long)input[ 0 ];
-  cha[3] += (signed long long)input[ 1 ];
-  cha[4] += (signed long long)input[ 2 ];
+  cha[0] += (uint64_t)input[ inputLength-2 ];
+  cha[1] += (uint64_t)input[ inputLength-1 ];
+  cha[2] += (uint64_t)input[ 0 ];
+  cha[3] += (uint64_t)input[ 1 ];
+  cha[4] += (uint64_t)input[ 2 ];
   carrier[7] += carrier[6];
   carrier[6] += carrier[5];
   carrier[5] += carrier[4];
@@ -110,7 +112,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
     cha[0] += carrier[0];
     cha[1] += cha[2];
     cha[2] += cha[3];
-    cha[3] += (signed long long)input[i+1];
+    cha[3] += (uint64_t)input[i+1];
     cha[4] += carrier[1];
     carrier[7] += carrier[6];
     carrier[6] += carrier[5];
@@ -126,7 +128,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
   cha[0] += carrier[0];
   cha[1] += cha[2];
   cha[2] += cha[3];
-  cha[3] += (signed long long)input[ 0 ];
+  cha[3] += (uint64_t)input[ 0 ];
   cha[4] += carrier[1];
   carrier[7] += carrier[6];
   carrier[6] += carrier[5];
@@ -242,7 +244,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 #ifdef PRINT_HASH
   if( iteration >= iteraciones - numMostrar ) {
     char hex[129];
-    sprintf(hex,"%016llx%016llx%016llx%016llx%016llx%016llx%016llx%016llx",hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
+    sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
     printf( "%s\n", hex );
   }
 #endif
