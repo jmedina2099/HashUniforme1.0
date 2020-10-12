@@ -61,7 +61,7 @@ static inline char* pad( const char* data, int length, int padding, char* output
   memcpy(output,data,length);
 
   int i;
-  uint64_t bits = length * 8;
+  const uint64_t bits = length * 8;
 
   char pad[padding];
   pad[0] = (char) 0x80;
