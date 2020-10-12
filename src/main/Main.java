@@ -299,8 +299,15 @@ public class Main {
 		byte[] bites = new byte[size];
 		
 		Random random = new Random();
+		int tope = Byte.MAX_VALUE - Byte.MIN_VALUE;
+		int rdm;
 		for( int i=0; i<size; i++ ) {
-			bites[i] = (byte)random.nextInt( Byte.MAX_VALUE );
+			rdm = random.nextInt( tope+1 );
+			if( rdm <= Byte.MAX_VALUE ) {
+				bites[i] = (byte)rdm;
+			} else {
+				bites[i] = (byte)( -(rdm - Byte.MAX_VALUE) );
+			}
 		}
 		
 		return bites;
