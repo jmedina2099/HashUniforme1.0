@@ -134,7 +134,7 @@ char* eval_hash( char* input, char* val, int inputLength ) {
 
 #ifdef DEBUG_PARTIAL_HASH
     printf("(3) END APILACION (%d)\n", rounds );
-    printf("hash[0] = [%016" PRId64 "] !\n",hash[0] );
+    printf("hash1 = [%016" PRId64 "] !\n",hash1 );
 #endif
 
   hash1 += rounds;
