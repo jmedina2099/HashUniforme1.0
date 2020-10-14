@@ -26,7 +26,7 @@ public class Azrael64 implements FuncionHash {
 
 	private int rounds = 0;
 
-	private int numIterations = 2;
+	private long numIterations = 2;
 	private int iteration = 0;
 	private RandomAccessFile fileToPersist;
 
@@ -46,7 +46,7 @@ public class Azrael64 implements FuncionHash {
 	/**
 	 * 
 	 */
-	public Azrael64( int numIterations ) {
+	public Azrael64( long numIterations ) {
 		this.numIterations = numIterations;
 	}
 
@@ -60,7 +60,11 @@ public class Azrael64 implements FuncionHash {
 			iteration++;
 			input = getHashEval( input );
 			
-			//String value = Hex.encodeHexString(input);
+			String value = Hex.encodeHexString(input);
+			
+			if( "ffdb3d80fed96840".equals(value) ) {
+				System.out.println( iteration +"="+value );
+			}
 			
 			/*
 			if( this.fileToPersist == null ) {
@@ -80,7 +84,7 @@ public class Azrael64 implements FuncionHash {
 			
 			if( DEBUG_INTERMIDIATE_HASH ) {
 				
-				String value = Hex.encodeHexString(input);
+				//String value = Hex.encodeHexString(input);
 				
 				int min=256, max=-1;
 				
@@ -268,7 +272,7 @@ public class Azrael64 implements FuncionHash {
 	
 	public static void main(String[] args) {
 		
-		int tope = 500000000;
+		long tope = 10000000000l;
 		Azrael64 hash = new Azrael64(tope);
 		
 		long timeIni = System.currentTimeMillis();

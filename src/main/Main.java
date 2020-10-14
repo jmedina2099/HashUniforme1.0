@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -29,10 +28,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import hash.Azrael320;
 import hash.Azrael512;
 import hash.Azrael64;
+import hash.AzraelX1;
+import hash.AzraelX2;
+import hash.AzraelX3;
+import hash.AzraelX4;
 import hash.FuncionHash;
-import hash.MD5;
 import hash.SHA3;
-import hash.SHA_256;
 import hash.SipHashImpl;
 import table.TablaHash;
 import ui.PanelPrincipal;
@@ -44,11 +45,11 @@ import ui.VentanaPrincipal;
  */
 public class Main {
 	
-	private boolean usePrime = false;
-	private boolean useFiles = false;
-	private boolean useRockyou = false;
-	private boolean useClean = false;
-	private boolean oneBitDistinct = false;
+	private boolean usePrime = true;
+	private boolean useFiles = true;
+	private boolean useRockyou = true;
+	private boolean useClean = true;
+	private boolean oneBitDistinct = true;
 	private boolean randomBites = true;
 	private boolean withHistogram = true;
 	
@@ -221,12 +222,15 @@ public class Main {
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
 		
+		tree.put( vacias+"-"+funcionHash.toString(), funcionHash.toString() );
+
+		
+		System.out.println( "TOTAL ELEMENTS="+total );
 		System.out.println( "TABLE SIZE="+sizeTable );
-		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
-		System.out.println( "MAX Chaining="+maxCasillas );
-		System.out.println( "Average Casillas="+promedioCasillas );
-		System.out.println( "Colisiones=["+colisiones+"]" );
-		System.out.println( "TOTAL="+total );
+		System.out.println( "BUSY/EMPTY="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
+		System.out.println( "MAX LINK LIST="+maxCasillas );
+		System.out.println( "AVERAGE LINK LIST="+promedioCasillas );
+		System.out.println( "COLISIONS=["+colisiones+"]" );
 
 		long timeNow = System.currentTimeMillis() - timeIni;
 		System.out.println( "TIME = "+
@@ -366,7 +370,11 @@ public class Main {
 		System.gc();
 		System.out.println( " DONE ==>");
 		*/
-		
+
+		//main.test( new SipHashImpl(iterations,key) );
+		main.test( new AzraelX4(iterations) );
+
+		/*
 		main.test( new SipHashImpl(iterations,key) );
 		main.test( new Azrael64(iterations) );
 		main.test( new MD5(iterations) );
@@ -374,6 +382,11 @@ public class Main {
 		main.test( new Azrael320(iterations) );
 		main.test( new SHA3(iterations) );
 		main.test( new Azrael512(iterations) );
+		main.test( new AzraelX1(iterations) );
+		main.test( new AzraelX2(iterations) );
+		main.test( new AzraelX3(iterations) );
+		main.test( new AzraelX4(iterations) );
+		*/
 		
 		for (Map.Entry<String, String> entry : tree.entrySet()) { 
 			System.out.println( "[" + entry.getKey() + ", " + entry.getValue() + "]");
@@ -393,12 +406,22 @@ public class Main {
 	public static void main2(String[] args , byte[] key ) {
 		// TODO Auto-generated method stub
 		
-		String stringValue = "";
+		String stringValue = ""; 
 		byte[] bites = stringValue.getBytes(StandardCharsets.UTF_8);
+		
+		executeAll(stringValue,bites,key);
+		
+		/*
+		stringValue = "azrael";
+		bites = stringValue.getBytes(StandardCharsets.UTF_8);
+		executeAll(stringValue,bites,key);
+		*/
 		
 		//String hashedVal = Base64.getEncoder().encodeToString(DigestUtils.sha1(bites));
 		//System.out.println( hashedVal );
-		
+	}
+	
+	public static void executeAll( String cadena, byte[] bites, byte[] key ) {
         byte[] hash000 = new SipHashImpl(1,key).getHashEval( bites );
 		byte[] hash00 = new Azrael64(1).getHashEval( bites );
 		byte[] hash0 = new DigestUtils(MD2).digest(bites);
@@ -409,8 +432,12 @@ public class Main {
 		byte[] hash5 = new DigestUtils(SHA_512).digest(bites);
 		byte[] hash6 = new SHA3(1).getHashEval( bites );
 		byte[] hash7 = new Azrael512(1).getHashEval( bites );
+		byte[] hash8 = new AzraelX1(1).getHashEval( bites );
+		byte[] hash9 = new AzraelX2(1).getHashEval( bites );
+		byte[] hashA = new AzraelX3(1).getHashEval( bites );
+		byte[] hashB = new AzraelX4(1).getHashEval( bites );
 
-		System.out.println( "Starting.. hashing the empty string" );
+		System.out.println( "Starting.. hashing "+cadena+" string" );
 
 		System.out.println( "siphash    (Base64)= "+ Base64.getEncoder().encodeToString(hash000) );
 		System.out.println( "siphash-key(Base64)= "+ Base64.getEncoder().encodeToString(key) );
@@ -423,6 +450,10 @@ public class Main {
 		System.out.println( "sha512     (Base64)= "+ Base64.getEncoder().encodeToString(hash5) );
 		System.out.println( "sha3_512   (Base64)= "+ Base64.getEncoder().encodeToString(hash6) );
 		System.out.println( "azrael512  (Base64)= "+ Base64.getEncoder().encodeToString(hash7) );
+		System.out.println( "azraelX1   (Base64)= "+ Base64.getEncoder().encodeToString(hash8) );
+		System.out.println( "azraelX2   (Base64)= "+ Base64.getEncoder().encodeToString(hash9) );
+		System.out.println( "azraelX3   (Base64)= "+ Base64.getEncoder().encodeToString(hashA) );
+		System.out.println( "azraelX4   (Base64)= "+ Base64.getEncoder().encodeToString(hashB) );
 		
 		System.out.println( "siphash    (Hex   )= "+ Hex.encodeHexString( hash000 ) );
 		System.out.println( "siphash-key(Hex   )= "+ Hex.encodeHexString(key) );
@@ -435,10 +466,10 @@ public class Main {
 		System.out.println( "sha512     (Hex   )= "+ Hex.encodeHexString( hash5 ) );
 		System.out.println( "sha3_512   (Hex   )= "+ Hex.encodeHexString( hash6 ) );
 		System.out.println( "azrael512  (Hex   )= "+ Hex.encodeHexString( hash7 ) );
-
-		//String hdigest = new DigestUtils(SHA_1).digestAsHex(new File("pom.xml"));
-
-		System.out.println( "END" );
-
+		System.out.println( "azraelX1   (Hex   )= "+ Hex.encodeHexString( hash8 ) );
+		System.out.println( "azraelX2   (Hex   )= "+ Hex.encodeHexString( hash9 ) );
+		System.out.println( "azraelX3   (Hex   )= "+ Hex.encodeHexString( hashA ) );
+		System.out.println( "azraelX4   (Hex   )= "+ Hex.encodeHexString( hashB ) );
+		
 	}
 }

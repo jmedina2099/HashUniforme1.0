@@ -28,7 +28,7 @@ public class SipHashImpl implements FuncionHash {
 
 	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
 	
-	private int numIterations = 1;
+	private long numIterations = 1;
 	private int iteration = 0;
 
 	private SipHash mac;
@@ -45,7 +45,7 @@ public class SipHashImpl implements FuncionHash {
 	/**
 	 * 
 	 */
-	public SipHashImpl( int numIterations, byte[] key ) {
+	public SipHashImpl( long numIterations, byte[] key ) {
 		this.numIterations = numIterations;
 		init(key);
 	}
@@ -64,15 +64,16 @@ public class SipHashImpl implements FuncionHash {
 	@Override
 	public BigInteger getHash(byte[] input) {
 		this.iteration  = 0;
-
+		
 		int promedioPro = 0;
 		for( ; iteration<numIterations; ) {
-			iteration++;
 			input = getHashEval( input );
+			iteration++;
+			
+			//String value = Hex.encodeHexString(input);
+
 			
 			/*
-			String value = Hex.encodeHexString(input);
-			
 			if( this.fileToPersist == null ) {
 				try {
 					String filename = "/home/jmedina/eclipse-workspace/HashUniforme/src/siphash-500millions-hashes.txt";
@@ -162,7 +163,7 @@ public class SipHashImpl implements FuncionHash {
 		byte[] key = new byte[16];
 		new SecureRandom().nextBytes(key);
 		
-		int tope = 500000000;
+		long tope = 10000000000l;
 		SipHashImpl hash = new SipHashImpl(tope,key);
 		
 		long timeIni = System.currentTimeMillis();
