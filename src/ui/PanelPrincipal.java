@@ -84,7 +84,7 @@ public class PanelPrincipal extends JPanel {
 		double height = dim.getHeight();
 		double borde = 40;
 		
-		g2.setColor( Color.WHITE );
+		g2.setColor( Color.GREEN );
 		double x1,y1;
 		double yStep;
 		double steps = 10;
@@ -96,7 +96,7 @@ public class PanelPrincipal extends JPanel {
 			y1 = height-borde-yStep;
 			leyenda = ""+i*maxY/steps;
 			g2.drawString( leyenda, (float)x1, (float)y1+15 );
-			g2.draw( new Line2D.Double(x1, y1, x1+borde, y1));
+			g2.draw( new Line2D.Double(borde, y1, borde+5, y1));
 		}
 		
 		double xStep;
@@ -106,9 +106,9 @@ public class PanelPrincipal extends JPanel {
 			xStep = i*(width-2*borde)/steps;
 			x1 = xStep+borde;
 			y1 = height-20;
-			leyenda = ""+(float)(i*maxX/steps);
+			leyenda = ""+(int)(i*maxX/steps);
 			g2.drawString( leyenda, (float)x1-25, (float)y1 );
-			g2.draw( new Line2D.Double(x1, y1-15, x1, y1-borde));
+			g2.draw( new Line2D.Double(x1, height-borde, x1, height-borde+5));
 		}
 		
 	}
@@ -135,12 +135,20 @@ public class PanelPrincipal extends JPanel {
 			if( casillas[i] != 0 ) {
 				g2.setColor( Color.RED );
 				g2.draw( new Line2D.Double( x1,y1,x1,y2) );
-			} else {
-				g2.setColor( Color.YELLOW );
-				g2.draw( new Line2D.Double( x1,y1-5,x1,y2+5) );
 			}
+		}
+
+		for( int i=0; i<casillas.length; i++ ) {
+			x1 = i*(width-2*borde)/(double)casillas.length + borde;
+			yI = casillas[i]*(height-2*borde)/(double)yMax; 
+			y1 = height-borde-yI;
+			y2 = height-borde;
 			
-			//System.out.println( "==> casilla("+x1+","+y1+")-("+x1+","+y2+")" );
+			if( casillas[i] == 0 ) {
+				g2.setColor( Color.YELLOW );
+				g2.draw( new Line2D.Double( x1,y2,x1,y2-5) );
+			}
+
 		}
 	}
 }

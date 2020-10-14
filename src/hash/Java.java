@@ -98,34 +98,6 @@ public class Java implements FuncionHash {
 
         return output;
     }
-	private static void itera() {
-		double total = 0d;
-		
-		int length = 1000000;
-		double avg = 0;
-		
-		Java hash = null;
-		BigInteger eval = null;
-		for( int i=1; i<=length; i++ ) {
-			hash = new Java(i);
-			eval = hash.getHash( "".getBytes(StandardCharsets.UTF_8) );
-	
-			//System.out.println( "===> hashEval="+eval );
-			avg = Statistics.getAverage( eval.toString() );
-			total += avg;
-			if( i % 500 == 0) {
-				System.out.println( "===> ["+i+"]="+(float)avg+"\t promedio="+total/(double)i );
-			}
-		}
-		
-		total = total/(double)length;
-		System.out.println( "===> AVG="+total );
-
-		System.out.println( "===> hashEval="+eval );
-		avg = Statistics.getAverage( eval.toString() );
-		System.out.println( "===> avg="+(float)avg );
-	}
-
 	public String toString() {
 		return "Java "+numIterations+"x";
 	}

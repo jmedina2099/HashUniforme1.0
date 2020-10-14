@@ -3,10 +3,11 @@
  */
 package main;
 
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD2;
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_1;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_512;
-import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA3_512;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -14,9 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -25,6 +30,10 @@ import hash.Azrael320;
 import hash.Azrael512;
 import hash.Azrael64;
 import hash.FuncionHash;
+import hash.MD5;
+import hash.SHA3;
+import hash.SHA_256;
+import hash.SipHashImpl;
 import table.TablaHash;
 import ui.PanelPrincipal;
 import ui.VentanaPrincipal;
@@ -35,14 +44,15 @@ import ui.VentanaPrincipal;
  */
 public class Main {
 	
-	private boolean usePrime = true;
-	private boolean useFiles = true;
+	private boolean usePrime = false;
+	private boolean useFiles = false;
 	private boolean useRockyou = false;
 	private boolean useClean = false;
-	private boolean oneBitDistinct = true;
+	private boolean oneBitDistinct = false;
 	private boolean randomBites = true;
-	private boolean withHistogram = false;
+	private boolean withHistogram = true;
 	
+	static TreeMap<String,String> tree = new TreeMap<String,String>();
 
 
 	private void test( FuncionHash funcionHash ) {
@@ -81,9 +91,11 @@ public class Main {
 			System.gc();
 			System.out.println( " DONE ==>");
 	
-			int size = 120000;
 			int sizePrime = 120031;
-			processBitesRandom( 15000,funcionHash, usePrime? sizePrime: size, withHistogram );
+			int size = 120000;
+			
+			int sizeBytes = 15000;
+			processBitesRandom( sizeBytes,sizeBytes*8,funcionHash, usePrime? sizePrime: size, withHistogram );
 		}
 
 	}
@@ -139,13 +151,16 @@ public class Main {
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
 		
-		System.out.println( "TABLE SIZE="+sizeTable );
-		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
-		System.out.println( "MAX Encadenamiento="+maxCasillas );
-		System.out.println( "Promedio Casillas="+promedioCasillas );
-		System.out.println( "Colisiones=["+colisiones+"]" );
-		System.out.println( "TOTAL="+total );
+		tree.put( vacias+"-"+funcionHash.toString(), funcionHash.toString() );
 
+		
+		System.out.println( "TOTAL ELEMENTS="+total );
+		System.out.println( "TABLE SIZE="+sizeTable );
+		System.out.println( "BUSY/EMPTY="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
+		System.out.println( "MAX LINK LIST="+maxCasillas );
+		System.out.println( "AVERAGE LINK LIST="+promedioCasillas );
+		System.out.println( "COLISIONS=["+colisiones+"]" );
+ 
 		long timeNow = System.currentTimeMillis() - timeIni;
 		System.out.println( "TIME = "+
 				"["+(timeNow/(1000.0))+"] secs,"+
@@ -208,8 +223,8 @@ public class Main {
 		
 		System.out.println( "TABLE SIZE="+sizeTable );
 		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
-		System.out.println( "MAX Encadenamiento="+maxCasillas );
-		System.out.println( "Promedio Casillas="+promedioCasillas );
+		System.out.println( "MAX Chaining="+maxCasillas );
+		System.out.println( "Average Casillas="+promedioCasillas );
 		System.out.println( "Colisiones=["+colisiones+"]" );
 		System.out.println( "TOTAL="+total );
 
@@ -232,12 +247,12 @@ public class Main {
 	 * @param capacityOfTable
 	 * @param withHistogram
 	 */
-	public static void processBitesRandom( int size, FuncionHash funcionHash, int capacityOfTable, boolean withHistogram ) {
+	public static void processBitesRandom( int size, int numCads, FuncionHash funcionHash, int capacityOfTable, boolean withHistogram ) {
 		
 		long timeIni = System.currentTimeMillis();
 		System.out.println( "=====> START RANDOM BYTES="+size );
 		
-		System.out.println( "===> FUNCION="+funcionHash.toString() );
+		System.out.println( "===> FUNCTION="+funcionHash.toString() );
 		TablaHash tablaHash = new TablaHash( funcionHash, capacityOfTable );
 
 		/*
@@ -252,7 +267,7 @@ public class Main {
 		//System.out.println( "<"+Arrays.toString(bites)+">-["+bites.length+"]" );
 
 		int total = 0;
-		for( int i=0; i< size*8; i++ ) {
+		for( int i=0; i< numCads; i++ ) {
 			//System.out.println( "BITES="+ Integer.toBinaryString( bites[index] & 0xFF ) );
 			
 			bites = getRandomBites( size );
@@ -270,12 +285,15 @@ public class Main {
 		double promedioCasillas = tablaHash.getPromedioCasillas();
 		int colisiones = tablaHash.getColisiones();
 		
+		tree.put( vacias+"-"+funcionHash.toString(), funcionHash.toString() );
+
+		
+		System.out.println( "TOTAL ELEMENTS="+total );
 		System.out.println( "TABLE SIZE="+sizeTable );
-		System.out.println( "Ocupadas/Vacias="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
-		System.out.println( "MAX Encadenamiento="+maxCasillas );
-		System.out.println( "Promedio Casillas="+promedioCasillas );
-		System.out.println( "Colisiones=["+colisiones+"]" );
-		System.out.println( "TOTAL="+total );
+		System.out.println( "BUSY/EMPTY="+ocupadas+"/"+vacias+"-"+porcentaje+"%"+"-"+porcentajeVacias+"%" );
+		System.out.println( "MAX LINK LIST="+maxCasillas );
+		System.out.println( "AVERAGE LINK LIST="+promedioCasillas );
+		System.out.println( "COLISIONS=["+colisiones+"]" );
 
 		long timeNow = System.currentTimeMillis() - timeIni;
 		System.out.println( "TIME = "+
@@ -318,23 +336,24 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
+		byte[] key = new byte[16];
+		new SecureRandom().nextBytes(key);
+        
+		main2(args,key);
+		
 		int iterations = 1;
 		
 		Main main = new Main();
-
-		main.test( new Azrael512(iterations) );
 		
-		System.out.print( "=====> CLEANING UP..." );
-		System.gc();
-		System.out.println( " DONE ==>");
-
 		/*
-		main.test( new Java(iterations) );
-		
 		System.out.print( "=====> CLEANING UP..." );
 		System.gc();
 		System.out.println( " DONE ==>");
-		
+
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
+
 		main.test( new SHA(iterations) );
 
 		System.out.print( "=====> CLEANING UP..." );
@@ -347,15 +366,31 @@ public class Main {
 		System.gc();
 		System.out.println( " DONE ==>");
 		*/
-
-		//main.test( new Azrael320(iterations) );
 		
+		main.test( new SipHashImpl(iterations,key) );
+		main.test( new Azrael64(iterations) );
+		main.test( new MD5(iterations) );
+		main.test( new SHA_256(iterations) );
+		main.test( new Azrael320(iterations) );
+		main.test( new SHA3(iterations) );
+		main.test( new Azrael512(iterations) );
+		
+		for (Map.Entry<String, String> entry : tree.entrySet()) { 
+			System.out.println( "[" + entry.getKey() + ", " + entry.getValue() + "]");
+		}
+		
+	}
+
+	public static void gcCall() {
+		System.out.print( "=====> CLEANING UP..." );
+		System.gc();
+		System.out.println( " DONE ==>");
 	}
 	
 	/**
 	 * @param args
 	 */
-	public static void main1(String[] args) {
+	public static void main2(String[] args , byte[] key ) {
 		// TODO Auto-generated method stub
 		
 		String stringValue = "";
@@ -364,36 +399,46 @@ public class Main {
 		//String hashedVal = Base64.getEncoder().encodeToString(DigestUtils.sha1(bites));
 		//System.out.println( hashedVal );
 		
-		byte[] hash1 = new Azrael64(1).getHashEval( bites );
+        byte[] hash000 = new SipHashImpl(1,key).getHashEval( bites );
+		byte[] hash00 = new Azrael64(1).getHashEval( bites );
+		byte[] hash0 = new DigestUtils(MD2).digest(bites);
+		byte[] hash1 = new DigestUtils(MD5).digest(bites);
 		byte[] hash2 = new DigestUtils(SHA_1).digest(bites);
 		byte[] hash3 = new DigestUtils(SHA_256).digest(bites);
 		byte[] hash4 = new Azrael320(1).getHashEval( bites );
 		byte[] hash5 = new DigestUtils(SHA_512).digest(bites);
-		byte[] hash6 = new DigestUtils(SHA3_512).digest(bites);
+		byte[] hash6 = new SHA3(1).getHashEval( bites );
 		byte[] hash7 = new Azrael512(1).getHashEval( bites );
 
 		System.out.println( "Starting.. hashing the empty string" );
 
-		System.out.println( " azrael64(Base64)= "+ Base64.getEncoder().encodeToString(hash1) );
-		System.out.println( "   sha160(Base64)= "+ Base64.getEncoder().encodeToString(hash2) );
-		System.out.println( "   sha256(Base64)= "+ Base64.getEncoder().encodeToString(hash3) );
-		System.out.println( "azrael320(Base64)= "+ Base64.getEncoder().encodeToString(hash4) );
-		System.out.println( "   sha512(Base64)= "+ Base64.getEncoder().encodeToString(hash5) );
-		System.out.println( " sha3_512(Base64)= "+ Base64.getEncoder().encodeToString(hash6) );
-		System.out.println( "azrael512(Base64)= "+ Base64.getEncoder().encodeToString(hash7) );
+		System.out.println( "siphash    (Base64)= "+ Base64.getEncoder().encodeToString(hash000) );
+		System.out.println( "siphash-key(Base64)= "+ Base64.getEncoder().encodeToString(key) );
+		System.out.println( "azrael64   (Base64)= "+ Base64.getEncoder().encodeToString(hash00) );
+		System.out.println( "md2        (Base64)= "+ Base64.getEncoder().encodeToString(hash0) );
+		System.out.println( "md5        (Base64)= "+ Base64.getEncoder().encodeToString(hash1) );
+		System.out.println( "sha160     (Base64)= "+ Base64.getEncoder().encodeToString(hash2) );
+		System.out.println( "sha256     (Base64)= "+ Base64.getEncoder().encodeToString(hash3) );
+		System.out.println( "azrael320  (Base64)= "+ Base64.getEncoder().encodeToString(hash4) );
+		System.out.println( "sha512     (Base64)= "+ Base64.getEncoder().encodeToString(hash5) );
+		System.out.println( "sha3_512   (Base64)= "+ Base64.getEncoder().encodeToString(hash6) );
+		System.out.println( "azrael512  (Base64)= "+ Base64.getEncoder().encodeToString(hash7) );
 		
-		System.out.println( " azrael64(Hex   )= "+ Hex.encodeHexString( hash1 ) );
-		System.out.println( "   sha160(Hex   )= "+ Hex.encodeHexString( hash2 ) );
-		System.out.println( "   sha256(Hex   )= "+ Hex.encodeHexString( hash3 ) );
-		System.out.println( "azrael320(Hex   )= "+ Hex.encodeHexString( hash4 ) );
-		System.out.println( "   sha512(Hex   )= "+ Hex.encodeHexString( hash5 ) );
-		System.out.println( " sha3_512(Hex   )= "+ Hex.encodeHexString( hash6 ) );
-		System.out.println( "azrael512(Hex   )= "+ Hex.encodeHexString( hash7 ) );
+		System.out.println( "siphash    (Hex   )= "+ Hex.encodeHexString( hash000 ) );
+		System.out.println( "siphash-key(Hex   )= "+ Hex.encodeHexString(key) );
+		System.out.println( "azrael64   (Hex   )= "+ Hex.encodeHexString( hash00 ) );
+		System.out.println( "md2        (Hex   )= "+ Hex.encodeHexString( hash0 ) );
+		System.out.println( "md5        (Hex   )= "+ Hex.encodeHexString( hash1 ) );
+		System.out.println( "sha160     (Hex   )= "+ Hex.encodeHexString( hash2 ) );
+		System.out.println( "sha256     (Hex   )= "+ Hex.encodeHexString( hash3 ) );
+		System.out.println( "azrael320  (Hex   )= "+ Hex.encodeHexString( hash4 ) );
+		System.out.println( "sha512     (Hex   )= "+ Hex.encodeHexString( hash5 ) );
+		System.out.println( "sha3_512   (Hex   )= "+ Hex.encodeHexString( hash6 ) );
+		System.out.println( "azrael512  (Hex   )= "+ Hex.encodeHexString( hash7 ) );
 
 		//String hdigest = new DigestUtils(SHA_1).digestAsHex(new File("pom.xml"));
 
 		System.out.println( "END" );
 
 	}
-
 }

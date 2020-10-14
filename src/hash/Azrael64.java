@@ -5,6 +5,10 @@
  */
 package hash;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +28,7 @@ public class Azrael64 implements FuncionHash {
 
 	private int numIterations = 2;
 	private int iteration = 0;
+	private RandomAccessFile fileToPersist;
 
 	private static final String EMPTY_STRING_1_IT =
 			"ffdb3d80fed96840";
@@ -50,17 +55,89 @@ public class Azrael64 implements FuncionHash {
 		this.rounds  = 0;
 		this.iteration  = 0;
 
+		int promedioPro = 0;
 		for( ; iteration<numIterations; ) {
 			iteration++;
 			input = getHashEval( input );
+			
+			//String value = Hex.encodeHexString(input);
+			
+			/*
+			if( this.fileToPersist == null ) {
+				try {
+					String filename = "/home/jmedina/eclipse-workspace/HashUniforme/src/azrael64-500millions-hashes.txt";
+					this.fileToPersist = new RandomAccessFile( new File(filename), "rw");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				this.fileToPersist.write( (value+"\n").getBytes(StandardCharsets.UTF_8) );
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/
+			
+			
 			if( DEBUG_INTERMIDIATE_HASH ) {
-				System.out.println( Hex.encodeHexString(input) );
+				
+				String value = Hex.encodeHexString(input);
+				
+				int min=256, max=-1;
+				
+				int promedioHex = 0;
+				int byteNum = 0;
+				for( int i=0; i<input.length; i++ ) {
+					byteNum = input[i]<0? 127-input[i]: input[i];
+					promedioHex += byteNum;
+					
+					if( byteNum < min ) {
+						min = byteNum;
+					}
+					if( max < byteNum ) {
+						max = byteNum;
+					}
+				}
+				double promedio = promedioHex/(double)input.length;
+				promedio = (promedio*100)/255;
+				promedio = ((int)(promedio*1000000))/1000000d;
+				
+				StringBuffer sb = new StringBuffer();
+				//sb.append( promedio );
+				
+				if( iteration > this.numIterations - 100 ) {
+					promedioPro += promedio;
+					
+					sb.append( "[" )
+					  .append( value )
+					  .append( "]-[bits]=[" )
+					  .append( input.length*8 )
+					  .append( "]-[avg]=[" )
+					  .append( promedio )
+					  .append( "]-[min,max]=[" )
+					  .append( min )
+					  .append( "," )
+					  .append( max )
+					  .append( "]-[iter]=[" )
+					  .append( iteration )
+					  .append( "]" );					
+					 
+					//System.out.println( iteration +"---"+ sb.toString() );
+					System.out.println( sb.toString() );
+				}
 			}
 		}
+		/*
+		try {
+			this.fileToPersist.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
 		
+		//System.out.println( promedioPro/100d );
+
 		return new BigInteger( input );
 	}
-	
 
 	public byte[] getHashEval( byte[] input ) {
 		
@@ -188,12 +265,28 @@ public class Azrael64 implements FuncionHash {
 	public String toString() {
 		return "Azrael64 "+numIterations+"x";
 	}
+	
+	public static void main(String[] args) {
+		
+		int tope = 500000000;
+		Azrael64 hash = new Azrael64(tope);
+		
+		long timeIni = System.currentTimeMillis();
+		System.out.println( "=====> INIT ("+tope+")-"+timeIni );
+
+		hash.getHash( "".getBytes(StandardCharsets.UTF_8) );
+		
+		long timeNow = System.currentTimeMillis() - timeIni;
+		System.out.println( "TIME = "+
+				"["+(timeNow/(1000.0))+"] secs,"+
+				"["+(timeNow/(1000.0*60.0))+"] mins." );
+	}
 
 	/**
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		Azrael64 hash = new Azrael64(2);
 		
 		BigInteger cript = hash.getHash("".getBytes(StandardCharsets.UTF_8));

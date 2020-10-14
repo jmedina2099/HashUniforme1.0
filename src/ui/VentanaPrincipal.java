@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 
 import hash.Azrael64;
 import hash.FuncionHash;
-import hash.SHA;
+import hash.SHA_256;
 import hash.Java;
 import main.Main;
 
@@ -66,7 +66,7 @@ public class VentanaPrincipal extends JFrame {
 		FuncionHash funcionHash = new Java();
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram);
 
-		funcionHash = new SHA();
+		funcionHash = new SHA_256();
 		main.processFile( funcionHash, "/esp.txt", "ISO-8859-1", 174848, withHistogram); //174848
 
 		funcionHash = new Azrael64();
