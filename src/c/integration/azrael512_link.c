@@ -19,68 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <string.h>
-#include <stdint.h>
-
-#define C0(x1,x2,x3,x4,x5) ((( x1 + x2 ) ^ ( x3 ^ x4 )) ^ x5)
-#define C1(x1,x2,x3,x4,x5) ((( x1 & x2 ) ^ ( x3 + x4 )) ^ x5)
-#define C2(x1,x2,x3,x4,x5) ((( x1 ^ x2 ) + ( x3 + x4 )) ^ x5)
-#define C3(x1,x2,x3,x4,x5) ((( x1 ^ x2 ) ^ ( x3 + x4 )) ^ x5)
-#define C4(x1,x2,x3,x4,x5) ((( x1 & x2 ) + ( x3 + x4 )) + x5)
-#define C5(x1,x2,x3,x4,x5) ((( x1 & x2 ) + ( x3 + x4 )) ^ x5)
-#define C6(x1,x2,x3,x4,x5) ((( x1 ^ x2 ) ^ ( x3 + x4 )) ^ x5)
-#define C7(x1,x2,x3,x4,x5) ((( x1 | x2 ) ^ ( x3 + x4 )) ^ x5)
-#define C8(x1,x2,x3,x4,x5) ((  x1 | x2 ) | ((x3 + x4 )  ^ x5))
-#define C9(x1,x2,x3,x4,x5) ((( x1 + x2 ) + ( x3 + x4 )) ^ x5)
-#define CA(x1,x2,x3,x4,x5) ((( x1 + x2 ) & ( x3 + x4 )) ^ x5)
-#define CB(x1,x2,x3,x4,x5) ((( x1 ^ x2 ) + ( x3 ^ x4 )) ^ x5)
-#define CC(x1,x2,x3,x4,x5) ((( x1 | x2 ) ^ ( x3 ^ x4 )) ^ x5)
-#define CD(x1,x2,x3,x4,x5) ((( x1 + x2 ) + ( x3 ^ x4 )) ^ x5)
-#define CE(x1,x2,x3,x4,x5) ((( x1 + x2 ) ^ ( x3 + x4 )) ^ x5)
-#define CF(x1,x2,x3,x4,x5) ((  x1 + x2 ) & ((x3 + x4 )  + x5))
-
-#define COMPRESS_320(x1,x2,x3,x4,x5) \
-  + C0(x1,x2,x3,x4,x5) + C1(x1,x2,x3,x4,x5) + C2(x1,x2,x3,x4,x5) + C3(x1,x2,x3,x4,x5) \
-  + C4(x1,x2,x3,x4,x5) + C5(x1,x2,x3,x4,x5) + C6(x1,x2,x3,x4,x5) + C7(x1,x2,x3,x4,x5) \
-  + C8(x1,x2,x3,x4,x5) + C9(x1,x2,x3,x4,x5) + CA(x1,x2,x3,x4,x5) + CB(x1,x2,x3,x4,x5) \
-  + CC(x1,x2,x3,x4,x5) + CD(x1,x2,x3,x4,x5) + CE(x1,x2,x3,x4,x5) + CF(x1,x2,x3,x4,x5)
-
-inline char* pad_512( const char* data, int length, int padding, char* output ) {
-  int i;
-  const uint64_t bits = length * 8;
-  char pad[padding];
-  pad[0] = (char) 0x80;
-  for( i=1; i<=padding-1-8; i++ ) {
-	 pad[i] = (char)0;
-  }
-  for( i=0; i < 8; i++ ) {
-	 pad[padding - 1 - i] = (char) ((bits >> (8 * i)) & 0xFF);
-  }
-  memcpy(output,data,length);
-  memcpy(output+length,pad,padding);
-  return output;
-}
+#ifndef UNIT_TEST
+  #include "azrael_base.c"
+#endif
 
 void eval_hash_512( char* input, uint64_t* hash, int inputLength ) {
-  // Fractional part of square roots..
-  const uint64_t IV[10] = {
-    0x6a09e667bb67ae85,
-    0x3c6ef372a54ff53a,
-    0x510e527f9b05688c,
-    0x1f83d9ab5be0cd19,
-    0x428a2f9871374491,
-    0xb5c0fbcfe9b5dba5,
-    0x3956c25b59f111f1,
-    0x923f82a4ab1c5ed5,
-    0xd807aa9812835b01,
-    0x243185be550c7dc3
-  };
-
   // Do padding..
   const int tail = inputLength % 64;
   int padding = 64 - tail >= 9? 64 - tail: 128 - tail;
   char output[inputLength+padding];
-  input = pad_512(input,inputLength,padding,output);
+  input = azr_pad(input,inputLength,padding,output);
   inputLength += padding;
 
   // Begin hash calculation..
