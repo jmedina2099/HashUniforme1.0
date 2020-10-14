@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+#include "azrael64_link.c"
 #include "azrael512_link.c"
 #include "azraelx4_link.c"
 
@@ -57,12 +58,28 @@ void test_512( char* val1 ) {
   }
 }
 
+void test_64( char* val1 ) {
+
+  uint64_t hash[1]; // output 8 bytes/64 bits.
+  eval_hash_64( val1, hash, strlen(val1) );
+
+  char hex[17];
+  sprintf(hex,"%016" PRIx64,hash[0] );
+
+  char* empty_hash = "ffdb3d80fed96840";
+  if( strcmp(hex,empty_hash) == 0 ) {
+    printf( "TEST  64 bits of output OK!!!\n" );
+  } else {
+    printf( "TEST FAILED!\n" );
+  }
+}
+
 int main() {
 
   char* val1 = ""; // input the empty string.
   test_x4( val1 );
   test_512( val1 );
-
+  test_64( val1 );
 
   return 0;
 }
