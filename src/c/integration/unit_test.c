@@ -22,6 +22,9 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+#define UNIT_TEST 1
+
+#include "azrael_base.c"
 #include "azrael64_link.c"
 #include "azrael512_link.c"
 #include "azraelx4_link.c"
