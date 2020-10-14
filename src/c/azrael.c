@@ -1,7 +1,7 @@
 /* Copyright (C) 2007-2020 - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential (eyes-only)
- * Written by Jorge Medina <medinarosas.jorgealberto@gmail.com>, October 14th, 2020
+ * Proprietary and confidential
+ * Written by Jorge Medina <medinarosas.jorgealberto@gmail.com>, October 7th, 2020
  */
 
 #include <stdio.h>
