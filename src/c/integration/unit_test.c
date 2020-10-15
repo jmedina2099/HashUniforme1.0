@@ -130,11 +130,12 @@ void test_64( char* val1 ) {
   }
 }
 
-void itera_64( char* val1, int n ) {
+void itera_64( char* val1, long n ) {
 
   char* first = "ffdb3d80fed96840";
 
-  int i,j;
+  long i;
+  int j;
   char hex[17];
   int size = strlen(val1);
   uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
@@ -144,7 +145,7 @@ void itera_64( char* val1, int n ) {
     eval_hash_64( val1, hash, size );
     sprintf(hex,"%016" PRIx64,hash[0] );
     if( strcmp(first,hex) == 0 ) {
-    	printf( "EQUALS %d\n",(i+1) );
+    	printf( "EQUALS %ld\n",(i+1l) );
     }
     for(j=0; j<8; j++ ) {
       val2[7-j] = hash[0] >> 8*j;
@@ -160,7 +161,7 @@ void itera_64( char* val1, int n ) {
 int main(int argc, char *argv[]) {
 
   char* val1 = ""; // input the empty string.
-  int n;
+  long n;
   if( argc < 2 ) {
     test_xMM( val1 );
     test_xM( val1 );
@@ -169,7 +170,7 @@ int main(int argc, char *argv[]) {
     test_320( val1 );
     test_64( val1 );
   } else {
-    n = atoi(argv[1]);
+    n = atol(argv[1]);
     itera_64( val1, n );
   }
 
