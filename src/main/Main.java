@@ -372,7 +372,9 @@ public class Main {
 		*/
 
 		//main.test( new SipHashImpl(iterations,key) );
-		main.test( new AzraelX4(iterations) );
+		//main.test( new AzraelX4(iterations) );
+		
+		//main.test( new Azrael320(iterations) );
 
 		/*
 		main.test( new SipHashImpl(iterations,key) );

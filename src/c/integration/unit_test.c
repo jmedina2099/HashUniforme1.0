@@ -19,8 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+
 
 #define UNIT_TEST 1
 
@@ -76,7 +78,7 @@ void test_x4( char* val1 ) {
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  768 bits of output OK!!!\n%s\n", hex );
   } else {
-    printf( "TEST FAILED!\n" );
+    printf( "TEST FAILED!\n%s\n", hex );
   }
 }
 
@@ -92,7 +94,7 @@ void test_512( char* val1 ) {
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
-    printf( "TEST FAILED!\n" );
+    printf( "TEST FAILED!\n%s\n", hex );
   }
 }
 
@@ -104,11 +106,11 @@ void test_320( char* val1 ) {
   char hex[81];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4] );
 
-  char* empty_hash = "b4d1fb3fec8b03e2966772855feaa41bfaf26ed6d2a21452040a819378b5ccce86a0400155d2a3fc";
+  char* empty_hash = "f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0a";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  320 bits of output OK!!!\n%s\n", hex );
   } else {
-    printf( "TEST FAILED!\n" );
+    printf( "TEST FAILED!\n%s\n", hex );
   }
 }
 
@@ -124,19 +126,55 @@ void test_64( char* val1 ) {
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {
-    printf( "TEST FAILED!\n" );
+    printf( "TEST FAILED!\n%s\n", hex );
   }
 }
 
-int main() {
+void itera_64( char* val1, int n ) {
+
+  char* first = "ffdb3d80fed96840";
+
+  int i,j;
+  char hex[17];
+  int size = strlen(val1);
+  uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+  char val2[8];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_64( val1, hash, size );
+    sprintf(hex,"%016" PRIx64,hash[0] );
+    if( strcmp(first,hex) == 0 ) {
+    	printf( "EQUALS %d\n",(i+1) );
+    }
+    for(j=0; j<8; j++ ) {
+      val2[7-j] = hash[0] >> 8*j;
+    }
+    val1 = val2;
+    size = 8;
+  }
+
+  sprintf(hex,"%016" PRIx64,hash[0] );
+  printf( "%s\n", hex );
+}
+
+int main(int argc, char *argv[]) {
 
   char* val1 = ""; // input the empty string.
+  int n;
+  if( argc < 2 ) {
+    n = 1;
+  } else {
+    n = atoi(argv[1]);
+  }
+
   test_xMM( val1 );
   test_xM( val1 );
   test_x4( val1 );
   test_512( val1 );
   test_320( val1 );
   test_64( val1 );
+
+  itera_64( val1, n );
 
   return 0;
 }

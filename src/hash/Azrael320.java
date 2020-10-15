@@ -27,7 +27,7 @@ public class Azrael320 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"b4d1fb3fec8b03e2966772855feaa41bfaf26ed6d2a21452040a819378b5ccce86a0400155d2a3fc";
+			"f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0a";
 
 	private static final String EMPTY_STRING_2_IT = 
 			"cc64f453ea71fb7b94928a6d1aae8999e665cf7e709ee46c0012a3c4ea5f938bea5d4405b225113f";
@@ -189,11 +189,11 @@ public class Azrael320 implements FuncionHash {
 			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
 		}
 		
-		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV1;
-		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
-		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
-		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
-		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV5;
+		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV9;
+		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV8;
+		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV6;
+		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV5;
+		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV3;
 
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** END DISPERSION 5x64: ("+rounds+") rounds" );
@@ -234,11 +234,11 @@ public class Azrael320 implements FuncionHash {
 				System.out.println( "**** hash1 = "+hash1 );
 			}
 
-			hash1 += evaluaFuncBool( hash1,hash1,hash1,hash1,hash1) + IV6;
-			hash2 += evaluaFuncBool( hash2,hash2,hash2,hash2,hash2) + IV7;
-			hash3 += evaluaFuncBool( hash3,hash3,hash3,hash3,hash3) + IV8;
-			hash4 += evaluaFuncBool( hash4,hash4,hash4,hash4,hash4) + IV9;
-			hash5 += evaluaFuncBool( hash5,hash5,hash5,hash5,hash5) + IV10;
+			hash1 += evaluaFuncBool( hash1,hash1,hash1,hash1,hash1) + IV7;
+			hash2 += evaluaFuncBool( hash2,hash2,hash2,hash2,hash2) + IV5;
+			hash3 += evaluaFuncBool( hash3,hash3,hash3,hash3,hash3) + IV9;
+			hash4 += evaluaFuncBool( hash4,hash4,hash4,hash4,hash4) + IV2;
+			hash5 += evaluaFuncBool( hash5,hash5,hash5,hash5,hash5) + IV1;
 		
 			if( DEBUG_PARTIAL_HASH ) {
 				System.out.println( "**** END DISPERSION FINAL 5x64: ("+rounds+") rounds" );
@@ -324,6 +324,7 @@ public class Azrael320 implements FuncionHash {
 		String hex1, hex2;
 		Azrael320 hash = new Azrael320(tope);
 		
+		/*
 		long timeIni = System.currentTimeMillis();
 		System.out.println( "=====> INIT ("+tope+")-"+timeIni );
 
@@ -333,8 +334,8 @@ public class Azrael320 implements FuncionHash {
 		System.out.println( "TIME = "+
 				"["+(timeNow/(1000.0))+"] secs,"+
 				"["+(timeNow/(1000.0*60.0))+"] mins." );
+		*/
 		
-		/*
 		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
 		hex1 = Hex.encodeHexString( hash1 );
 		
@@ -347,7 +348,6 @@ public class Azrael320 implements FuncionHash {
 		
 		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );
 		System.out.println( "EMPTY 2 => "+(hex2.equals(EMPTY_STRING_2_IT)) );
-		*/
 		
 	}
 }
