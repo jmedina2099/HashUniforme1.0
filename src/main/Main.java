@@ -47,7 +47,7 @@ public class Main {
 	
 	private boolean usePrime = true;
 	private boolean useFiles = true;
-	private boolean useRockyou = true;
+	private boolean useRockyou = false;
 	private boolean useClean = true;
 	private boolean oneBitDistinct = true;
 	private boolean randomBites = true;
@@ -375,6 +375,8 @@ public class Main {
 		//main.test( new AzraelX4(iterations) );
 		
 		//main.test( new Azrael320(iterations) );
+		
+		main.test( new Azrael64(iterations) );
 
 		/*
 		main.test( new SipHashImpl(iterations,key) );

@@ -33,15 +33,15 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength ) {
 
   // Begin hash calculation..
   int i;
-  uint64_t cha[5] = {0,0,0,0,0};
-  uint64_t carrier[5] = {(uint64_t)input[ inputLength-2 ],(uint64_t)input[ 2 ],0,0,0};
+  uint64_t cha[5] = {IV[0],IV[1],IV[2],IV[3],IV[4]};
+  uint64_t carrier[5] = {IV[5],IV[6],IV[7],IV[8],IV[9]};
 
   // First iteration..
-  cha[0] += carrier[0];
+  cha[0] += (uint64_t)input[ inputLength-2 ];
   cha[1] += (uint64_t)input[ inputLength-1 ];
   cha[2] += (uint64_t)input[ 0 ];
   cha[3] += (uint64_t)input[ 1 ];
-  cha[4] += carrier[1];
+  cha[4] += (uint64_t)input[ 2 ];
   carrier[4] += carrier[3];
   carrier[3] += carrier[2];
   carrier[2] += carrier[1];

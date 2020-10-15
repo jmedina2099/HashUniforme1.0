@@ -31,7 +31,7 @@ public class Azrael64 implements FuncionHash {
 	private RandomAccessFile fileToPersist;
 
 	private static final String EMPTY_STRING_1_IT =
-			"ffdb3d80fed96840";
+			"d7ffe7b852fe0e97";
 
 	private static final String EMPTY_STRING_2_IT = 
 			"e99b67b4ddbf9272";
@@ -148,19 +148,45 @@ public class Azrael64 implements FuncionHash {
 		input = pad(input);
 
 		long hash = 0;
-		long char1=0,char2=0,char3=0,char4=0,char5=0;
+		//long char1=0,char2=0,char3=0,char4=0,char5=0;
+
+		// fractional part of sqrt(2) and sqrt(3)
+		long IV1 = 0x6a09e667bb67ae85l;
+		long IV2 = 0x3c6ef372a54ff53al;
+		long IV3 = 0x510e527f9b05688cl;
+		long IV4 = 0x1f83d9ab5be0cd19l;
+		long IV5 = 0x428a2f9871374491l;
+		long IV6 = 0xb5c0fbcfe9b5dba5l;
+		long IV7 = 0x3956c25b59f111f1l;
+		long IV8 = 0x923f82a4ab1c5ed5l;
+		long IV9 = 0xd807aa9812835b01l;
+		long IV10 = 0x243185be550c7dc3l;
 		
+		long char1=IV1;
+		long char2=IV2;
+		long char3=IV3;
+		long char4=IV4;
+		long char5=IV5;
+		
+		/*
 		long sumaAnt1 = (long)input[ input.length-2 ];
 		long sumaAnt2 = (long)input[ 2 ];
 		long sumaAnt3 = 0;
 		long sumaAnt4 = 0;
 		long sumaAnt5 = 0;
+		*/
+		
+		long sumaAnt1 = IV6;
+		long sumaAnt2 = IV7;
+		long sumaAnt3 = IV8;
+		long sumaAnt4 = IV9;
+		long sumaAnt5 = IV10;
 
-		char1 += sumaAnt1;
+		char1 += (long)input[ input.length-2 ];
 		char2 += (long)input[ input.length-1 ];
 		char3 += (long)input[ 0 ];
 		char4 += (long)input[ 1 ];
-		char5 += sumaAnt2;
+		char5 += (long)input[ 2 ];
 		sumaAnt5 += sumaAnt4;
 		sumaAnt4 += sumaAnt3;
 		sumaAnt3 += sumaAnt2;
@@ -270,7 +296,7 @@ public class Azrael64 implements FuncionHash {
 		return "Azrael64 "+numIterations+"x";
 	}
 	
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		
 		long tope = 10000000000l;
 		Azrael64 hash = new Azrael64(tope);
@@ -290,10 +316,21 @@ public class Azrael64 implements FuncionHash {
 	 * 
 	 * @param args
 	 */
-	public static void main2(String[] args) {
-		Azrael64 hash = new Azrael64(2);
+	public static void main(String[] args) {
 		
-		BigInteger cript = hash.getHash("".getBytes(StandardCharsets.UTF_8));
-		//System.out.println( Hex.encodeHexString( cript.toByteArray() ) );
+		Azrael64 hash = new Azrael64(1);
+		
+		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
+		String hex1 = Hex.encodeHexString( hash1 );
+		
+		System.out.println( "1 => "+hex1 );
+		
+		byte[] hash2 = hash.getHashEval( hash1 );
+		String hex2 = Hex.encodeHexString( hash2 );
+		
+		System.out.println( "2 => "+hex2 );
+		
+		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );
+		System.out.println( "EMPTY 2 => "+(hex2.equals(EMPTY_STRING_2_IT)) );
 	}
 }

@@ -122,7 +122,7 @@ void test_64( char* val1 ) {
   char hex[17];
   sprintf(hex,"%016" PRIx64,hash[0] );
 
-  char* empty_hash = "ffdb3d80fed96840";
+  char* empty_hash = "d7ffe7b852fe0e97";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -132,7 +132,7 @@ void test_64( char* val1 ) {
 
 void itera_64( char* val1, long n ) {
 
-  char* first = "ffdb3d80fed96840";
+  char* first = "d7ffe7b852fe0e97";
 
   long i;
   int j;
