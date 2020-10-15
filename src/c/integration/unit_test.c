@@ -30,6 +30,23 @@
 #include "azrael512_link.c"
 #include "azraelx4_link.c"
 #include "azraelxM_link.c"
+#include "azraelxMM_link.c"
+
+void test_xMM( char* val1 ) {
+
+  uint64_t hash[32]; // output 256 bytes/2048 bits.
+  eval_hash_xMM( val1, hash, strlen(val1) );
+
+  char hex[513];
+  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15],hash[16],hash[17],hash[18],hash[19],hash[20],hash[21],hash[22],hash[23],hash[24],hash[25],hash[26],hash[27],hash[28],hash[29],hash[30],hash[31] );
+
+  char* empty_hash = "e9b90e715bd879a1847732c649632381cbdd7ef7ab8ba076579b9f66a03228e068882ef485f29061d3a598c4aad1ae88ae3b7c80604d6a492a635f9f816e33bedab9adc5954419617b08a7874c9b6a54d7ebd8652469e78b2235dcd3ac7fa2501d0f580357ec96e72cb65b2ccc1683bc113d761a686c351454c207bd5ce62116d29eb349746ac9b96907647a940881b0377fd5cf08726ed92f7e8b539a9203bd8299df3fb512283cf1b6ea5cac8818f984b1a6d36b14ffb088a2d2efcf3e2f808202f86438e801a1a5a03532a54a18ef3cccc5b7bee4407c0fa76d5afd9f4f0b793bcd151b6391b7cf90fd473e58403fae3fb7a0118d81ab09cddf8a964ded84";
+  if( strcmp(hex,empty_hash) == 0 ) {
+    printf( "TEST 2048 bits of output OK!!!\n%s\n", hex );
+  } else {
+    printf( "TEST FAILED!\n%s\n", hex );
+  }
+}
 
 void test_xM( char* val1 ) {
 
@@ -114,6 +131,7 @@ void test_64( char* val1 ) {
 int main() {
 
   char* val1 = ""; // input the empty string.
+  test_xMM( val1 );
   test_xM( val1 );
   test_x4( val1 );
   test_512( val1 );
