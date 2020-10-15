@@ -52,13 +52,13 @@
 #define CE(x1,x2,x3,x4,x5) ((( x1 + x2 ) ^ ( x3 + x4 )) ^ x5)
 #define CF(x1,x2,x3,x4,x5) ((  x1 + x2 ) & ((x3 + x4 )  + x5))
 
-#define COMPRESS(x1,x2,x3,x4,x5) \
+#define COMPRESS_320(x1,x2,x3,x4,x5) \
   + C0(x1,x2,x3,x4,x5) + C1(x1,x2,x3,x4,x5) + C2(x1,x2,x3,x4,x5) + C3(x1,x2,x3,x4,x5) \
   + C4(x1,x2,x3,x4,x5) + C5(x1,x2,x3,x4,x5) + C6(x1,x2,x3,x4,x5) + C7(x1,x2,x3,x4,x5) \
   + C8(x1,x2,x3,x4,x5) + C9(x1,x2,x3,x4,x5) + CA(x1,x2,x3,x4,x5) + CB(x1,x2,x3,x4,x5) \
   + CC(x1,x2,x3,x4,x5) + CD(x1,x2,x3,x4,x5) + CE(x1,x2,x3,x4,x5) + CF(x1,x2,x3,x4,x5)
 
-static inline uint64_t COMPRESS_320( uint64_t input,
+static inline uint64_t COMPRESS_LOOP( uint64_t input,
 		uint64_t last1, uint64_t last2, uint64_t last3, uint64_t last4, uint64_t last5,
 		uint64_t A, uint64_t B, uint64_t C, uint64_t D, uint64_t E ) {
 	A += last1;
@@ -70,7 +70,7 @@ static inline uint64_t COMPRESS_320( uint64_t input,
     last4 += last3;
     last3 += last2;
     last2 += last1;
-    last1 += COMPRESS( A,B,C,D,E );
+    last1 += COMPRESS_320( A,B,C,D,E );
     return last1;
 }
 
@@ -116,13 +116,13 @@ static void update_table_with_flips(int i_input, size_t flips[8][8], uint64_t x[
     uint64_t initial = x[i_input];
 
     uint64_t y1=x[0],y2=x[1],y3=x[2],y4=x[3],y5=x[4];
-    uint64_t y_initial = COMPRESS_320(0,y1,y2,y3,y4,y5,x[0], x[1], x[2], x[3], x[4] );
+    uint64_t y_initial = COMPRESS_LOOP(0,y1,y2,y3,y4,y5,x[0], x[1], x[2], x[3], x[4] );
 
     for (int i_bit = 0; i_bit < 8; i_bit++) {
         // set up the input with the flipped bit
         x[i_input] = initial ^ (1 << i_bit);  // flip the bit
 
-        y1 = COMPRESS_320(x[i_input],y1,y2,y3,y4,y5,x[0], x[1], x[2], x[3], x[4] );
+        y1 = COMPRESS_LOOP(x[i_input],y1,y2,y3,y4,y5,x[0], x[1], x[2], x[3], x[4] );
 
         // increment the flip counter if a bit was flipped
         for (int i = 0; i < 8; i++)
