@@ -29,6 +29,23 @@
 #include "azrael320_link.c"
 #include "azrael512_link.c"
 #include "azraelx4_link.c"
+#include "azraelxM_link.c"
+
+void test_xM( char* val1 ) {
+
+  uint64_t hash[16]; // output 128 bytes/1024 bits.
+  eval_hash_xM( val1, hash, strlen(val1) );
+
+  char hex[257];
+  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15] );
+
+  char* empty_hash = "0d3a879c9a71f6717b43c589321cf0e13e9927f0fac73232de94f77f17b01b555362f257810dfc3301408bb9c0e967d3bcbf9f678a1b8e445298fbdc7122e40e453c32c5f3f802f1fe9e6e12bcd6a0a069dddb7ece5a06792235dcd3ac7fa250354cc5b7a8300e5e13bac744abb43dc375f01f6ab71ca82d825cfab272fdda51";
+  if( strcmp(hex,empty_hash) == 0 ) {
+    printf( "TEST 1024 bits of output OK!!!\n%s\n", hex );
+  } else {
+    printf( "TEST FAILED!\n%s\n", hex );
+  }
+}
 
 void test_x4( char* val1 ) {
 
@@ -40,7 +57,7 @@ void test_x4( char* val1 ) {
 
   char* empty_hash = "cded98730118b7a4a15597430c9d75863d9532329540cab109ea26ab72a96d1b30c264e213beef31700795f4bb881bf0fd10ce945b15a8557dac5d970b49d75b6e8904776c7d3b5b975228ead94f06dbeb97574581bf53ac4b82ae93ec4f77c7";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST 768 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST  768 bits of output OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n" );
   }
@@ -56,7 +73,7 @@ void test_512( char* val1 ) {
 
   char* empty_hash = "b4d1fb3fffb8b7a496677285b03e5c7dfaf26eda834dab12040a81923eb1081086a03ff930128bc8c2cbd29e3637fd13b911297c89d5a855fadd4393eb442683";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST 512 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n" );
   }
@@ -72,7 +89,7 @@ void test_320( char* val1 ) {
 
   char* empty_hash = "b4d1fb3fec8b03e2966772855feaa41bfaf26ed6d2a21452040a819378b5ccce86a0400155d2a3fc";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST 320 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST  320 bits of output OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n" );
   }
@@ -88,7 +105,7 @@ void test_64( char* val1 ) {
 
   char* empty_hash = "ffdb3d80fed96840";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST  64 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n" );
   }
@@ -97,6 +114,7 @@ void test_64( char* val1 ) {
 int main() {
 
   char* val1 = ""; // input the empty string.
+  test_xM( val1 );
   test_x4( val1 );
   test_512( val1 );
   test_320( val1 );
