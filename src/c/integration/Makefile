@@ -33,6 +33,7 @@ $(UNIT_TEST): $(UNIT_TEST).c
 clean:
 	$(RM) $(TARGET_BASE)
 	$(RM) $(TARGET_64)
+	$(RM) $(TARGET_320)
 	$(RM) $(TARGET_512)
 	$(RM) $(TARGET_X4)
 	$(RM) $(UNIT_TEST)	
