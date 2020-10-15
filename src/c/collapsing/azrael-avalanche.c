@@ -106,7 +106,7 @@ static void update_table_with_flips(int i_input, size_t flips[8][8], uint8_t x[5
     x[2] += x[3];
     x[3] += initial;
     x[4] += y2;
-	y5 += y4;
+    y5 += y4;
     y4 += y3;
     y3 += y2;
     y2 += y1;
