@@ -58,22 +58,6 @@
   + C8(x1,x2,x3,x4,x5) + C9(x1,x2,x3,x4,x5) + CA(x1,x2,x3,x4,x5) + CB(x1,x2,x3,x4,x5) \
   + CC(x1,x2,x3,x4,x5) + CD(x1,x2,x3,x4,x5) + CE(x1,x2,x3,x4,x5) + CF(x1,x2,x3,x4,x5)
 
-static inline uint64_t COMPRESS_LOOP( uint64_t input,
-		uint64_t last1, uint64_t last2, uint64_t last3, uint64_t last4, uint64_t last5,
-		uint64_t A, uint64_t B, uint64_t C, uint64_t D, uint64_t E ) {
-	A += last1;
-	B += C;
-	C += D;
-	D += input;
-	E += last2;
-    last5 += last4;
-    last4 += last3;
-    last3 += last2;
-    last2 += last1;
-    last1 += COMPRESS_320( A,B,C,D,E );
-    return last1;
-}
-
 // ---
 // end
 // ---
@@ -112,17 +96,36 @@ static void initialize_flips_table(size_t flips[5][8][8]) {
 }
 
 /// Given the pattern x, flip all bits in the i'th byte and count the flips
-static void update_table_with_flips(int i_input, size_t flips[8][8], uint64_t x[5]) {
-    uint64_t initial = x[i_input];
+static void update_table_with_flips(int i_input, size_t flips[8][8], uint8_t x[5]) {
+    uint8_t initial = x[i_input];
 
-    uint64_t y1=x[0],y2=x[1],y3=x[2],y4=x[3],y5=x[4];
-    uint64_t y_initial = COMPRESS_LOOP(0,y1,y2,y3,y4,y5,x[0], x[1], x[2], x[3], x[4] );
+    uint8_t y1=x[0],y2=x[1],y3=x[2],y4=x[3],y5=x[4];
+
+    x[0] += y1;
+	x[1] += x[2];
+	x[2] += x[3];
+	x[3] += initial;
+	x[4] += y2;
+	y5 += y4;
+    y4 += y3;
+    y3 += y2;
+    y2 += y1;
+    uint8_t y_initial = COMPRESS_320( x[0], x[1], x[2], x[3], x[4] );
 
     for (int i_bit = 0; i_bit < 8; i_bit++) {
         // set up the input with the flipped bit
         x[i_input] = initial ^ (1 << i_bit);  // flip the bit
 
-        y1 = COMPRESS_LOOP(x[i_input],y1,y2,y3,y4,y5,x[0], x[1], x[2], x[3], x[4] );
+    	x[0] += y1;
+    	x[1] += x[2];
+    	x[2] += x[3];
+    	x[3] += x[i_input];
+    	x[4] += y2;
+    	y5 += y4;
+        y4 += y3;
+        y3 += y2;
+        y2 += y1;
+        y1 += COMPRESS_320( x[0], x[1], x[2], x[3], x[4] );
 
         // increment the flip counter if a bit was flipped
         for (int i = 0; i < 8; i++)
@@ -136,7 +139,7 @@ struct WorkerArgs {
 };
 
 #define N_BIT_PATTERNS 18
-static const uint64_t PATTERNS[N_BIT_PATTERNS] = {
+static const uint8_t PATTERNS[N_BIT_PATTERNS] = {
     // all-zero
     0b00000000,
     // single-bit
@@ -163,8 +166,8 @@ static void* worker(void* args) {
           for (unsigned xb = 0; xb < N_BIT_PATTERNS; xb++) {
             for (unsigned xc = 0; xc < N_BIT_PATTERNS; xc++) {
               for (unsigned xd = 0; xd < N_BIT_PATTERNS; xd++) {
-                  uint64_t i_pattern[4] = {xa, xb, xc, xd};
-                  uint64_t x[5] = {0};
+                  uint8_t i_pattern[4] = {xa, xb, xc, xd};
+                  uint8_t x[5] = {0};
                   for (int i = 0; i < 5; i++) {
                       if (i < i_input)
                           x[i] = PATTERNS[i_pattern[i]];
