@@ -162,19 +162,16 @@ int main(int argc, char *argv[]) {
   char* val1 = ""; // input the empty string.
   int n;
   if( argc < 2 ) {
-    n = 1;
+    test_xMM( val1 );
+    test_xM( val1 );
+    test_x4( val1 );
+    test_512( val1 );
+    test_320( val1 );
+    test_64( val1 );
   } else {
     n = atoi(argv[1]);
+    itera_64( val1, n );
   }
-
-  test_xMM( val1 );
-  test_xM( val1 );
-  test_x4( val1 );
-  test_512( val1 );
-  test_320( val1 );
-  test_64( val1 );
-
-  itera_64( val1, n );
 
   return 0;
 }
