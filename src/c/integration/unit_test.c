@@ -50,6 +50,32 @@ void test_xMM( char* val1 ) {
   }
 }
 
+void itera_xMM( char* val1, long n, int flag ) {
+
+  long i;
+  int k,j;
+  char hex[513];
+  int size = strlen(val1);
+  uint64_t hash[32] = {0}; // output 256 bytes/2048 bits.
+  char val2[256];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_xMM( val1, hash, size );
+    for(k=0; k<32; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 256;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15],hash[16],hash[17],hash[18],hash[19],hash[20],hash[21],hash[22],hash[23],hash[24],hash[25],hash[26],hash[27],hash[28],hash[29],hash[30],hash[31] );
+    printf( "%s\n", hex );
+  }
+}
+
 void test_xM( char* val1 ) {
 
   uint64_t hash[16]; // output 128 bytes/1024 bits.
@@ -63,6 +89,32 @@ void test_xM( char* val1 ) {
     printf( "TEST 1024 bits of output OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n%s\n", hex );
+  }
+}
+
+void itera_xM( char* val1, long n, int flag ) {
+
+  long i;
+  int k,j;
+  char hex[257];
+  int size = strlen(val1);
+  uint64_t hash[16] = {0}; // output 128 bytes/1024 bits.
+  char val2[128];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_xM( val1, hash, size );
+    for(k=0; k<16; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 128;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15] );
+    printf( "%s\n", hex );
   }
 }
 
@@ -82,6 +134,32 @@ void test_x4( char* val1 ) {
   }
 }
 
+void itera_x4( char* val1, long n, int flag ) {
+
+  long i;
+  int k,j;
+  char hex[193];
+  int size = strlen(val1);
+  uint64_t hash[12] = {0}; // output 96 bytes/768 bits.
+  char val2[96];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_x4( val1, hash, size );
+    for(k=0; k<12; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 96;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11] );
+    printf( "%s\n", hex );
+  }
+}
+
 void test_512( char* val1 ) {
 
   uint64_t hash[8]; // output 64 bytes/512 bits.
@@ -95,6 +173,32 @@ void test_512( char* val1 ) {
     printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n%s\n", hex );
+  }
+}
+
+void itera_512( char* val1, long n, int flag ) {
+
+  long i;
+  int k,j;
+  char hex[129];
+  int size = strlen(val1);
+  uint64_t hash[8] = {0}; // output 64 bytes/512 bits.
+  char val2[64];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_512( val1, hash, size );
+    for(k=0; k<8; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 64;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
+    printf( "%s\n", hex );
   }
 }
 
@@ -114,6 +218,32 @@ void test_320( char* val1 ) {
   }
 }
 
+void itera_320( char* val1, long n, int flag ) {
+
+  long i;
+  int k,j;
+  char hex[81];
+  int size = strlen(val1);
+  uint64_t hash[5] = {0}; // output 40 bytes/320 bits.
+  char val2[40];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_320( val1, hash, size );
+    for(k=0; k<5; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 40;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4] );
+    printf( "%s\n", hex );
+  }
+}
+
 void test_64( char* val1 ) {
 
   uint64_t hash[1]; // output 8 bytes/64 bits.
@@ -130,9 +260,7 @@ void test_64( char* val1 ) {
   }
 }
 
-void itera_64( char* val1, long n ) {
-
-  char* first = "d7ffe7b852fe0e97";
+void itera_64( char* val1, long n, int flag ) {
 
   long i;
   int j;
@@ -143,10 +271,6 @@ void itera_64( char* val1, long n ) {
 
   for( i=0; i<n; i++ ) {
     eval_hash_64( val1, hash, size );
-    sprintf(hex,"%016" PRIx64,hash[0] );
-    if( strcmp(first,hex) == 0 ) {
-    	printf( "EQUALS %ld\n",(i+1l) );
-    }
     for(j=0; j<8; j++ ) {
       val2[7-j] = hash[0] >> 8*j;
     }
@@ -154,24 +278,59 @@ void itera_64( char* val1, long n ) {
     size = 8;
   }
 
-  sprintf(hex,"%016" PRIx64,hash[0] );
-  printf( "%s\n", hex );
+  if( flag != 0 ) {
+    sprintf(hex,"%016" PRIx64,hash[0] );
+    printf( "%s\n", hex );
+  }
+}
+
+void itera( char* val1, long n, int flag, char* spice ) {
+
+	if( strcmp(spice,"64") == 0 ) {
+		itera_64( val1, n, flag );
+	} else if( strcmp(spice,"320") == 0 ) {
+		itera_320( val1, n, flag );
+	} else if( strcmp(spice,"512") == 0 ) {
+		itera_512( val1, n, flag );
+	} else if( strcmp(spice,"x4") == 0 ) {
+		itera_x4( val1, n, flag );
+	} else if( strcmp(spice,"xM") == 0 ) {
+		itera_xM( val1, n, flag );
+	} else if( strcmp(spice,"xMM") == 0 ) {
+		itera_xMM( val1, n, flag );
+	}
+
 }
 
 int main(int argc, char *argv[]) {
 
   char* val1 = ""; // input the empty string.
   long n;
-  if( argc < 2 ) {
-    test_xMM( val1 );
-    test_xM( val1 );
-    test_x4( val1 );
-    test_512( val1 );
-    test_320( val1 );
+  int t;
+  if( argc == 1 ) {
     test_64( val1 );
+    test_320( val1 );
+    test_512( val1 );
+    test_x4( val1 );
+    test_xM( val1 );
+    test_xMM( val1 );
+  } else if( argc == 2 ) {
+	val1 = argv[1];
+	itera_64( val1, 1, 1 );
+  } else if( argc == 3 ) {
+	val1 = argv[1];
+	n = atol(argv[2]);
+	itera_64( val1, n, 1 );
+  } else if( argc == 4 ) {
+	val1 = argv[1];
+	n = atol(argv[2]);
+	t = atoi(argv[3]);
+	itera_64( val1, n, t );
   } else {
-    n = atol(argv[1]);
-    itera_64( val1, n );
+	val1 = argv[1];
+	n = atol(argv[2]);
+	t = atoi(argv[3]);
+	itera( val1, n, t, argv[4] );
   }
 
   return 0;
