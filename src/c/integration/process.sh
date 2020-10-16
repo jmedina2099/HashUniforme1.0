@@ -4,7 +4,7 @@
 echo '===> PROCESANDO..[' $1 ']'..
 echo -ne '\e[?7l'
 
-if [ $# -ne 5 ] 
+if [ $# -lt 5 ] 
 then
   echo 'cat is parsing file..'
   cat $1 | while read line 
@@ -13,7 +13,7 @@ then
   done
 else
   echo 'c is parsing file..'
-  nice -0 ./unit_test "" $2 $3 $4 $1
+  nice -0 ./unit_test "" $2 $3 $4 $1 $6
 fi
 
 echo -ne '\e[?7h'
