@@ -299,7 +299,28 @@ void itera( char* val1, long n, int flag, char* spice ) {
 	} else if( strcmp(spice,"xMM") == 0 ) {
 		itera_xMM( val1, n, flag );
 	}
+}
 
+int readFile( long n, int flag, char* spice, char* filename ) {
+    FILE * fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen(filename, "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        //printf("Retrieved line of length %zu:\n", read);
+        //printf("%s", line);
+        itera(line,n,flag,spice);
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
+    exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char *argv[]) {
@@ -326,11 +347,15 @@ int main(int argc, char *argv[]) {
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	itera_64( val1, n, t );
-  } else {
+  } else if( argc == 5 ) {
 	val1 = argv[1];
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	itera( val1, n, t, argv[4] );
+  } else if( argc == 6 ) {
+    n = atol(argv[2]);
+    t = atoi(argv[3]);
+    readFile( n, t, argv[4], argv[5] );
   }
 
   return 0;
