@@ -312,8 +312,6 @@ int readFile( long n, int flag, char* spice, char* filename ) {
         exit(EXIT_FAILURE);
 
     while ((read = getline(&line, &len, fp)) != -1) {
-        //printf("Retrieved line of length %zu:\n", read);
-        //printf("%s", line);
         itera(line,n,flag,spice);
     }
 
