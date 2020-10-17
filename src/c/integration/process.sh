@@ -22,8 +22,8 @@ nice -0 ../random/random $6
 if [ $# -gt 6 ]
 then
   echo 'compressing the hashes..'
-  time nice -0 tar cJPf $6.xz $6
-  nice -0 ../random/random /spacio/azrael/$6.xz 
+  time nice -0 tar cJPf /spacio/azrael/$6.xz $6
+  nice -0 ../random/random /spacio/azrael/$6.xz
 fi
 
 echo -ne '\e[?7h'
