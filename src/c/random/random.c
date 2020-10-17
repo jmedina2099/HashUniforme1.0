@@ -39,13 +39,11 @@ int doFile( char* filein ) {
     	}
     }
 
-    printf("(0)(1)\n");
-    printf("(%ld)(%ld)\n",ceros,unos);
+    printf("(0)-(1)=(%ld)(%ld)\n",ceros,unos);
 
     long total = ceros + unos;
 
-    printf("(0)(1)\n");
-    printf("(%f)(%f)\n",(ceros/(float)total),(unos/(float)total));
+    printf("(0)-(1)=(%f)(%f)\n",(ceros/(float)total),(unos/(float)total));
 
     fclose(fp);
     if (line)
