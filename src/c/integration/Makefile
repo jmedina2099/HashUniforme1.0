@@ -47,3 +47,9 @@ clean:
 	$(RM) $(TARGET_XM)
 	$(RM) $(TARGET_XMM)
 	$(RM) $(UNIT_TEST)	
+	
+clean-hash:
+	$(RM) *.hash
+	$(RM) *.hash.xz
+
+clean-all: clean clean-hash

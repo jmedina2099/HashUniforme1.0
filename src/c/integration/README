@@ -1,1 +1,2 @@
-./run-sample ../../en.txt out64.hash 64
+make
+./run-sample ../../rockyou.txt out64-rock.hash 64 1

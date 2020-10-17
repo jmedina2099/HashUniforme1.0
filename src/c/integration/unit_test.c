@@ -50,12 +50,11 @@ void test_xMM( char* val1 ) {
   }
 }
 
-void itera_xMM( char* val1, long n, int flag, char* hex ) {
+void itera_xMM( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
 
   long i;
   int k,j;
   int size = strlen(val1);
-  uint64_t hash[32] = {0}; // output 256 bytes/2048 bits.
   char val2[256];
 
   for( i=0; i<n; i++ ) {
@@ -69,8 +68,8 @@ void itera_xMM( char* val1, long n, int flag, char* hex ) {
     size = 256;
   }
 
-  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15],hash[16],hash[17],hash[18],hash[19],hash[20],hash[21],hash[22],hash[23],hash[24],hash[25],hash[26],hash[27],hash[28],hash[29],hash[30],hash[31] );
   if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15],hash[16],hash[17],hash[18],hash[19],hash[20],hash[21],hash[22],hash[23],hash[24],hash[25],hash[26],hash[27],hash[28],hash[29],hash[30],hash[31] );
     printf( "%s\n", hex );
   }
 }
@@ -91,12 +90,11 @@ void test_xM( char* val1 ) {
   }
 }
 
-void itera_xM( char* val1, long n, int flag, char* hex ) {
+void itera_xM( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
 
   long i;
   int k,j;
   int size = strlen(val1);
-  uint64_t hash[16] = {0}; // output 128 bytes/1024 bits.
   char val2[128];
 
   for( i=0; i<n; i++ ) {
@@ -110,8 +108,8 @@ void itera_xM( char* val1, long n, int flag, char* hex ) {
     size = 128;
   }
 
-  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15] );
   if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15] );
     printf( "%s\n", hex );
   }
 }
@@ -132,12 +130,11 @@ void test_x4( char* val1 ) {
   }
 }
 
-void itera_x4( char* val1, long n, int flag, char* hex ) {
+void itera_x4( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
 
   long i;
   int k,j;
   int size = strlen(val1);
-  uint64_t hash[12] = {0}; // output 96 bytes/768 bits.
   char val2[96];
 
   for( i=0; i<n; i++ ) {
@@ -151,8 +148,8 @@ void itera_x4( char* val1, long n, int flag, char* hex ) {
     size = 96;
   }
 
-  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11] );
   if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11] );
     printf( "%s\n", hex );
   }
 }
@@ -173,12 +170,11 @@ void test_512( char* val1 ) {
   }
 }
 
-void itera_512( char* val1, long n, int flag, char* hex ) {
+void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
 
   long i;
   int k,j;
   int size = strlen(val1);
-  uint64_t hash[8] = {0}; // output 64 bytes/512 bits.
   char val2[64];
 
   for( i=0; i<n; i++ ) {
@@ -192,8 +188,8 @@ void itera_512( char* val1, long n, int flag, char* hex ) {
     size = 64;
   }
 
-  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
   if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
     printf( "%s\n", hex );
   }
 }
@@ -214,12 +210,11 @@ void test_320( char* val1 ) {
   }
 }
 
-void itera_320( char* val1, long n, int flag, char* hex ) {
+void itera_320( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
 
   long i;
   int k,j;
   int size = strlen(val1);
-  uint64_t hash[5] = {0}; // output 40 bytes/320 bits.
   char val2[40];
 
   for( i=0; i<n; i++ ) {
@@ -233,8 +228,8 @@ void itera_320( char* val1, long n, int flag, char* hex ) {
     size = 40;
   }
 
-  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4] );
   if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4] );
     printf( "%s\n", hex );
   }
 }
@@ -255,12 +250,11 @@ void test_64( char* val1 ) {
   }
 }
 
-void itera_64( char* val1, long n, int flag, char* hex ) {
+void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
 
   long i;
   int j;
   int size = strlen(val1);
-  uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
   char val2[8];
 
   for( i=0; i<n; i++ ) {
@@ -272,26 +266,26 @@ void itera_64( char* val1, long n, int flag, char* hex ) {
     size = 8;
   }
 
-  sprintf(hex,"%016" PRIx64,hash[0] );
   if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64,hash[0] );
     printf( "%s\n", hex );
   }
 }
 
-void itera( char* val1, long n, int flag, char* hex, char* spice ) {
+void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash ) {
 
 	if( strcmp(spice,"64") == 0 ) {
-		itera_64( val1, n, flag, hex );
+		itera_64( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"320") == 0 ) {
-		itera_320( val1, n, flag, hex );
+		itera_320( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"512") == 0 ) {
-		itera_512( val1, n, flag, hex );
+		itera_512( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"x4") == 0 ) {
-		itera_x4( val1, n, flag, hex );
+		itera_x4( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"xM") == 0 ) {
-		itera_xM( val1, n, flag, hex );
+		itera_xM( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"xMM") == 0 ) {
-		itera_xMM( val1, n, flag, hex );
+		itera_xMM( val1, n, flag, hex, hash );
 	}
 }
 
@@ -313,6 +307,24 @@ int getNumHex(char* spice) {
   return sizeHex;
 }
 
+int getOutSize(char* spice) {
+  int size = 8;
+  if( strcmp(spice,"64") == 0 ) {
+	  size = 8;
+  } else if( strcmp(spice,"320") == 0 ) {
+	  size = 40;
+  } else if( strcmp(spice,"512") == 0 ) {
+	  size = 64;
+  } else if( strcmp(spice,"x4") == 0 ) {
+	  size = 96;
+  } else if( strcmp(spice,"xM") == 0 ) {
+	  size = 128;
+  } else if( strcmp(spice,"xMM") == 0 ) {
+	  size = 256;
+  }
+  return size;
+}
+
 int doFile( long n, int flag, char* spice, char* filein ) {
     FILE * fp;
     char * line = NULL;
@@ -325,8 +337,9 @@ int doFile( long n, int flag, char* spice, char* filein ) {
 
     int sizeHex = getNumHex(spice);
     char hex[sizeHex];
+    uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
     while ((read = getline(&line, &len, fp)) != -1) {
-    	itera(line,n,flag,hex,spice);
+    	itera(line,n,flag,hex,spice,hash);
     }
 
     fclose(fp);
@@ -335,7 +348,7 @@ int doFile( long n, int flag, char* spice, char* filein ) {
     exit(EXIT_SUCCESS);
 }
 
-int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout ) {
+int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uint64_t* hash, int size ) {
     FILE * fp;
     FILE * fo;
     char * line = NULL;
@@ -352,8 +365,13 @@ int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout ) {
     int sizeHex = getNumHex(spice);
     char hex[sizeHex];
     while ((read = getline(&line, &len, fp)) != -1) {
-    	itera(line,n,flag,hex,spice);
-        fprintf(fo,"%s\n",hex);
+    	itera(line,n,flag,hex,spice,hash);
+    	/*
+    	for( int i=0; i<size; i++ ) {
+    		fprintf(fo, "[%d]%" PRIu64 "\n",i,hash[i]);
+    	}
+    	*/
+    	fwrite(hash, sizeof(hash[0]), size, fo);
     }
 
     fclose(fp);
@@ -378,25 +396,29 @@ int main(int argc, char *argv[]) {
   } else if( argc == 2 ) { // Cadena a hashear.
 	val1 = argv[1];
 	char hex[17];
-	itera_64( val1, 1, 1, hex );
+	uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+	itera_64( val1, 1, 1, hex, hash );
   } else if( argc == 3 ) { // Num. de iteracion.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	char hex[17];
-	itera_64( val1, n, 1, hex );
+	uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+	itera_64( val1, n, 1, hex, hash );
   } else if( argc == 4 ) { // Bandera para imprimir el hash.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	char hex[17];
-	itera_64( val1, n, t, hex );
+	uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+	itera_64( val1, n, t, hex, hash );
   } else if( argc == 5 ) { // Tipo de algoritmo.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	int sizeHex = getNumHex(argv[4]);
 	char hex[sizeHex];
-	itera( val1, n, t, hex, argv[4] );
+	uint64_t hash[getOutSize(argv[4])];
+    itera( val1, n, t, hex, argv[4], hash );
   } else if( argc == 6 ) { // Archivo a hashear entrada.
     n = atol(argv[2]);
     t = atoi(argv[3]);
@@ -404,7 +426,9 @@ int main(int argc, char *argv[]) {
   } else if( argc == 7 ) { // Archivo de salida.
     n = atol(argv[2]);
     t = atoi(argv[3]);
-    doFileWrite( n, t, argv[4], argv[5], argv[6] );
+	uint64_t hash[getOutSize(argv[4])];
+	int sizeBytes = (int)((getOutSize(argv[4]))/8.0);
+    doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes );
   }
 
   return 0;
