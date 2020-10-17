@@ -1,2 +1,2 @@
 make
-./run-sample ../../rockyou.txt out64-rock.hash 64 1
+./run-sample ../../rockyou.txt out512-rock.hash 512 1

@@ -1,7 +1,8 @@
 #!/bin/bash
 
+OUT_PATH=/spacio/azrael
 
-echo '===> PROCESANDO..[' $1 ']-[' $4 ']'..
+echo '===> PROCESANDO..['$1']-['$4'] OUT_DIR='$OUT_PATH
 echo -ne '\e[?7l'
 
 nice -0 ../random/random $1 
@@ -22,9 +23,12 @@ nice -0 ../random/random $6
 if [ $# -gt 6 ]
 then
   echo 'compressing the hashes..'
-  time nice -0 tar cJPf /spacio/azrael/$6.xz $6
-  nice -0 ../random/random /spacio/azrael/$6.xz
+  time nice -0 tar cJPf $OUT_PATH/$6.xz $6
+  nice -0 ../random/random $OUT_PATH/$6.xz
 fi
+
+ls $6 $OUT_PATH/$6.xz -lh
+ls $6 $OUT_PATH/$6.xz -l
 
 echo -ne '\e[?7h'
 echo '===> DONE!'
