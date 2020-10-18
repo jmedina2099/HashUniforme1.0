@@ -3,6 +3,9 @@ CFLAGS=-Wextra -Wpedantic -Werror -Wall -fwrapv
 COPT=-O3
 CDELL=-march=skylake -mtune=skylake
 
+README=README
+RANDOM_DIR=../random
+
 OUT_DIR=/spacio/azrael
 
 TARGET_BASE = azrael_base
@@ -39,8 +42,12 @@ $(TARGET_XMM): $(TARGET_XMM).c
 	
 $(UNIT_TEST): $(UNIT_TEST).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -o $(UNIT_TEST) $(UNIT_TEST).c
-	
-run:
+	$(MAKE) -C $(RANDOM_DIR)
+
+run: test
+	./$(README)
+
+test: all
 	./$(UNIT_TEST)
 	
 clean-target:
@@ -58,3 +65,4 @@ clean-hashes:
 	$(RM) $(OUT_DIR)/*.hash.xz
 
 clean: clean-target clean-hashes
+	$(MAKE) -C $(RANDOM_DIR) clean

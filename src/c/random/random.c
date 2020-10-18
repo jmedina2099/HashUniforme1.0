@@ -44,7 +44,7 @@ int doFile( char* filein ) {
     long total = ceros + unos;
     double cerosP = (ceros/(double)total);
     double unosP = (unos/(double)total);
-    printf("(0)-(1)=(%.17g)(%.17g)\n",cerosP,unosP);
+    printf("(0)-(1)=(%.17g%%)(%.17g%%)\n",cerosP,unosP);
 
     fclose(fp);
     if (line)
