@@ -30,5 +30,13 @@ fi
 ls $6 $OUT_PATH/$6.xz -lh
 ls $6 $OUT_PATH/$6.xz -l
 
+BITS_HASH=`stat -c %s $6`
+echo $BITS_HASH
+BITS_HASH_XZ=`stat -c %s $OUT_PATH/$6.xz`
+echo $BITS_HASH_XZ
+BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
+echo 'DIFFER='$BITS_DIFF' bits'
+echo 'COMPRESS_PERCENTAGE='`printf "%.9f\n" "$((BITS_HASH_XZ*100/BITS_HASH))"`'%'
+
 echo -ne '\e[?7h'
 echo '===> DONE!'
