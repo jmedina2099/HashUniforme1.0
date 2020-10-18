@@ -4,12 +4,15 @@ OUT_PATH=$1
 TIMEFORMAT='TIME (USER)=%3lU'
 
 echo '===> PROCESANDO.. FILE=[['$2']]-BITS=[['$5']] OUT_DIR=[['$OUT_PATH']]'
-echo -ne '\e[?7l'
 
 echo 'COUNTING BITS..'
 time nice -0 ../random/random $2 
 
 echo 'HASHING...'
+if [ $4 -eq 1 ]
+then
+  echo -ne '\e[?7l'
+fi
 if [ $# -lt 5 ] 
 then
   echo 'cat is parsing file..'
@@ -21,14 +24,19 @@ else
   echo 'c is parsing file..'
   time nice -0 ./unit_test "" $3 $4 $5 $2 $7
 fi
+if [ $4 -eq 1 ]
+then
+  echo -ne '\e[?7h'
+fi
 echo 'HASHING IS DONE!'
+
 echo 'COUNTING BITS..'
 nice -0 ../random/random $7 
 echo '----------|/'
 
 if [ $# -gt 6 ]
 then
-  echo 'compressing (bz2) the hashes..'
+  echo 'COMPRESSING (bz2)..'
   time nice -0 tar cJf $OUT_PATH/$7.xz $7
   echo 'COUNTING BITS..'
   time nice -0 ../random/random $7.xz
@@ -49,6 +57,4 @@ DIV=`echo "if($BITS_DIFF<0) print 0; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
 echo 'DIFFER='$BITS_DIFF' bits'
 echo 'COMPRESS_RATIO='$DIV%''
 echo '----------------|/'
-
-echo -ne '\e[?7h'
 echo '===> DONE!'
