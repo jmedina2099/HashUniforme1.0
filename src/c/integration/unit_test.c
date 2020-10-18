@@ -325,7 +325,7 @@ int getOutSize(char* spice) {
   return size;
 }
 
-int doFile( long n, int flag, char* spice, char* filein ) {
+int doFileRead( long n, int flag, char* spice, char* filein ) {
     FILE * fp;
     char * line = NULL;
     size_t len = 0;
@@ -366,11 +366,6 @@ int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uin
     char hex[sizeHex];
     while ((read = getline(&line, &len, fp)) != -1) {
     	itera(line,n,flag,hex,spice,hash);
-    	/*
-    	for( int i=0; i<size; i++ ) {
-    		fprintf(fo, "[%d]%" PRIu64 "\n",i,hash[i]);
-    	}
-    	*/
     	fwrite(hash, sizeof(hash[0]), size, fo);
     }
 
@@ -422,7 +417,7 @@ int main(int argc, char *argv[]) {
   } else if( argc == 6 ) { // Archivo a hashear entrada.
     n = atol(argv[2]);
     t = atoi(argv[3]);
-    doFile( n, t, argv[4], argv[5] );
+    doFileRead( n, t, argv[4], argv[5] );
   } else if( argc == 7 ) { // Archivo de salida.
     n = atol(argv[2]);
     t = atoi(argv[3]);

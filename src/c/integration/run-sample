@@ -3,4 +3,4 @@
 TIMEFORMAT='TIME (USER)=%3lU'
 
 echo '===================> PROCESSING...'
-time ./process.sh $1 $2 $3 1 0 $5 1 $4 $6
+time ./process.sh $1 $2 $3 $6 0 $5 1 $4 $7

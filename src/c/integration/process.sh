@@ -1,10 +1,11 @@
 #!/bin/bash
 
-OUT_DIR_HASH=$1
-OUT_DIR_HASH_XZ=$2
-TIMEFORMAT='TIME (USER)=%3lU'
+export OUT_DIR_HASH=$1
+export OUT_DIR_HASH_XZ=$2
+export TIMEFORMAT='TIME (USER)=%3lU'
+export BZIP=-9
 
-echo '===> PROCESANDO.. FILE=[['$3']]-BITS=[['$6']] OUT_DIR_HASH=[['$OUT_DIR_HASH']] OUT_DIR_HASH_XZ=[['$OUT_DIR_HASH_XZ']]'
+echo '===> PROCESANDO.. FILE=[['$3']]-BITS=[['$6']]-[['$4'x]] OUT_DIR_HASH=[['$OUT_DIR_HASH']] OUT_DIR_HASH_XZ=[['$OUT_DIR_HASH_XZ']]'
 
 echo 'COUNTING BITS..'
 time nice -0 ../random/random $3 
@@ -53,7 +54,7 @@ BITS_HASH_XZ=`stat -c %s $OUT_DIR_HASH_XZ/$8.xz`
 #echo $BITS_HASH_XZ
 
 BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
-DIV=`echo "if($BITS_DIFF<0) print 0; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
+DIV=`echo "if($BITS_DIFF<0) print 0; scale=27; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
 
 echo 'DIFFER='$BITS_DIFF' bits'
 echo 'COMPRESS_RATIO='$DIV%''
