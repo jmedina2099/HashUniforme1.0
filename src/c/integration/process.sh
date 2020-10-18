@@ -23,7 +23,7 @@ then
   done
 else
   echo 'c is parsing file..'
-  time nice -0 ./unit_test "" $4 $5 $6 $3 $8
+  time nice -0 ./unit_test "" $4 $5 $6 $3 $OUT_DIR_HASH/$8
 fi
 if [ $5 -eq 1 ]
 then
@@ -32,22 +32,22 @@ fi
 echo 'HASHING IS DONE!'
 
 echo 'COUNTING BITS..'
-nice -0 ../random/random $8 
+nice -0 ../random/random $OUT_DIR_HASH/$8 
 echo '----------|/'
 
 if [ $# -gt 6 ]
 then
   echo 'COMPRESSING (bz2)..'
-  time nice -0 tar cJf $OUT_PATH/$8.xz $8
+  time nice -0 tar cJf $OUT_DIR_HASH_XZ/$8.xz $OUT_DIR_HASH/$8
   echo 'COUNTING BITS..'
-  time nice -0 ../random/random $8.xz
+  time nice -0 ../random/random $OUT_DIR_HASH_XZ/$8.xz
 fi
 
-ls $8 $OUT_PATH/$8.xz -lh
-ls $8 $OUT_PATH/$8.xz -l
+ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -lh
+ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -l
 
-BITS_HASH=`stat -c %s $8`
-BITS_HASH_XZ=`stat -c %s $OUT_PATH/$8.xz`
+BITS_HASH=`stat -c %s $OUT_DIR_HASH/$8`
+BITS_HASH_XZ=`stat -c %s $OUT_DIR_HASH_XZ/$8.xz`
 
 echo $BITS_HASH
 echo $BITS_HASH_XZ

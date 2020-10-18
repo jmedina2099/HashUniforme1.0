@@ -1,9 +1,12 @@
+# arch
+CARCH=skylake
+
 CC=gcc
 CFLAGS=-Wextra -Wpedantic -Werror -Wall -fwrapv
 COPT=-O3
-CDELL=-march=skylake -mtune=skylake
+CDELL=-march=$(CARCH) -mtune=$(CARCH)
 
-README=README
+RUN=run
 RANDOM_DIR=../random
 
 OUT_DIR_HASH=.
@@ -46,7 +49,7 @@ $(UNIT_TEST): $(UNIT_TEST).c
 	$(MAKE) -C $(RANDOM_DIR)
 
 run:
-	./$(README)
+	./$(RUN)
 
 test: all
 	./$(UNIT_TEST)

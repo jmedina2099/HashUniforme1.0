@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Output dirs.
+export OUT_DIR_HASH=.
+export OUT_DIR_HASH_XZ=/spacio/azrael
+
+make clean
+make all
+make test
+./run-sample $OUT_DIR_HASH $OUT_DIR_HASH_XZ ../../rockyou.txt out64-rock.hash 64 1
+./run-sample $OUT_DIR_HASH $OUT_DIR_HASH_XZ ../../rockyou.txt out320-rock.hash 320 1
+#./run-sample $OUT_DIR_HASH $OUT_DIR_HASH_XZ ../../rockyou.txt out512-rock.hash 512 1
+#./run-sample $OUT_DIR_HASH $OUT_DIR_HASH_XZ ../../rockyou.txt outx4-rock.hash x4 1
