@@ -17,7 +17,7 @@ TARGET_XM = azraelxM_link
 TARGET_XMM = azraelxMM_link
 UNIT_TEST = unit_test
 
-all: $(TARGET_BASE) $(TARGET_64) $(TARGET_320) $(TARGET_512) $(TARGET_X4) $(TARGET_XM) $(TARGET_XMM) $(UNIT_TEST)
+all: $(TARGET_BASE) $(TARGET_64) $(TARGET_320) $(TARGET_512) $(TARGET_X4) $(TARGET_XM) $(TARGET_XMM) $(UNIT_TEST) test
 
 $(TARGET_BASE): $(TARGET_BASE).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_BASE) $(TARGET_BASE).c
@@ -44,7 +44,7 @@ $(UNIT_TEST): $(UNIT_TEST).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -o $(UNIT_TEST) $(UNIT_TEST).c
 	$(MAKE) -C $(RANDOM_DIR)
 
-run: test
+run:
 	./$(README)
 
 test: all
