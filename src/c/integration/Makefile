@@ -6,7 +6,8 @@ CDELL=-march=skylake -mtune=skylake
 README=README
 RANDOM_DIR=../random
 
-OUT_DIR=/spacio/azrael
+OUT_DIR_HASH=.
+OUT_DIR_HASH_XZ=/spacio/azrael
 
 TARGET_BASE = azrael_base
 TARGET_64 = azrael64_link
@@ -61,8 +62,8 @@ clean-target:
 	$(RM) $(UNIT_TEST)	
 	
 clean-hashes:
-	$(RM) *.hash
-	$(RM) $(OUT_DIR)/*.hash.xz
+	$(RM) $(OUT_DIR_HASH)*.hash
+	$(RM) $(OUT_DIR_HASH_XZ)/*.hash.xz
 
 clean: clean-target clean-hashes
 	$(MAKE) -C $(RANDOM_DIR) clean
