@@ -1,4 +1,4 @@
-make clean
+#make clean
 make
 make test
 ./runit

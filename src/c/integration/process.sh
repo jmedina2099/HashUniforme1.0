@@ -7,7 +7,7 @@ export BZIP=-9
 
 echo '===> PROCESANDO.. FILE=[['$3']]-BITS=[['$6']]-[['$4'x]] OUT_DIR_HASH=[['$OUT_DIR_HASH']] OUT_DIR_HASH_XZ=[['$OUT_DIR_HASH_XZ']]'
 
-echo 'COUNTING BITS..'
+echo 'COUNTING FILE BITS..'
 time nice -0 ../random/random $3 
 
 echo 'HASHING...'
@@ -30,21 +30,25 @@ if [ $5 -eq 1 ]
 then
   echo -ne '\e[?7h'
 fi
-echo '============|/'
+echo '***=========|/'
 echo 'HASHING IS DONE!'
 
-echo 'COUNTING BITS..'
-nice -0 ../random/random $OUT_DIR_HASH/$8 
-echo '----------|/'
+echo 'COUNTING HASHED BITS..'
+time nice -0 ../random/random $OUT_DIR_HASH/$8 
+echo '============|/'
+echo 'COUNTING IS DONE!'
 
 if [ $# -gt 6 ] && [ $7 -eq 1 ]
 then
-  echo '='$7
   echo 'COMPRESSING (bz2)..'
   time nice -0 tar cJf $OUT_DIR_HASH_XZ/$8.xz $OUT_DIR_HASH/$8
+  echo '============|/'
+  echo 'COMPRESSING IS DONE!'
 
-  echo 'COUNTING BITS..'
+  echo 'COUNTING COMPRESS BITS..'
   time nice -0 ../random/random $OUT_DIR_HASH_XZ/$8.xz
+  echo '============|/'
+  echo 'COUNTING IS DONE!'
 
   ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -lh
   ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -l
