@@ -2,7 +2,7 @@
 
 OUT_PATH=$1
 
-echo '===> PROCESANDO.. FILE=['$2']-BITS=['$5'] OUT_DIR=['$OUT_PATH']'
+echo '===> PROCESANDO.. FILE=['$2']-BITS=[['$5']] OUT_DIR=['$OUT_PATH']'
 echo -ne '\e[?7l'
 
 nice -0 ../random/random $2 
@@ -41,11 +41,11 @@ echo $BITS_HASH
 echo $BITS_HASH_XZ
 
 BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
-DIV=`echo $BITS_HASH_XZ*100/$BITS_HASH | bc -l`
+DIV=`echo $BITS_HASH_XZ/$BITS_HASH | bc -l | awk '{printf "%f", $0}'`
 
 echo 'DIFFER='$BITS_DIFF' bits'
-echo 'COMPRESS_PERCENTAGE='$DIV%''
-echo '--------------------|/'
+echo 'COMPRESS_RATIO='$DIV%''
+echo '----------------|/'
 
 echo -ne '\e[?7h'
 echo '===> DONE!'
