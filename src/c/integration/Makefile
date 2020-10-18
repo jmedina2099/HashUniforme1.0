@@ -74,7 +74,9 @@ clean-target:
 	
 clean-hashes:
 	$(RM) $(OUT_DIR_HASH)/*.hash
+	$(RM) $(OUT_DIR_HASH)/*.hash.*
 	$(RM) $(OUT_DIR_HASH_XZ)/*.hash.xz
+	$(RM) $(OUT_DIR_HASH_XZ)/*.hash.*.xz
 
 clean: clean-target clean-hashes
 	$(MAKE) -C $(RANDOM_DIR) clean
