@@ -1,7 +1,11 @@
+# arch
+#CARCH=skylake
 CC=gcc
+CARCH=$(shell $(CC) -march=native -Q --help=target | grep -- '-march='| grep -v 'option' | cut -f3)
+
 CFLAGS=-Wextra -Wpedantic -Werror -Wall -fwrapv
 COPT=-O3
-CDELL=-march=skylake -mtune=skylake
+CDELL=-march=$(CARCH) -mtune=$(CARCH)
 
 TARGET = random
 

@@ -7,11 +7,18 @@ CFLAGS=-Wextra -Wpedantic -Werror -Wall -fwrapv
 COPT=-O3
 CDELL=-march=$(CARCH) -mtune=$(CARCH)
 
-RUN=run
+RUN=runit
 RANDOM_DIR=../random
 
-OUT_DIR_HASH=.
-OUT_DIR_HASH_XZ=/spacio/azrael
+OUT_DIR_HASH_DEF=.
+OUT_DIR_HASH_XZ_DEF=/spacio/azrael
+
+ifndef OUT_DIR_HASH
+OUT_DIR_HASH=$(OUT_DIR_HASH_DEF)
+endif
+ifndef OUT_DIR_HASH_XZ
+OUT_DIR_HASH_XZ=$(OUT_DIR_HASH_XZ_DEF)
+endif
 
 TARGET_BASE = azrael_base
 TARGET_64 = azrael64_link
