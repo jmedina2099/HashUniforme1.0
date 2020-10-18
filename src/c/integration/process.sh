@@ -41,7 +41,7 @@ echo $BITS_HASH
 echo $BITS_HASH_XZ
 
 BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
-DIV=`echo $BITS_HASH_XZ/$BITS_HASH | bc -l | awk '{printf "%f", $0}'`
+DIV=`echo "if($BITS_DIFF<0) print 0; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
 
 echo 'DIFFER='$BITS_DIFF' bits'
 echo 'COMPRESS_RATIO='$DIV%''
