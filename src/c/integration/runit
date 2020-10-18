@@ -10,4 +10,7 @@ export DIR_HASH_XZ=/spacio/azrael
 #./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outx4-rock.hash x4 1 1
 #./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxM-rock.hash xM 1 1
 #./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxMM-rock.hash xMM 1 1
-./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxMM-rock.hash xMM 3 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxMM-rock.hash xMM 10 1
+./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxMM-rock.hash xMM 1 0
+./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxMM-rock.hash xMM 10 0
+./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt outxMM-rock.hash xMM 20 0

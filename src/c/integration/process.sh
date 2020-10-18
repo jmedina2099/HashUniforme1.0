@@ -30,33 +30,36 @@ if [ $5 -eq 1 ]
 then
   echo -ne '\e[?7h'
 fi
+echo '============|/'
 echo 'HASHING IS DONE!'
 
 echo 'COUNTING BITS..'
 nice -0 ../random/random $OUT_DIR_HASH/$8 
 echo '----------|/'
 
-if [ $# -gt 6 ]
+if [ $# -gt 6 ] && [ $7 -eq 1 ]
 then
+  echo '='$7
   echo 'COMPRESSING (bz2)..'
   time nice -0 tar cJf $OUT_DIR_HASH_XZ/$8.xz $OUT_DIR_HASH/$8
+
   echo 'COUNTING BITS..'
   time nice -0 ../random/random $OUT_DIR_HASH_XZ/$8.xz
+
+  ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -lh
+  ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -l
+
+  BITS_HASH=`stat -c %s $OUT_DIR_HASH/$8`
+  BITS_HASH_XZ=`stat -c %s $OUT_DIR_HASH_XZ/$8.xz`
+
+  #echo $BITS_HASH
+  #echo $BITS_HASH_XZ
+
+  BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
+  DIV=`echo "if($BITS_DIFF<0) print 0; scale=27; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
+
+  echo 'DIFFER='$BITS_DIFF' bits'
+  echo 'COMPRESS_RATIO='$DIV%''
+  echo '----------------|/'
 fi
-
-ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -lh
-ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -l
-
-BITS_HASH=`stat -c %s $OUT_DIR_HASH/$8`
-BITS_HASH_XZ=`stat -c %s $OUT_DIR_HASH_XZ/$8.xz`
-
-#echo $BITS_HASH
-#echo $BITS_HASH_XZ
-
-BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
-DIV=`echo "if($BITS_DIFF<0) print 0; scale=27; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
-
-echo 'DIFFER='$BITS_DIFF' bits'
-echo 'COMPRESS_RATIO='$DIV%''
-echo '----------------|/'
 echo '===> DONE!'

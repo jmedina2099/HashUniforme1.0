@@ -44,7 +44,7 @@ void test_xMM( char* val1 ) {
 
   char* empty_hash = "e9b90e715bd879a1847732c649632381cbdd7ef7ab8ba076579b9f66a03228e068882ef485f29061d3a598c4aad1ae88ae3b7c80604d6a492a635f9f816e33bedab9adc5954419617b08a7874c9b6a54d7ebd8652469e78b2235dcd3ac7fa2501d0f580357ec96e72cb65b2ccc1683bc113d761a686c351454c207bd5ce62116d29eb349746ac9b96907647a940881b0377fd5cf08726ed92f7e8b539a9203bd8299df3fb512283cf1b6ea5cac8818f984b1a6d36b14ffb088a2d2efcf3e2f808202f86438e801a1a5a03532a54a18ef3cccc5b7bee4407c0fa76d5afd9f4f0b793bcd151b6391b7cf90fd473e58403fae3fb7a0118d81ab09cddf8a964ded84";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST 2048 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST 2048 bits of output (xMM) OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n%s\n", hex );
   }
@@ -84,7 +84,7 @@ void test_xM( char* val1 ) {
 
   char* empty_hash = "0d3a879c9a71f6717b43c589321cf0e13e9927f0fac73232de94f77f17b01b555362f257810dfc3301408bb9c0e967d3bcbf9f678a1b8e445298fbdc7122e40e453c32c5f3f802f1fe9e6e12bcd6a0a069dddb7ece5a06792235dcd3ac7fa250354cc5b7a8300e5e13bac744abb43dc375f01f6ab71ca82d825cfab272fdda51";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST 1024 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST 1024 bits of output (xM) OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n%s\n", hex );
   }
@@ -124,7 +124,7 @@ void test_x4( char* val1 ) {
 
   char* empty_hash = "cded98730118b7a4a15597430c9d75863d9532329540cab109ea26ab72a96d1b30c264e213beef31700795f4bb881bf0fd10ce945b15a8557dac5d970b49d75b6e8904776c7d3b5b975228ead94f06dbeb97574581bf53ac4b82ae93ec4f77c7";
   if( strcmp(hex,empty_hash) == 0 ) {
-    printf( "TEST  768 bits of output OK!!!\n%s\n", hex );
+    printf( "TEST  768 bits of output (x4) OK!!!\n%s\n", hex );
   } else {
     printf( "TEST FAILED!\n%s\n", hex );
   }
