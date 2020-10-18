@@ -49,8 +49,8 @@ ls $OUT_DIR_HASH/$8 $OUT_DIR_HASH_XZ/$8.xz -l
 BITS_HASH=`stat -c %s $OUT_DIR_HASH/$8`
 BITS_HASH_XZ=`stat -c %s $OUT_DIR_HASH_XZ/$8.xz`
 
-echo $BITS_HASH
-echo $BITS_HASH_XZ
+#echo $BITS_HASH
+#echo $BITS_HASH_XZ
 
 BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
 DIV=`echo "if($BITS_DIFF<0) print 0; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
