@@ -1,2 +1,8 @@
+#!/bin/bash
+# OUT_DIR for bz2 output
+export OUT_DIR=/spacio/azrael
+make clean
 make
-./run-sample ../../rockyou.txt out512-rock.hash 512 1
+./run-sample $OUT_DIR ../../rockyou.txt out64-rock.hash 64 1
+./run-sample $OUT_DIR ../../rockyou.txt out320-rock.hash 320 1
+./run-sample $OUT_DIR ../../rockyou.txt out512-rock.hash 512 1

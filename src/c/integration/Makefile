@@ -3,6 +3,8 @@ CFLAGS=-Wextra -Wpedantic -Werror -Wall -fwrapv
 COPT=-O3
 CDELL=-march=skylake -mtune=skylake
 
+OUT_DIR=/spacio/azrael
+
 TARGET_BASE = azrael_base
 TARGET_64 = azrael64_link
 TARGET_320 = azrael320_link
@@ -38,7 +40,10 @@ $(TARGET_XMM): $(TARGET_XMM).c
 $(UNIT_TEST): $(UNIT_TEST).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -o $(UNIT_TEST) $(UNIT_TEST).c
 	
-clean:
+run:
+	./$(UNIT_TEST)
+	
+clean-target:
 	$(RM) $(TARGET_BASE)
 	$(RM) $(TARGET_64)
 	$(RM) $(TARGET_320)
@@ -48,8 +53,8 @@ clean:
 	$(RM) $(TARGET_XMM)
 	$(RM) $(UNIT_TEST)	
 	
-clean-hash:
+clean-hashes:
 	$(RM) *.hash
-	$(RM) *.hash.xz
+	$(RM) $(OUT_DIR)/*.hash.xz
 
-clean-all: clean clean-hash
+clean: clean-target clean-hashes
