@@ -1,4 +1,5 @@
 #make clean
+make clean-hashes
 make
 make test
 ./runit

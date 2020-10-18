@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Output dirs.
-export DIR_HASH=.
+export DIR_HASH=/spacio/azrael
 export DIR_HASH_XZ=/spacio/azrael
 
 #./run-sample $DIR_HASH $DIR_HASH_XZ ../../rockyou.txt out64-rock.hash 64 1 0

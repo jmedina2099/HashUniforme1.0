@@ -10,7 +10,7 @@ CDELL=-march=$(CARCH) -mtune=$(CARCH)
 RUN=runit
 RANDOM_DIR=../random
 
-OUT_DIR_HASH_DEF=.
+OUT_DIR_HASH_DEF=/spacio/azrael
 OUT_DIR_HASH_XZ_DEF=/spacio/azrael
 
 ifndef OUT_DIR_HASH
