@@ -2,7 +2,7 @@
 
 OUT_PATH=$1
 
-echo '===> PROCESANDO..['$2']-['$5'] OUT_DIR='$OUT_PATH
+echo '===> PROCESANDO.. FILE=['$2']-BITS=['$5'] OUT_DIR=['$OUT_PATH']'
 echo -ne '\e[?7l'
 
 nice -0 ../random/random $2 
@@ -23,10 +23,12 @@ echo 'HASHING IS DONE!'
 
 nice -0 ../random/random $7 
 
+echo '----------|/'
+
 if [ $# -gt 6 ]
 then
   echo 'compressing (bz2) the hashes..'
-  time nice -0 tar cJPf $OUT_PATH/$7.xz $7
+  time nice -0 tar cJf $OUT_PATH/$7.xz $7
 fi
 
 ls $7 $OUT_PATH/$7.xz -lh
@@ -43,6 +45,7 @@ DIV=`echo $BITS_HASH_XZ*100/$BITS_HASH | bc -l`
 
 echo 'DIFFER='$BITS_DIFF' bits'
 echo 'COMPRESS_PERCENTAGE='$DIV%''
+echo '--------------------|/'
 
 echo -ne '\e[?7h'
 echo '===> DONE!'
