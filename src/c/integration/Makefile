@@ -66,7 +66,7 @@ clean-target:
 	$(RM) $(UNIT_TEST)	
 	
 clean-hashes:
-	$(RM) $(OUT_DIR_HASH)*.hash
+	$(RM) $(OUT_DIR_HASH)/*.hash
 	$(RM) $(OUT_DIR_HASH_XZ)/*.hash.xz
 
 clean: clean-target clean-hashes
