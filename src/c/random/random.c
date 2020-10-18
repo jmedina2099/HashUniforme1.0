@@ -15,8 +15,8 @@ int doFile( char* filein ) {
     char c;
     int bits[8];
 
-    long ceros = 0;
-	long unos = 0;
+    long long ceros = 0;
+	long long unos = 0;
 
     fp = fopen(filein, "r");
     if (fp == NULL)
@@ -39,11 +39,12 @@ int doFile( char* filein ) {
     	}
     }
 
-    printf("(0)-(1)=(%ld)(%ld)\n",ceros,unos);
+    printf("(0)-(1)=(%lld)(%lld)\n",ceros,unos);
 
     long total = ceros + unos;
-
-    printf("(0)-(1)=(%f)(%f)\n",(ceros/(float)total),(unos/(float)total));
+    double cerosP = (ceros/(double)total);
+    double unosP = (unos/(double)total);
+    printf("(0)-(1)=(%.17g)(%.17g)\n",cerosP,unosP);
 
     fclose(fp);
     if (line)
