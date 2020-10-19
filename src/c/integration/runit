@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# First test
+make test
+
 # Output dirs.
 export DIR_HASH=/spacio/azrael
 export DIR_HASH_XZ=/spacio/azrael

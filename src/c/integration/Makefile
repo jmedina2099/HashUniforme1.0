@@ -68,7 +68,7 @@ $(UNIT_TEST): $(UNIT_TEST).c
 run:
 	./$(RUN)
 
-test: all
+test: $(UNIT_TEST)
 	./$(UNIT_TEST)
 	
 clean-target:

@@ -2,7 +2,7 @@
 
 TIMEFORMAT='TOTAL TIME (USER)=%3lU'
 
-echo -ne '\e[?7h'
+#echo -ne '\e[?7h'
 date +"===================> %c <==================="
 
 echo '===================> PROCESSING...'

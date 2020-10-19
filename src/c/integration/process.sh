@@ -10,12 +10,13 @@ echo '===> PROCESANDO.. FILE=[['$3']]-BITS=[['$6']]-[['$4'x]] OUT_DIR_HASH=[['$O
 #echo 'COUNTING FILE BITS..'
 #time nice -0 ../random/random $3 
 
+#if [ $5 -eq 1 ]
+#then
+#  echo -ne '\e[?7l'
+#fi
+
 echo 'HASHING...'
-if [ $5 -eq 1 ]
-then
-  echo -ne '\e[?7l'
-fi
-if [ $# -lt 5 ] 
+if [ $# -lt 5 ]
 then
   echo 'cat is parsing file..'
   cat $3 | while read line 
@@ -26,10 +27,12 @@ else
   echo 'c is parsing file..'
   time nice -0 ./unit_test "" $4 $5 $6 $3 $OUT_DIR_HASH/$8
 fi
-if [ $5 -eq 1 ]
-then
-  echo -ne '\e[?7h'
-fi
+
+#if [ $5 -eq 1 ]
+#then
+#  echo -ne '\e[?7h'
+#fi
+
 echo '***=========|/'
 echo 'HASHING IS DONE!'
 
@@ -78,7 +81,8 @@ then
   echo 'DIFFER='$BITS_DIFF' bits'
   echo 'COMPRESS_RATIO='$DIV'%'
   echo '----------------|/'
-  echo '         ERROR='$SUB
+  echo '         error='$SUB
+  echo '         error='`sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' <<< $SUB ` 
   echo '----------------|/'
 fi
 echo '===> DONE!'
