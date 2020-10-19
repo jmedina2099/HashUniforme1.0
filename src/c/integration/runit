@@ -15,7 +15,7 @@ echo 'COUNTING FILE BITS ['$FILE_IN']..'
 time nice -0 ../random/random $FILE_IN
 
 export SHOW=0
-export CLEAN_RM=1
+export CLEAN_RM=0
 
 # TESTING SUIT WITH COMPRESSION TEST
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 1
