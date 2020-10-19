@@ -1,0 +1,327 @@
+./unit_test
+TEST   64 bits of output OK!!!
+b4d1fb3fec8b0428
+TEST  128 bits of output OK!!!
+e8c790169510bfbab9d25019a4f78714
+TEST  192 bits of output OK!!!
+721927e00fb6a7a6e75b4a67ef5e44ae79c368410dddcc58
+TEST  320 bits of output OK!!!
+f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0a
+TEST  512 bits of output OK!!!
+b4d1fb3fffb8b7a496677285b03e5c7dfaf26eda834dab12040a81923eb1081086a03ff930128bc8c2cbd29e3637fd13b911297c89d5a855fadd4393eb442683
+TEST  768 bits of output (x4) OK!!!
+cded98730118b7a4a15597430c9d75863d9532329540cab109ea26ab72a96d1b30c264e213beef31700795f4bb881bf0fd10ce945b15a8557dac5d970b49d75b6e8904776c7d3b5b975228ead94f06dbeb97574581bf53ac4b82ae93ec4f77c7
+TEST 1024 bits of output (xM) OK!!!
+0d3a879c9a71f6717b43c589321cf0e13e9927f0fac73232de94f77f17b01b555362f257810dfc3301408bb9c0e967d3bcbf9f678a1b8e445298fbdc7122e40e453c32c5f3f802f1fe9e6e12bcd6a0a069dddb7ece5a06792235dcd3ac7fa250354cc5b7a8300e5e13bac744abb43dc375f01f6ab71ca82d825cfab272fdda51
+TEST 2048 bits of output (xMM) OK!!!
+e9b90e715bd879a1847732c649632381cbdd7ef7ab8ba076579b9f66a03228e068882ef485f29061d3a598c4aad1ae88ae3b7c80604d6a492a635f9f816e33bedab9adc5954419617b08a7874c9b6a54d7ebd8652469e78b2235dcd3ac7fa2501d0f580357ec96e72cb65b2ccc1683bc113d761a686c351454c207bd5ce62116d29eb349746ac9b96907647a940881b0377fd5cf08726ed92f7e8b539a9203bd8299df3fb512283cf1b6ea5cac8818f984b1a6d36b14ffb088a2d2efcf3e2f808202f86438e801a1a5a03532a54a18ef3cccc5b7bee4407c0fa76d5afd9f4f0b793bcd151b6391b7cf90fd473e58403fae3fb7a0118d81ab09cddf8a964ded84
+===================> Sun 18 Oct 2020 11:55:17 PM CDT <======================================
+COUNTING FILE BITS [../../rockyou.txt]..
+(0)-(1)=(603834287)(515537385)
+(0)-(1)=(0.539440386159781293251569423%)(0.460559613840218762259581808%)
+(error)=(0.0394403861597812932515694229)=(3.944038615978129325156942286e-02)
+TIME (USER)=0m2.002s
+===================> Sun 18 Oct 2020 11:55:19 PM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[64]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m9.373s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(195656630)(200284738)
+(0)-(1)=(0.494155563962187460713693099%)(0.505844436037812594797458132%)
+(error)=(0.00584443603781253928630690098)=(5.844436037812539286306900976e-03)
+TIME (USER)=0m1.544s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=0m43.684s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(195699601)(200324375)
+(0)-(1)=(0.494160992414257260740839683%)(0.505839007585742739259160317%)
+(error)=(0.00583900758574273925916031658)=(5.839007585742739259160316578e-03)
+TIME (USER)=0m1.539s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 110M Oct 18 23:55 /spacio/azrael/out64-rock.hash
+-rw-r--r-- 1 jmedina jmedina 110M Oct 18 23:56 /spacio/azrael/out64-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 114755096 Oct 18 23:55 /spacio/azrael/out64-rock.hash
+-rw-r--r-- 1 jmedina jmedina 114761536 Oct 18 23:56 /spacio/azrael/out64-rock.hash.xz
+DIFFER=6440 bits
+COMPRESS_RATIO=1.000056119512112995835932201%
+----------------|/
+         error=(0.000056119512112995835932201)=(5.611951211299583819466438306e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=0m56.148s
+===================> Sun 18 Oct 2020 11:56:18 PM CDT <===================
+===================> Sun 18 Oct 2020 11:56:18 PM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[128]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m9.318s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(441441920)(440530448)
+(0)-(1)=(0.500516723671324825772899203%)(0.499483276328675174227100797%)
+(error)=(0.000516723671324825772899203002)=(5.167236713248257728992030025e-04)
+TIME (USER)=0m3.453s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=1m26.665s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(441463228)(440550204)
+(0)-(1)=(0.50051757941935737239447235%)(0.499482420580642572094376419%)
+(error)=(0.000517579419357372394472349697)=(5.175794193573723944723496970e-04)
+TIME (USER)=0m3.446s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 219M Oct 18 23:56 /spacio/azrael/out128-rock.hash
+-rw-r--r-- 1 jmedina jmedina 219M Oct 18 23:58 /spacio/azrael/out128-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 229510192 Oct 18 23:56 /spacio/azrael/out128-rock.hash
+-rw-r--r-- 1 jmedina jmedina 229522244 Oct 18 23:58 /spacio/azrael/out128-rock.hash.xz
+DIFFER=12052 bits
+COMPRESS_RATIO=1.000052511829191446103622273%
+----------------|/
+         error=(0.000052511829191446103622273)=(5.251182919144610239956319497e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=1m42.888s
+===================> Sun 18 Oct 2020 11:58:04 PM CDT <===================
+===================> Sun 18 Oct 2020 11:58:04 PM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[192]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m9.620s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(700370964)(711603684)
+(0)-(1)=(0.496022336514359285519759624%)(0.503977663485640658969089145%)
+(error)=(0.00397766348564071448024037636)=(3.977663485640714480240376361e-03)
+TIME (USER)=0m5.518s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=2m10.616s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(700393826)(711617390)
+(0)-(1)=(0.496025681711015520303220683%)(0.503974318288984424185628086%)
+(error)=(0.00397431828898447969677931724)=(3.974318288984479696779317237e-03)
+TIME (USER)=0m5.507s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 329M Oct 18 23:58 /spacio/azrael/out192-rock.hash
+-rw-r--r-- 1 jmedina jmedina 329M Oct 19 00:00 /spacio/azrael/out192-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 344265288 Oct 18 23:58 /spacio/azrael/out192-rock.hash
+-rw-r--r-- 1 jmedina jmedina 344283532 Oct 19 00:00 /spacio/azrael/out192-rock.hash.xz
+DIFFER=18244 bits
+COMPRESS_RATIO=1.000052994015475646792481732%
+----------------|/
+         error=(0.000052994015475646792481732)=(5.299401547564679332887743746e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=2m31.266s
+===================> Mon 19 Oct 2020 12:00:45 AM CDT <===================
+===================> Mon 19 Oct 2020 12:00:45 AM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[320]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m9.328s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(1258674894)(1255333106)
+(0)-(1)=(0.500664633525430335936334814%)(0.499335366474569664063665186%)
+(error)=(0.000664633525430335936334813596)=(6.646335254303359363348135957e-04)
+TIME (USER)=0m9.810s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=3m38.857s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(1258784307)(1255420021)
+(0)-(1)=(0.5006690558047595107638017%)(0.499330944195240433725047069%)
+(error)=(0.000669055804759510763801699795)=(6.690558047595107638016997953e-04)
+TIME (USER)=0m9.806s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 548M Oct 19 00:00 /spacio/azrael/out320-rock.hash
+-rw-r--r-- 1 jmedina jmedina 548M Oct 19 00:04 /spacio/azrael/out320-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 573775480 Oct 19 00:00 /spacio/azrael/out320-rock.hash
+-rw-r--r-- 1 jmedina jmedina 573804876 Oct 19 00:04 /spacio/azrael/out320-rock.hash.xz
+DIFFER=29396 bits
+COMPRESS_RATIO=1.000051232583169988372455372%
+----------------|/
+         error=(0.000051232583169988372455372)=(5.123258316998837390548321435e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=4m7.809s
+===================> Mon 19 Oct 2020 12:05:02 AM CDT <===================
+===================> Mon 19 Oct 2020 12:05:02 AM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[512]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m10.178s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(2036758607)(2030156377)
+(0)-(1)=(0.500811700026429718057841001%)(0.499188299973570337453310231%)
+(error)=(0.0008117000264297180578410007)=(8.117000264297180578410007001e-04)
+TIME (USER)=0m15.889s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=5m49.242s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(2036795102)(2030178562)
+(0)-(1)=(0.500813447608300044144868934%)(0.499186552391699955855131066%)
+(error)=(0.000813447608300044144868934382)=(8.134476083000441448689343815e-04)
+TIME (USER)=0m15.852s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 876M Oct 19 00:05 /spacio/azrael/out512-rock.hash
+-rw-r--r-- 1 jmedina jmedina 876M Oct 19 00:12 /spacio/azrael/out512-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 918040768 Oct 19 00:05 /spacio/azrael/out512-rock.hash
+-rw-r--r-- 1 jmedina jmedina 918086908 Oct 19 00:12 /spacio/azrael/out512-rock.hash.xz
+DIFFER=46140 bits
+COMPRESS_RATIO=1.000050259205917966379462573%
+----------------|/
+         error=(0.000050259205917966379462573)=(5.025920591796638161241270182e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=6m31.168s
+===================> Mon 19 Oct 2020 12:12:23 AM CDT <===================
+===================> Mon 19 Oct 2020 12:12:23 AM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[x4]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m16.623s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(3079234336)(3073284792)
+(0)-(1)=(0.500483504713778448724781356%)(0.499516495286221551275218644%)
+(error)=(0.00048350471377844872478135585)=(4.835047137784487247813558497e-04)
+TIME (USER)=0m23.998s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=8m42.527s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(3079378312)(3073407824)
+(0)-(1)=(0.50048518572464806286603789%)(0.499514814275351881622810879%)
+(error)=(0.000485185724648062866037889762)=(4.851857246480628660378897621e-04)
+TIME (USER)=0m24.005s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 1.3G Oct 19 00:13 /spacio/azrael/outx4-rock.hash
+-rw-r--r-- 1 jmedina jmedina 1.3G Oct 19 00:22 /spacio/azrael/outx4-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 1377061152 Oct 19 00:13 /spacio/azrael/outx4-rock.hash
+-rw-r--r-- 1 jmedina jmedina 1377130024 Oct 19 00:22 /spacio/azrael/outx4-rock.hash.xz
+DIFFER=68872 bits
+COMPRESS_RATIO=1.000050013755670888317964836%
+----------------|/
+         error=(0.000050013755670888317964836)=(5.001375567088831475444365982e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=9m47.161s
+===================> Mon 19 Oct 2020 12:23:24 AM CDT <===================
+===================> Mon 19 Oct 2020 12:23:24 AM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[xM]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m14.858s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(4012201132)(4018648684)
+(0)-(1)=(0.499598575982136139383982254%)(0.500401424017863916127168977%)
+(error)=(0.000401424017863860616017745997)=(4.014240178638606160177459969e-04)
+TIME (USER)=0m31.345s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=11m49.736s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(4012384804)(4018804788)
+(0)-(1)=(0.499600309273834419787618799%)(0.500399690726165635723532432%)
+(error)=(0.000399690726165580212381200909)=(3.996907261655802123812009086e-04)
+TIME (USER)=0m31.368s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 1.8G Oct 19 00:24 /spacio/azrael/outxM-rock.hash
+-rw-r--r-- 1 jmedina jmedina 1.8G Oct 19 00:36 /spacio/azrael/outxM-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 1836081536 Oct 19 00:24 /spacio/azrael/outxM-rock.hash
+-rw-r--r-- 1 jmedina jmedina 1836173696 Oct 19 00:36 /spacio/azrael/outxM-rock.hash.xz
+DIFFER=92160 bits
+COMPRESS_RATIO=1.000050193849343300623442465%
+----------------|/
+         error=(0.000050193849343300623442465)=(5.019384934330062508723788173e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=13m7.311s
+===================> Mon 19 Oct 2020 12:37:20 AM CDT <===================
+===================> Mon 19 Oct 2020 12:37:20 AM CDT <===================
+===================> PROCESSING...
+===> PROCESANDO.. FILE=[[../../rockyou.txt]]-BITS=[[xMM]]-[[1x]] OUT_DIR_HASH=[[/spacio/azrael]] OUT_DIR_HASH_XZ=[[/spacio/azrael]]
+HASHING...
+c is parsing file..
+TIME (USER)=0m27.168s
+***=========|/
+HASHING IS DONE!
+COUNTING HASHED BITS..
+(0)-(1)=(7825116522)(7827054942)
+(0)-(1)=(0.499938078240311334354828432%)(0.500061921759688665645171568%)
+(error)=(6.19217596886656451715680305e-05)=(6.192175968866564517156803049e-05)
+TIME (USER)=1m1.603s
+============|/
+COUNTING IS DONE!
+COMPRESSING (bz2)..
+TIME (USER)=22m21.233s
+============|/
+COMPRESSING IS DONE!
+COUNTING COMPRESS BITS..
+(0)-(1)=(7825485312)(7827367808)
+(0)-(1)=(0.499939867320495223701470877%)(0.500060132679504776298529123%)
+(error)=(6.01326795047762985291228688e-05)=(6.013267950477629852912286879e-05)
+TIME (USER)=1m9.342s
+============|/
+COUNTING IS DONE!
+-rw-r--r-- 1 jmedina jmedina 3.5G Oct 19 00:38 /spacio/azrael/outxMM-rock.hash
+-rw-r--r-- 1 jmedina jmedina 3.5G Oct 19 01:04 /spacio/azrael/outxMM-rock.hash.xz
+-rw-r--r-- 1 jmedina jmedina 3672163072 Oct 19 00:38 /spacio/azrael/outxMM-rock.hash
+-rw-r--r-- 1 jmedina jmedina 3672345876 Oct 19 01:04 /spacio/azrael/outxMM-rock.hash.xz
+DIFFER=182804 bits
+COMPRESS_RATIO=1.000049781013646661931248787%
+----------------|/
+         error=(0.000049781013646661931248787)=(4.978101364666192879971512442e-05)
+-----------------|/
+===> DONE!
+TOTAL TIME (USER)=24m59.368s
+===================> Mon 19 Oct 2020 01:06:11 AM CDT <===================
