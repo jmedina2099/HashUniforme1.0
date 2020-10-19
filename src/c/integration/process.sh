@@ -82,7 +82,7 @@ then
   echo 'DIFFER='$BITS_DIFF' bits'
   echo 'COMPRESS_RATIO='$DIV'%'
   echo '----------------|/'
-  echo '         error=('$SUB')-('$SUB_E')'
+  echo '         error=('$SUB')=('$SUB_E')'
   echo '-----------------|/'
 fi
 echo '===> DONE!'

@@ -46,9 +46,9 @@ int doFile( char* filein ) {
     double unosP = (unos/(double)total);
     printf("(0)-(1)=(%.27g%%)(%.27g%%)\n",cerosP,unosP);
     if( cerosP <= 0.5 ) {
-    	printf("(error)=(%.27g)-(%.27e)\n",0.5-cerosP,0.5-cerosP);
+    	printf("(error)=(%.27g)=(%.27e)\n",0.5-cerosP,0.5-cerosP);
     } else {
-    	printf("(error)=(%.27g)-(%.27e)\n",cerosP-0.5,cerosP-0.5);
+    	printf("(error)=(%.27g)=(%.27e)\n",cerosP-0.5,cerosP-0.5);
     }
 
     fclose(fp);
