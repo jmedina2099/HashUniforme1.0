@@ -83,17 +83,17 @@ void eval_hash_192( char* input, uint64_t* hash, int inputLength ) {
 
   // Doing pile of bits.. (vertical 'avalanche' effect (2))
   hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
-            (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffffL ) |
-            (((carrier[0]+carrier[1]+carrier[2]) << 16) & 0xffffffffL) |
-            ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffffL);
-  hash[1] = ((carrier[1] << 48) & 0xffffffffffffffffL ) |
-            (((carrier[0]+carrier[4]) << 32) & 0xffffffffffffffffL ) |
-            (((carrier[3]+carrier[4]+carrier[0]) << 16) & 0xffffffffL) |
-            ((carrier[0]+carrier[1]+carrier[2]) & 0xffffffffL);
-  hash[2] = ((carrier[1] << 48) & 0xffffffffffffffffL ) |
-            (((carrier[0]+carrier[0]) << 32) & 0xffffffffffffffffL ) |
-            (((carrier[4]+carrier[0]+carrier[1]) << 16) & 0xffffffffL) |
-            ((carrier[1]+carrier[2]+carrier[3]) & 0xffffffffL);
+              (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffffL ) |
+              (((carrier[0]+carrier[1]+carrier[2]) << 16) & 0xffffffffL) |
+              ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffffL);
+  	hash[1] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
+              (((carrier[0]+carrier[2]) << 32) & 0xffffffffffffffffL ) |
+              (((carrier[1]+carrier[2]+carrier[3]) << 16) & 0xffffffffL) |
+              ((carrier[3]+carrier[4]+carrier[0]) & 0xffffffffL);
+    hash[2] = ((carrier[1] << 48) & 0xffffffffffffffffL ) |
+              (((carrier[0]+carrier[4]) << 32) & 0xffffffffffffffffL ) |
+              (((carrier[3]+carrier[4]+carrier[0]) << 16) & 0xffffffffL) |
+              ((carrier[0]+carrier[1]+carrier[2]) & 0xffffffffL);
 
   // Doing dispersion of bits.. (horizontal 'avalanche' effect (3))
   hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[5];

@@ -244,7 +244,7 @@ void test_192( char* val1 ) {
   char hex[49];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2] );
 
-  char* empty_hash = "721927e00fb6a7a6e75b4a67ef5e44ae79c368410dddcc58";
+  char* empty_hash = "721927e00fb6a7a63b5188479cb19bd240440ab1408991da";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  192 bits of output OK!!!\n%s\n", hex );
   } else {
