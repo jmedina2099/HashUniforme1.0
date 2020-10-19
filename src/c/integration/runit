@@ -7,14 +7,15 @@ export DIR_HASH_XZ=/spacio/azrael
 FILE_IN=../../rockyou.txt 
 TIMEFORMAT='TIME (USER)=%3lU'
 
-echo ''
+date +"===================> %c <======================================"
 echo 'COUNTING FILE BITS ['$FILE_IN']..'
 time nice -0 ../random/random $FILE_IN
 
 export SHOW=0
+export CLEAN_RM=1
 
 # Test 
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0
+./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 1
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out128-rock.hash 128 1 0
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out192-rock.hash 192 1 0
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash 320 1 0
