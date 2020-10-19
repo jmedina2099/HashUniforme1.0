@@ -24,17 +24,17 @@ public class Azrael64 implements FuncionHash {
 	private static final boolean DEBUG_PARTIAL_HASH = false;
 	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
 
-	private int rounds = 0;
+	//private int rounds = 0;
 
 	private long numIterations = 2;
 	private int iteration = 0;
 	private RandomAccessFile fileToPersist;
 
 	private static final String EMPTY_STRING_1_IT =
-			"d7ffe7b852fe0e97";
+			"b4d1fb3fec8b0428";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"e99b67b4ddbf9272";
+			"507db4a04fa3fc27";
 
 	/**
 	 * 
@@ -52,7 +52,7 @@ public class Azrael64 implements FuncionHash {
 
 	@Override
 	public BigInteger getHash(byte[] input) {
-		this.rounds  = 0;
+		//this.rounds  = 0;
 		this.iteration  = 0;
 
 		int promedioPro = 0;
@@ -219,7 +219,7 @@ public class Azrael64 implements FuncionHash {
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END ACUMULACION 5x64: ("+rounds+") rounds" );
+			System.out.println( "**** END ACUMULACION 5x64: " );
 			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
 			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
 			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
@@ -227,18 +227,34 @@ public class Azrael64 implements FuncionHash {
 			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
 		}
 
+		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV1;
+		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
+		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
+		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
+		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV5;
+
+		if( DEBUG_PARTIAL_HASH ) {
+			System.out.println( "**** END DISPERSION 5x64: " );
+			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
+			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
+			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
+			System.out.println( "**** sumAnt2 = "+sumaAnt2 );
+			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
+		}
 		
 		hash = ((sumaAnt1 << 48) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt2 << 32) & 0xffffffffffffffffL ) |
 	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
-	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL) +rounds;
-					
+	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL);
+
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV6;
+		
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** END APILACION 1x64:" );
 			System.out.println( "**** hash = "+hash );
 		}
 
-		return longToBytes(hash);
+		return longToBytes(hash+input.length+5+1);
 	}
 	
 	public byte[] longToBytes(long x) {
@@ -273,7 +289,7 @@ public class Azrael64 implements FuncionHash {
     }
 	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
-		rounds++;
+		//rounds++;
 		return (( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5) +
 			   (( char1 & char2 ) ^ ( char3 + char4 ) ^ char5) +
 			   (( char1 ^ char2 ) + ( char3 + char4 ) ^ char5) +
@@ -321,13 +337,11 @@ public class Azrael64 implements FuncionHash {
 		Azrael64 hash = new Azrael64(1);
 		
 		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
-		String hex1 = Hex.encodeHexString( hash1 );
-		
-		System.out.println( "1 => "+hex1 );
-		
 		byte[] hash2 = hash.getHashEval( hash1 );
+		String hex1 = Hex.encodeHexString( hash1 );
 		String hex2 = Hex.encodeHexString( hash2 );
 		
+		System.out.println( "1 => "+hex1 );
 		System.out.println( "2 => "+hex2 );
 		
 		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );

@@ -20,7 +20,7 @@ public class AzraelX4 implements FuncionHash {
 	private static final boolean DEBUG_PARTIAL_HASH = false;
 	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
 
-	private int rounds = 0;
+	//private int rounds = 0;
 
 	private int numIterations = 1;
 	private int iteration = 0;
@@ -30,7 +30,7 @@ public class AzraelX4 implements FuncionHash {
 			"cded98730118b7a4a15597430c9d75863d9532329540cab109ea26ab72a96d1b30c264e213beef31700795f4bb881bf0fd10ce945b15a8557dac5d970b49d75b6e8904776c7d3b5b975228ead94f06dbeb97574581bf53ac4b82ae93ec4f77c7";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"8bc70c47c64bd45c8f69a9815b521f94481f523e0c9dc7c358669b36980fe9b7cff6f770cb368636e28eb600bc15cf5a56bd4326a6f51ae5929ea6384c7d2c3f634d16c131658227fe59df040b68a8f23ba1a71676b1ef2b4046c0d18a857cfb";
+			"8bc70c47c64bd45c8f69a9815b521f94481f523e0c9dc7c358669b36980fe9b7cff6f770cb368636e28eb600bc15cf5a56bd4326a6f51ae5929ea6384c7d2c3f634d16c131658227fe59df040b68a8f23ba1a71676b1ef2b4046c0d18a857ca7";
 	
 	/**
 	 * 
@@ -48,7 +48,7 @@ public class AzraelX4 implements FuncionHash {
 	
 	@Override
 	public BigInteger getHash(byte[] input) {
-		this.rounds  = 0;
+		//this.rounds  = 0;
 		this.iteration  = 0;
 
 		int promedioPro = 0;
@@ -192,7 +192,7 @@ public class AzraelX4 implements FuncionHash {
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END ACUMULACION 8x64: ("+rounds+") rounds" );
+			System.out.println( "**** END ACUMULACION 8x64: " );
 			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
 			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
 			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
@@ -213,7 +213,7 @@ public class AzraelX4 implements FuncionHash {
 		sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV1;
 
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END DISPERSION 8x64: ("+rounds+") rounds" );
+			System.out.println( "**** END DISPERSION 8x64: " );
 			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
 			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
 			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
@@ -286,7 +286,7 @@ public class AzraelX4 implements FuncionHash {
 		           ((sumaAnt3+sumaAnt5+sumaAnt6+sumaAnt8) & 0xffffffffL);
 
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END APILACION 8x64: ("+rounds+") rounds" );
+				System.out.println( "**** END APILACION 8x64: " );
 				System.out.println( "**** hashC = "+hashC );
 				System.out.println( "**** hashB = "+hashB );
 				System.out.println( "**** hashA = "+hashA );
@@ -315,7 +315,7 @@ public class AzraelX4 implements FuncionHash {
 			hashC += evaluaFuncBool( hashC,hashC,hashC,hashC,hashC) + IV4;
 		
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END DISPERSION FINAL 8x64: ("+rounds+") rounds" );
+				System.out.println( "**** END DISPERSION FINAL 8x64: " );
 				System.out.println( "**** hashC END = "+hashC );
 				System.out.println( "**** hashB END = "+hashB );
 				System.out.println( "**** hashA END = "+hashA );
@@ -341,7 +341,7 @@ public class AzraelX4 implements FuncionHash {
 										hash9,
 										hashA,
 										hashB,
-										hashC +rounds } );
+										hashC +input.length +8+12} );
 	}
 	
 	public byte[] longToBytes(long[] x) {
@@ -378,7 +378,7 @@ public class AzraelX4 implements FuncionHash {
     }
 	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
-		rounds++;
+		//rounds++;
 		return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
 			   ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
 			   ((( char1 ^ char2 ) + ( char3 + char4 )) ^ char5) +

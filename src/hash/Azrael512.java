@@ -20,7 +20,7 @@ public class Azrael512 implements FuncionHash {
 	private static final boolean DEBUG_PARTIAL_HASH = false;
 	private static final boolean DEBUG_INTERMIDIATE_HASH = false;
 
-	private int rounds = 0;
+	//private int rounds = 0;
 
 	private int numIterations = 1;
 	private int iteration = 0;
@@ -30,7 +30,7 @@ public class Azrael512 implements FuncionHash {
 			"b4d1fb3fffb8b7a496677285b03e5c7dfaf26eda834dab12040a81923eb1081086a03ff930128bc8c2cbd29e3637fd13b911297c89d5a855fadd4393eb442683";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"5dcf99680277388bf44fefb9bfa9e700584218257e404f28db053884d144e1f441626d7979dd3daa65cc7be3b99acf8f512ee06bc70bb05558414c13167be37e";
+			"5dcf99680277388bf44fefb9bfa9e700584218257e404f28db053884d144e1f441626d7979dd3daa65cc7be3b99acf8f512ee06bc70bb05558414c13167be32e";
 	
 	/**
 	 * 
@@ -48,7 +48,7 @@ public class Azrael512 implements FuncionHash {
 	
 	@Override
 	public BigInteger getHash(byte[] input) {
-		this.rounds  = 0;
+		//this.rounds  = 0;
 		this.iteration  = 0;
 
 		int promedioPro = 0;
@@ -192,7 +192,7 @@ public class Azrael512 implements FuncionHash {
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END ACUMULACION 8x64: ("+rounds+") rounds" );
+			System.out.println( "**** END ACUMULACION 8x64: " );
 			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
 			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
 			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
@@ -213,7 +213,7 @@ public class Azrael512 implements FuncionHash {
 		sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV8;
 
 		if( DEBUG_PARTIAL_HASH ) {
-			System.out.println( "**** END DISPERSION 8x64: ("+rounds+") rounds" );
+			System.out.println( "**** END DISPERSION 8x64: " );
 			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
 			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
 			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
@@ -258,7 +258,7 @@ public class Azrael512 implements FuncionHash {
 		           ((sumaAnt5+sumaAnt6+sumaAnt7+sumaAnt8) & 0xffffffffL);
 
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END APILACION 8x64: ("+rounds+") rounds" );
+				System.out.println( "**** END APILACION 8x64: " );
 				System.out.println( "**** hash8 = "+hash8 );
 				System.out.println( "**** hash7 = "+hash7 );
 				System.out.println( "**** hash6 = "+hash6 );
@@ -279,7 +279,7 @@ public class Azrael512 implements FuncionHash {
 			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV8;
 		
 			if( DEBUG_PARTIAL_HASH ) {
-				System.out.println( "**** END DISPERSION FINAL 8x64: ("+rounds+") rounds" );
+				System.out.println( "**** END DISPERSION FINAL 8x64: " );
 				System.out.println( "**** hash8 END = "+hash8 );
 				System.out.println( "**** hash7 END = "+hash7 );
 				System.out.println( "**** hash6 END = "+hash6 );
@@ -297,7 +297,7 @@ public class Azrael512 implements FuncionHash {
 										hash5,
 										hash6,
 										hash7,
-										hash8+rounds} );
+										hash8+input.length +8 +8} );
 	}
 	
 	public byte[] longToBytes(long[] x) {
@@ -334,7 +334,7 @@ public class Azrael512 implements FuncionHash {
     }
 	
 	public long evaluaFuncBool(Long char1, Long char2, Long char3, Long char4, Long char5) {
-		rounds++;
+		//rounds++;
 		return ((( char1 + char2 ) ^ ( char3 ^ char4 )) ^ char5) +
 			   ((( char1 & char2 ) ^ ( char3 + char4 ))	^ char5) +
 			   ((( char1 ^ char2 ) + ( char3 + char4 )) ^ char5) +
@@ -365,6 +365,7 @@ public class Azrael512 implements FuncionHash {
 		
 		String hex1, hex2;
 		
+		/*
 		int tope = 10;
 		Azrael512 hash = new Azrael512(tope);
 		
@@ -377,6 +378,7 @@ public class Azrael512 implements FuncionHash {
 		System.out.println( "TIME = "+
 				"["+(timeNow/(1000.0))+"] secs,"+
 				"["+(timeNow/(1000.0*60.0))+"] mins." );
+		*/
 
 		/*
 		String cadena = "";
@@ -387,7 +389,6 @@ public class Azrael512 implements FuncionHash {
 		System.out.println( "["+cadena+"]=["+hex1+"]" );
 		*/
 
-		/*
 		Azrael512 hash = new Azrael512(1);
 		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
 		byte[] hash2 = hash.getHashEval( hash1 );
@@ -396,6 +397,7 @@ public class Azrael512 implements FuncionHash {
 		
 		System.out.println( hex1+" == EMPTY (1) ="+hex1.equals(EMPTY_STRING_1_IT) );
 		System.out.println( hex2+" == EMPTY (2) ="+hex2.equals(EMPTY_STRING_2_IT) );
+		/*
 		
 		String input = null;
 		input = "Azrael512";
