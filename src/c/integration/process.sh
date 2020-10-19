@@ -77,12 +77,13 @@ then
   else
     SUB=`echo "print 0; scale=27; $BITS_HASH_XZ/$BITS_HASH-1" | bc -l`
   fi
+  SUB_E=`echo $SUB | awk '{printf "%.27e\n", $1}'`
 
   echo 'DIFFER='$BITS_DIFF' bits'
   echo 'COMPRESS_RATIO='$DIV'%'
   echo '----------------|/'
   echo '         error='$SUB
-  echo '         error='`sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' <<< $SUB ` 
+  echo '              ='$SUB_E
   echo '----------------|/'
 fi
 echo '===> DONE!'
