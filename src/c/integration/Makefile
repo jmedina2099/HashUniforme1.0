@@ -22,6 +22,8 @@ endif
 
 TARGET_BASE = azrael_base
 TARGET_64 = azrael64_link
+TARGET_128 = azrael128_link
+TARGET_192 = azrael192_link
 TARGET_320 = azrael320_link
 TARGET_512 = azrael512_link
 TARGET_X4 = azraelx4_link
@@ -29,13 +31,20 @@ TARGET_XM = azraelxM_link
 TARGET_XMM = azraelxMM_link
 UNIT_TEST = unit_test
 
-all: $(TARGET_BASE) $(TARGET_64) $(TARGET_320) $(TARGET_512) $(TARGET_X4) $(TARGET_XM) $(TARGET_XMM) $(UNIT_TEST)
+all: $(TARGET_BASE) $(TARGET_64) $(TARGET_128) $(TARGET_192) $(TARGET_320) $(TARGET_512) \
+	$(TARGET_X4) $(TARGET_XM) $(TARGET_XMM) $(UNIT_TEST)
 
 $(TARGET_BASE): $(TARGET_BASE).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_BASE) $(TARGET_BASE).c
 
 $(TARGET_64): $(TARGET_64).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_64) $(TARGET_64).c
+
+$(TARGET_128): $(TARGET_128).c
+	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_128) $(TARGET_128).c
+
+$(TARGET_192): $(TARGET_192).c
+	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_192) $(TARGET_192).c
 
 $(TARGET_320): $(TARGET_320).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_320) $(TARGET_320).c
@@ -65,6 +74,8 @@ test: all
 clean-target:
 	$(RM) $(TARGET_BASE)
 	$(RM) $(TARGET_64)
+	$(RM) $(TARGET_128)
+	$(RM) $(TARGET_192)
 	$(RM) $(TARGET_320)
 	$(RM) $(TARGET_512)
 	$(RM) $(TARGET_X4)

@@ -12,9 +12,11 @@ echo 'COUNTING FILE BITS ['$FILE_IN']..'
 time nice -0 ../random/random $FILE_IN
 
 # TESTING SUIT
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 1
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash 320 1 1
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash 512 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out128-rock.hash 128 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out192-rock.hash 192 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash 320 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash 512 1 1
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 1 1
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxM-rock.hash xM 1 1
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxMM-rock.hash xMM 1 1

@@ -28,6 +28,8 @@
 
 #include "azrael_base.c"
 #include "azrael64_link.c"
+#include "azrael128_link.c"
+#include "azrael192_link.c"
 #include "azrael320_link.c"
 #include "azrael512_link.c"
 #include "azraelx4_link.c"
@@ -234,6 +236,87 @@ void itera_320( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
   }
 }
 
+void test_192( char* val1 ) {
+
+  uint64_t hash[3]; // output 24 bytes/192 bits.
+  eval_hash_192( val1, hash, strlen(val1) );
+
+  char hex[49];
+  sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2] );
+
+  char* empty_hash = "b4d1fb3fec8b03e265599956c02383bef4ae3ce7abe2850c";
+  if( strcmp(hex,empty_hash) == 0 ) {
+    printf( "TEST  192 bits of output OK!!!\n%s\n", hex );
+  } else {
+    printf( "TEST FAILED!\n%s\n", hex );
+  }
+}
+
+void itera_192( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
+
+  long i;
+  int k,j;
+  int size = strlen(val1);
+  char val2[24];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_192( val1, hash, size );
+    for(k=0; k<3; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 24;
+  }
+
+  if( flag != 0 ) {
+    sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2] );
+    printf( "%s\n", hex );
+  }
+}
+
+void test_128( char* val1 ) {
+
+  uint64_t hash[2]; // output 16 bytes/128 bits.
+  eval_hash_128( val1, hash, strlen(val1) );
+
+  char hex[33];
+  sprintf(hex,"%016" PRIx64 "%016" PRIx64,hash[0],hash[1] );
+
+  char* empty_hash = "d7ffe7b852fe0e579fdef2808ba62b33";
+  if( strcmp(hex,empty_hash) == 0 ) {
+    printf( "TEST  128 bits of output OK!!!\n%s\n", hex );
+  } else {
+    printf( "TEST FAILED!\n%s\n", hex );
+  }
+}
+
+void itera_128( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
+
+  long i;
+  int k,j;
+  int size = strlen(val1);
+  char val2[16];
+
+  for( i=0; i<n; i++ ) {
+    eval_hash_128( val1, hash, size );
+    for(k=0; k<2; k++ ) {
+      for(j=0; j<8; j++ ) {
+        val2[8*(k+1)-1-j] = hash[k] >> 8*j;
+      }
+    }
+    val1 = val2;
+    size = 16;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64, hash[0],hash[1] );
+    printf( "%s\n", hex );
+  }
+}
+
+
 void test_64( char* val1 ) {
 
   uint64_t hash[1]; // output 8 bytes/64 bits.
@@ -276,6 +359,10 @@ void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash
 
 	if( strcmp(spice,"64") == 0 ) {
 		itera_64( val1, n, flag, hex, hash );
+	} else if( strcmp(spice,"128") == 0 ) {
+		itera_128( val1, n, flag, hex, hash );
+	} else if( strcmp(spice,"192") == 0 ) {
+		itera_192( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"320") == 0 ) {
 		itera_320( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"512") == 0 ) {
@@ -293,6 +380,10 @@ int getNumHex(char* spice) {
   int sizeHex = 17;
   if( strcmp(spice,"64") == 0 ) {
 	sizeHex = 17;
+  } else if( strcmp(spice,"128") == 0 ) {
+	sizeHex = 33;
+  } else if( strcmp(spice,"192") == 0 ) {
+	sizeHex = 49;
   } else if( strcmp(spice,"320") == 0 ) {
 	sizeHex = 81;
   } else if( strcmp(spice,"512") == 0 ) {
@@ -311,6 +402,10 @@ int getOutSize(char* spice) {
   int size = 8;
   if( strcmp(spice,"64") == 0 ) {
 	  size = 8;
+  } else if( strcmp(spice,"128") == 0 ) {
+	  size = 16;
+  } else if( strcmp(spice,"192") == 0 ) {
+	  size = 24;
   } else if( strcmp(spice,"320") == 0 ) {
 	  size = 40;
   } else if( strcmp(spice,"512") == 0 ) {
@@ -383,6 +478,8 @@ int main(int argc, char *argv[]) {
   int t;
   if( argc == 1 ) { // Sin argumentos.
     test_64( val1 );
+    test_128( val1 );
+    test_192( val1 );
     test_320( val1 );
     test_512( val1 );
     test_x4( val1 );
