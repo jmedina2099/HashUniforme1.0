@@ -2,9 +2,10 @@
 
 TIMEFORMAT='TOTAL TIME (USER)=%3lU'
 
+echo -ne '\e[?7h'
 date +"===================> %c <==================="
 
 echo '===================> PROCESSING...'
-time ./process.sh $1 $2 $3 $6 0 $5 $7 $4
+time ./process.sh $1 $2 $3 $6 $SHOW $5 $7 $4
 
 date +"===================> %c <==================="

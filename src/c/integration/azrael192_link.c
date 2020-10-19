@@ -74,6 +74,13 @@ void eval_hash_192( char* input, uint64_t* hash, int inputLength ) {
   carrier[1] += carrier[0];
   carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
 
+  // Doing dispersion of bits.. (horizontal 'avalanche' effect (1))
+  carrier[0] += COMPRESS_320( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[8];
+  carrier[1] += COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[7];
+  carrier[2] += COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[5];
+  carrier[3] += COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[4];
+  carrier[4] += COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[2];
+
   // Doing pile of bits.. (vertical 'avalanche' effect (2))
   hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
             (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffffL ) |
@@ -88,6 +95,11 @@ void eval_hash_192( char* input, uint64_t* hash, int inputLength ) {
             (((carrier[4]+carrier[0]+carrier[1]) << 16) & 0xffffffffL) |
             ((carrier[1]+carrier[2]+carrier[3]) & 0xffffffffL);
 
+  // Doing dispersion of bits.. (horizontal 'avalanche' effect (3))
+  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[5];
+  hash[1]  += COMPRESS_320( hash[1],hash[1],hash[1],hash[1],hash[1]) + IV[6];
+  hash[2]  += COMPRESS_320( hash[2],hash[2],hash[2],hash[2],hash[2]) + IV[7];
+
   // Finally, we add the number of rounds to output..
-  hash[2] += inputLength;
+  hash[2] += inputLength + 5 + 3;
 }
