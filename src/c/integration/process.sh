@@ -76,9 +76,9 @@ then
   fi
 
   echo 'DIFFER='$BITS_DIFF' bits'
-  echo 'COMPRESS_RATIO='$DIV%''
+  echo 'COMPRESS_RATIO='$DIV'%'
   echo '----------------|/'
-  echo '     DIF_RATIO='$SUB%''
+  echo '         ERROR='$SUB
   echo '----------------|/'
 fi
 echo '===> DONE!'

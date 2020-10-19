@@ -2,4 +2,4 @@ make clean
 #make clean-hashes
 make
 make test
-./runit
+./runit 2>&1 | tee azrael.log
