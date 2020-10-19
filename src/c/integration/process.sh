@@ -44,8 +44,8 @@ echo 'COUNTING IS DONE!'
 if [ $# -gt 6 ] && [ $7 -eq 1 ]
 then
   echo 'COMPRESSING (bz2)..'
-  time nice -0 tar cJPf $OUT_DIR_HASH_XZ/$8.xz $OUT_DIR_HASH/$8
-  echo '============|/'
+  #time nice -0 tar cJPf $OUT_DIR_HASH_XZ/$8.xz $OUT_DIR_HASH/$8
+  time nice -0 bzip2 -kz9vc $OUT_DIR_HASH/$8 > $OUT_DIR_HASH_XZ/$8.xz
   echo 'COMPRESSING IS DONE!'
 
   echo 'COUNTING COMPRESS BITS..'
@@ -59,14 +59,13 @@ then
   BITS_HASH=`stat -c %s $OUT_DIR_HASH/$8`
   BITS_HASH_XZ=`stat -c %s $OUT_DIR_HASH_XZ/$8.xz`
 
+  # DELETE HASH FILE
+  rm $OUT_DIR_HASH/$8
   if [ $9 -eq 1 ]
   then
-    rm $OUT_DIR_HASH/$8
+    # DELETE HASH XZ FILE - (CLEAN_RM)
     rm $OUT_DIR_HASH_XZ/$8.xz
   fi
-
-  #echo $BITS_HASH
-  #echo $BITS_HASH_XZ
 
   BITS_DIFF=$(( BITS_HASH_XZ - BITS_HASH ))
   DIV=`echo "if($BITS_DIFF<0) print 0; scale=27; $BITS_HASH_XZ/$BITS_HASH" | bc -l`
