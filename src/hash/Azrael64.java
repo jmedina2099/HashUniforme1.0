@@ -31,10 +31,10 @@ public class Azrael64 implements FuncionHash {
 	private RandomAccessFile fileToPersist;
 
 	private static final String EMPTY_STRING_1_IT =
-			"b4d1fb3fec8b0428";
+			"a041afe55d33c2cf";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"507db4a04fa3fc27";
+			"f2bb8c6efc407fae";
 
 	/**
 	 * 
@@ -248,13 +248,14 @@ public class Azrael64 implements FuncionHash {
 	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL);
 
 		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV6;
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV8;
 		
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** END APILACION 1x64:" );
 			System.out.println( "**** hash = "+hash );
 		}
 
-		return longToBytes(hash+input.length+5+1);
+		return longToBytes(hash+input.length+5+2+1);
 	}
 	
 	public byte[] longToBytes(long x) {

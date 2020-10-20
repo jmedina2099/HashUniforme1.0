@@ -27,10 +27,10 @@ public class Azrael512 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"b4d1fb3fffb8b7a496677285b03e5c7dfaf26eda834dab12040a81923eb1081086a03ff930128bc8c2cbd29e3637fd13b911297c89d5a855fadd4393eb442683";
+			"62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe4a102a4f243dde7c1ffe501b86c5303421415e2aab2132e7";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"5dcf99680277388bf44fefb9bfa9e700584218257e404f28db053884d144e1f441626d7979dd3daa65cc7be3b99acf8f512ee06bc70bb05558414c13167be32e";
+			"e305ab9cdbc5a4db6aedd79126675f5297d7f5e79cdad1e1d85e8ba22884d8d5248c98f5ffbc5bdcf75659a26ab49278188d3389a5c32a2998180508ee7f0171";
 	
 	/**
 	 * 
@@ -203,11 +203,11 @@ public class Azrael512 implements FuncionHash {
 			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
 		}
 		
-		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV1;
-		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
-		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
-		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
-		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV5;
+		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV7;
+		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV8;
+		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV9;
+		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV10;
+		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV1;
 		sumaAnt6 += evaluaFuncBool( sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6) + IV6;
 		sumaAnt7 += evaluaFuncBool( sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7) + IV7;
 		sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV8;
@@ -297,7 +297,7 @@ public class Azrael512 implements FuncionHash {
 										hash5,
 										hash6,
 										hash7,
-										hash8+input.length +8 +8} );
+										hash8+input.length +8 +8 +8} );
 	}
 	
 	public byte[] longToBytes(long[] x) {

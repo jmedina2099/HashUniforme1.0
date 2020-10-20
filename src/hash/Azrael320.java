@@ -27,10 +27,10 @@ public class Azrael320 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0a";
+			"f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0f";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"44483f3d29f74e2d4d91782a781c5c55693edef1bf4b32cc5128c30cf7fc9630300b5c2451656038";
+			"4f772e6304f23f7772baa8047bf869843bcb485a5324256805f432d69dd0a195a15050312c23783b";
 
 	/**
 	 * 
@@ -253,7 +253,7 @@ public class Azrael320 implements FuncionHash {
 										hash2,
 										hash3,
 										hash4,
-										hash5+input.length+5+5} );
+										hash5+input.length+5+5+5} );
 	}
 	
 	public byte[] longToBytes(long[] x) {

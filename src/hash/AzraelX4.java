@@ -27,10 +27,10 @@ public class AzraelX4 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"cded98730118b7a4a15597430c9d75863d9532329540cab109ea26ab72a96d1b30c264e213beef31700795f4bb881bf0fd10ce945b15a8557dac5d970b49d75b6e8904776c7d3b5b975228ead94f06dbeb97574581bf53ac4b82ae93ec4f77c7";
+			"6219986a754b80526556d98a6f67e19c32e5c68c9b3321cd40cba83372e0eeef9774287a573d1c4b4a102a501e2a9a9c1ffe501c67efa8559d66d7d1aaf6e76f454a46c642cf1cf9aaafe17a9f1c2775d38b173aa0bdb0362243f0dbe83b72cb";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"8bc70c47c64bd45c8f69a9815b521f94481f523e0c9dc7c358669b36980fe9b7cff6f770cb368636e28eb600bc15cf5a56bd4326a6f51ae5929ea6384c7d2c3f634d16c131658227fe59df040b68a8f23ba1a71676b1ef2b4046c0d18a857ca7";
+			"61c243684ace59836818538559f6ecb25d40e1d1ab2218a3d812a8e61c870237e4609f6e200cb34d98cb45951414958c511350cf275edba3a9bdbaa5ab7b4258428bc0bfb140b3204f5ad00259f51ca0d3055e08bbb857d21f856ad6429672b7";
 	
 	/**
 	 * 
@@ -203,11 +203,11 @@ public class AzraelX4 implements FuncionHash {
 			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
 		}
 		
-		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV8;
-		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV7;
-		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV6;
-		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV5;
-		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV4;
+		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV7;
+		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV8;
+		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV9;
+		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV10;
+		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV1;
 		sumaAnt6 += evaluaFuncBool( sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6,sumaAnt6) + IV3;
 		sumaAnt7 += evaluaFuncBool( sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7,sumaAnt7) + IV2;
 		sumaAnt8 += evaluaFuncBool( sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8,sumaAnt8) + IV1;
@@ -341,7 +341,7 @@ public class AzraelX4 implements FuncionHash {
 										hash9,
 										hashA,
 										hashB,
-										hashC +input.length +8+12} );
+										hashC +input.length +8+12+12} );
 	}
 	
 	public byte[] longToBytes(long[] x) {
