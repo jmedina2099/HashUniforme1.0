@@ -9,6 +9,7 @@ CDELL=-march=$(CARCH) -mtune=$(CARCH)
 
 RUN=runit
 RANDOM_DIR=../random
+SHA_DIR=../sha
 
 OUT_DIR_HASH_DEF=/spacio/azrael
 OUT_DIR_HASH_XZ_DEF=/spacio/azrael
@@ -34,6 +35,7 @@ UNIT_TEST = unit_test
 all: $(TARGET_BASE) $(TARGET_64) $(TARGET_128) $(TARGET_192) $(TARGET_320) $(TARGET_512) \
 	$(TARGET_X4) $(TARGET_XM) $(TARGET_XMM) $(UNIT_TEST)
 	$(MAKE) -C $(RANDOM_DIR)
+	$(MAKE) -C $(SHA_DIR)
 
 $(TARGET_BASE): $(TARGET_BASE).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_BASE) $(TARGET_BASE).c
@@ -63,7 +65,8 @@ $(TARGET_XMM): $(TARGET_XMM).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_XMM) $(TARGET_XMM).c
 	
 $(UNIT_TEST): $(UNIT_TEST).c
-	$(CC) $(CFLAGS) $(COPT) $(CDELL) -o $(UNIT_TEST) $(UNIT_TEST).c
+	$(MAKE) -C $(SHA_DIR)
+	$(CC) $(CFLAGS) $(COPT) $(CDELL) -o $(UNIT_TEST) $(UNIT_TEST).c $(SHA_DIR)/sha3.o
 
 run:
 	./$(RUN)
@@ -91,3 +94,4 @@ clean-hashes:
 
 clean: clean-target clean-hashes
 	$(MAKE) -C $(RANDOM_DIR) clean
+	$(MAKE) -C $(SHA_DIR) clean

@@ -36,6 +36,8 @@
 #include "azraelxM_link.c"
 #include "azraelxMM_link.c"
 
+#include "../sha/sha3.h"
+
 void test_xMM( char* val1 ) {
 
   uint64_t hash[32]; // output 256 bytes/2048 bits.
@@ -355,6 +357,86 @@ void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
   }
 }
 
+static void byte_to_hex(uint8_t b, char s[23]) {
+    unsigned i=1;
+    s[0] = s[1] = '0';
+    s[2] = '\0';
+    while(b) {
+        unsigned t = b & 0x0f;
+        if( t < 10 ) {
+            s[i] = '0' + t;
+        } else {
+            s[i] = 'a' + t - 10;
+        }
+        i--;
+        b >>= 4;
+    }
+}
+
+void itera_sha3( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
+
+  sha3_context c;
+
+  long i;
+  int k;
+  int size = strlen(val1);
+  char val2[64];
+
+  const uint8_t* hash1 = {0};
+
+  for( i=0; i<n; i++ ) {
+	sha3_Init512(&c);
+    sha3_Update(&c, val1, size);
+    hash1 = sha3_Finalize(&c);
+    for(k=0; k<64; k++ ) {
+        val2[k] = hash1[k];
+    }
+    val1 = val2;
+    size = 64;
+  }
+
+  for( int j=0; j<8; j++ ) {
+	for( int i=0; i<8; i++ ) {
+	  hash[j] = (hash[j] << 8) | hash1[j*8+i];
+	}
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
+    printf( "%s\n", hex );
+  }
+}
+
+void test_sha3( char* val1 ) {
+
+	sha3_context c;
+
+	int i;
+	int size = strlen(val1);
+	const uint8_t *hash;
+	char hex[129];
+	char* ptr = hex;
+	char s[3];
+
+	sha3_Init512(&c);
+	sha3_Update(&c, val1, size);
+	hash = sha3_Finalize(&c);
+
+	for(i=0; i<64; i++) {
+		byte_to_hex(hash[i],s);
+		sprintf(ptr,"%s", s);
+		ptr += 2;
+	}
+
+	char* empty_hash = "a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26";
+	if( strcmp(hex,empty_hash) == 0 ) {
+		printf( "SHA3  512 bits of output OK!!!\n%s\n", hex );
+	} else {
+		printf( "TEST FAILED!\n%s\n", hex );
+	}
+
+}
+
 void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash ) {
 
 	if( strcmp(spice,"64") == 0 ) {
@@ -373,6 +455,8 @@ void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash
 		itera_xM( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"xMM") == 0 ) {
 		itera_xMM( val1, n, flag, hex, hash );
+	} else if( strcmp(spice,"sha3") == 0 ) {
+		itera_sha3( val1, n, flag, hex, hash );
 	}
 }
 
@@ -386,7 +470,7 @@ int getNumHex(char* spice) {
 	sizeHex = 49;
   } else if( strcmp(spice,"320") == 0 ) {
 	sizeHex = 81;
-  } else if( strcmp(spice,"512") == 0 ) {
+  } else if( strcmp(spice,"512") == 0 || strcmp(spice,"sha3") == 0 ) {
 	sizeHex = 129;
   } else if( strcmp(spice,"x4") == 0 ) {
 	sizeHex = 193;
@@ -399,6 +483,29 @@ int getNumHex(char* spice) {
 }
 
 int getOutSize(char* spice) {
+  int size = 1;
+  if( strcmp(spice,"64") == 0 ) {
+	  size = 1;
+  } else if( strcmp(spice,"128") == 0 ) {
+	  size = 2;
+  } else if( strcmp(spice,"192") == 0 ) {
+	  size = 3;
+  } else if( strcmp(spice,"320") == 0 ) {
+	  size = 5;
+  } else if( strcmp(spice,"512") == 0 || strcmp(spice,"sha3") == 0 ) {
+	  size = 8;
+  } else if( strcmp(spice,"x4") == 0 ) {
+	  size = 12;
+  } else if( strcmp(spice,"xM") == 0 ) {
+	  size = 16;
+  } else if( strcmp(spice,"xMM") == 0 ) {
+	  size = 32;
+  }
+  return size;
+}
+
+
+int getOutSize2(char* spice) {
   int size = 8;
   if( strcmp(spice,"64") == 0 ) {
 	  size = 8;
@@ -408,7 +515,7 @@ int getOutSize(char* spice) {
 	  size = 24;
   } else if( strcmp(spice,"320") == 0 ) {
 	  size = 40;
-  } else if( strcmp(spice,"512") == 0 ) {
+  } else if( strcmp(spice,"512") == 0 || strcmp(spice,"sha3") == 0 ) {
 	  size = 64;
   } else if( strcmp(spice,"x4") == 0 ) {
 	  size = 96;
@@ -432,7 +539,7 @@ int doFileRead( long n, int flag, char* spice, char* filein ) {
 
     int sizeHex = getNumHex(spice);
     char hex[sizeHex];
-    uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+    uint64_t hash[getOutSize(spice)];
     while ((read = getline(&line, &len, fp)) != -1) {
     	itera(line,n,flag,hex,spice,hash);
     }
@@ -481,6 +588,7 @@ int main(int argc, char *argv[]) {
     test_128( val1 );
     test_192( val1 );
     test_320( val1 );
+    test_sha3( val1 );
     test_512( val1 );
     test_x4( val1 );
     test_xM( val1 );
@@ -488,20 +596,20 @@ int main(int argc, char *argv[]) {
   } else if( argc == 2 ) { // Cadena a hashear.
 	val1 = argv[1];
 	char hex[17];
-	uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
 	itera_64( val1, 1, 1, hex, hash );
   } else if( argc == 3 ) { // Num. de iteracion.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	char hex[17];
-	uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
 	itera_64( val1, n, 1, hex, hash );
   } else if( argc == 4 ) { // Bandera para imprimir el hash.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	char hex[17];
-	uint64_t hash[1] = {0}; // output 8 bytes/64 bits.
+	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
 	itera_64( val1, n, t, hex, hash );
   } else if( argc == 5 ) { // Tipo de algoritmo.
 	val1 = argv[1];
@@ -519,7 +627,7 @@ int main(int argc, char *argv[]) {
     n = atol(argv[2]);
     t = atoi(argv[3]);
 	uint64_t hash[getOutSize(argv[4])];
-	int sizeBytes = (int)((getOutSize(argv[4]))/8.0);
+	int sizeBytes = (int)((getOutSize2(argv[4]))/8.0);
     doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes );
   }
 
