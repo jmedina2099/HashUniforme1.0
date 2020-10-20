@@ -178,5 +178,5 @@ void eval_hash_xM( char* input, uint64_t* hash, int inputLength ) {
   hash[15] += COMPRESS_320( hash[15],hash[15],hash[15],hash[15],hash[15]) + IV[0];
 
   // Finally, we add the number of rounds to output..
-  hash[15] += inputLength + 8 + 16;
+  hash[15] += inputLength + 8 + 16 + 16;
 }

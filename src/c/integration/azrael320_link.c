@@ -111,5 +111,5 @@ void eval_hash_320( char* input, uint64_t* hash, int inputLength ) {
   hash[4]  += COMPRESS_320( hash[4],hash[4],hash[4],hash[4],hash[4]) + IV[0];
 
   // Finally, we add the number of rounds to output..
-  hash[4] += inputLength + 5 + 5;
+  hash[4] += inputLength + 5 + 5 + 5;
 }
