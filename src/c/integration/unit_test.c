@@ -37,6 +37,7 @@
 #include "azraelxMM_link.c"
 
 #include "../sha/sha3.h"
+#include "../siphash/csiphash.c"
 
 void test_xMM( char* val1 ) {
 
@@ -437,6 +438,48 @@ void test_sha3( char* val1 ) {
 
 }
 
+void itera_siphash( char* val1, long n, int flag, char* hex, uint64_t* hash ) {
+
+  long i;
+  int j;
+  int size = strlen(val1);
+  char val2[8];
+
+  char key[16] = {0,1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf};
+
+  for( i=0; i<n; i++ ) {
+	hash[0] = siphash24(val1, size, key);
+    for(j=0; j<8; j++ ) {
+      val2[7-j] = hash[0] >> 8*j;
+    }
+    val1 = val2;
+    size = 8;
+  }
+
+  if( flag != 0 ) {
+	sprintf(hex,"%016" PRIx64,hash[0] );
+    printf( "%s\n", hex );
+  }
+}
+
+void test_siphash( char* val1 ) {
+
+	int size = strlen(val1);
+	char key[16] = {0,1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf};
+
+	uint64_t hash = siphash24(val1, size, key);
+
+	char hex[17];
+	sprintf(hex,"%016" PRIx64,hash );
+
+	char* empty_hash = "726fdb47dd0e0e31";
+	if( strcmp(hex,empty_hash) == 0 ) {
+		printf( "SIPHASH64 bits of output OK!!!\n%s\n", hex );
+	} else {
+		printf( "TEST FAILED!\n%s\n", hex );
+	}
+}
+
 void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash ) {
 
 	if( strcmp(spice,"64") == 0 ) {
@@ -457,12 +500,14 @@ void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash
 		itera_xMM( val1, n, flag, hex, hash );
 	} else if( strcmp(spice,"sha3") == 0 ) {
 		itera_sha3( val1, n, flag, hex, hash );
+	} else if( strcmp(spice,"siphash") == 0 ) {
+		itera_siphash( val1, n, flag, hex, hash );
 	}
 }
 
 int getNumHex(char* spice) {
   int sizeHex = 17;
-  if( strcmp(spice,"64") == 0 ) {
+  if( strcmp(spice,"64") == 0 || strcmp(spice,"siphash") == 0 ) {
 	sizeHex = 17;
   } else if( strcmp(spice,"128") == 0 ) {
 	sizeHex = 33;
@@ -484,7 +529,7 @@ int getNumHex(char* spice) {
 
 int getOutSize(char* spice) {
   int size = 1;
-  if( strcmp(spice,"64") == 0 ) {
+  if( strcmp(spice,"64") == 0 || strcmp(spice,"siphash") == 0 ) {
 	  size = 1;
   } else if( strcmp(spice,"128") == 0 ) {
 	  size = 2;
@@ -507,7 +552,7 @@ int getOutSize(char* spice) {
 
 int getOutSize2(char* spice) {
   int size = 8;
-  if( strcmp(spice,"64") == 0 ) {
+  if( strcmp(spice,"64") == 0 || strcmp(spice,"siphash") == 0 ) {
 	  size = 8;
   } else if( strcmp(spice,"128") == 0 ) {
 	  size = 16;
@@ -584,6 +629,7 @@ int main(int argc, char *argv[]) {
   long n;
   int t;
   if( argc == 1 ) { // Sin argumentos.
+    test_siphash( val1 );
     test_64( val1 );
     test_128( val1 );
     test_192( val1 );
