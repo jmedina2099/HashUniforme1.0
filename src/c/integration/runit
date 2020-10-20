@@ -17,7 +17,6 @@ time nice -0 ../random/random $FILE_IN
 export SHOW=0
 export CLEAN_RM=1
 
-
 # TESTING SUIT AGAINST SHA-3_512 SIPHASH
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsiphash-rock.hash siphash 1 1
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsha3-rock.hash sha3 1 1
