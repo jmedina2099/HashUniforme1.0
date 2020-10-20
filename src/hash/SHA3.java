@@ -28,6 +28,13 @@ public class SHA3 implements FuncionHash {
 	private int iteration = 0;
 
 	private RandomAccessFile fileToPersist;
+
+	private static final String EMPTY_STRING_1_IT =
+			"a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26";
+
+	private static final String EMPTY_STRING_2_IT = 
+			"057f7539ed68710b44b6457366839b76ce674ebc214a4ef60a5d5fc9f723d1a40c8137c86e0262394f461b1e562817c8b4e1972a56bfd593320aefe4ca9b26a8";
+	
 	
 	/**
 	 * 
@@ -199,8 +206,16 @@ public class SHA3 implements FuncionHash {
 
 		SHA3 hash = new SHA3(1);
 
-		byte[] cript = hash.getHashEval("".getBytes(StandardCharsets.UTF_8));
-		System.out.println( Hex.encodeHexString(cript) );
+		byte[] hash1 = hash.getHashEval( "".getBytes(StandardCharsets.UTF_8) );
+		byte[] hash2 = hash.getHashEval( hash1 );
+		String hex1 = Hex.encodeHexString( hash1 );
+		String hex2 = Hex.encodeHexString( hash2 );
+		
+		System.out.println( "1 => "+hex1 );
+		System.out.println( "2 => "+hex2 );
+		
+		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );
+		System.out.println( "EMPTY 2 => "+(hex2.equals(EMPTY_STRING_2_IT)) );
 		
 	}
 
