@@ -47,7 +47,7 @@ void test_xMM( char* val1 ) {
   char hex[513];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15],hash[16],hash[17],hash[18],hash[19],hash[20],hash[21],hash[22],hash[23],hash[24],hash[25],hash[26],hash[27],hash[28],hash[29],hash[30],hash[31] );
 
-  char* empty_hash = "e9b90e715bd879a1847732c649632381cbdd7ef7ab8ba076579b9f66a03228e068882ef485f29061d3a598c4aad1ae88ae3b7c80604d6a492a635f9f816e33bedab9adc5954419617b08a7874c9b6a54d7ebd8652469e78b2235dcd3ac7fa2501d0f580357ec96e72cb65b2ccc1683bc113d761a686c351454c207bd5ce62116d29eb349746ac9b96907647a940881b0377fd5cf08726ed92f7e8b539a9203bd8299df3fb512283cf1b6ea5cac8818f984b1a6d36b14ffb088a2d2efcf3e2f808202f86438e801a1a5a03532a54a18ef3cccc5b7bee4407c0fa76d5afd9f4f0b793bcd151b6391b7cf90fd473e58403fae3fb7a0118d81ab09cddf8a964ded84";
+  char* empty_hash = "e9b90e715bd879a1847732c649632381cbdd7ef7ab8ba076579b9f66a03228e068882ef485f29061d3a598c4aad1ae88ae3b7c80604d6a492a635f9f816e33bedab9adc5954419617b08a7874c9b6a54d7ebd8652469e78b2235dcd3ac7fa2501d0f580357ec96e72cb65b2ccc1683bc113d761a686c351454c207bd5ce62136d29eb349746ac9b96907647a940881b0377fd5cf08726ed92f7e8b539a9203bd8299df3fb512283cf1b6ea5cac8818f984b1a6d36b14ffb088a2d2efcf3e2f808202f86438e801a1a5a03532a54a18ef3cccc5b7bee4407c0fa76d5afd9f4f0b793bcd151b6391b7cf90fd473e58403fae3fb7a0118d81ab09cddf8a964ded84";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST 2048 bits of output (xMM) OK!!!\n%s\n", hex );
   } else {
@@ -87,7 +87,7 @@ void test_xM( char* val1 ) {
   char hex[257];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11],hash[12],hash[13],hash[14],hash[15] );
 
-  char* empty_hash = "0d3a879c9a71f6717b43c589321cf0e13e9927f0fac73232de94f77f17b01b555362f257810dfc3301408bb9c0e967d3bcbf9f678a1b8e445298fbdc7122e40e453c32c5f3f802f1fe9e6e12bcd6a0a069dddb7ece5a06792235dcd3ac7fa250354cc5b7a8300e5e13bac744abb43dc375f01f6ab71ca82d825cfab272fdda51";
+  char* empty_hash = "0d3a879c9a71f6717b43c589321cf0e13e9927f0fac73232de94f77f17b01b555362f257810dfc3301408bb9c0e967d3bcbf9f678a1b8e445298fbdc7122e40e453c32c5f3f802f1fe9e6e12bcd6a0a069dddb7ece5a06792235dcd3ac7fa250354cc5b7a8300e5e13bac744abb43dc375f01f6ab71ca82d825cfab272fdda61";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST 1024 bits of output (xM) OK!!!\n%s\n", hex );
   } else {
@@ -127,7 +127,7 @@ void test_x4( char* val1 ) {
   char hex[193];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7],hash[8],hash[9],hash[10],hash[11] );
 
-  char* empty_hash = "cded98730118b7a4a15597430c9d75863d9532329540cab109ea26ab72a96d1b30c264e213beef31700795f4bb881bf0fd10ce945b15a8557dac5d970b49d75b6e8904776c7d3b5b975228ead94f06dbeb97574581bf53ac4b82ae93ec4f77c7";
+  char* empty_hash = "6219986a754b80526556d98a6f67e19c32e5c68c9b3321cd40cba83372e0eeef9774287a573d1c4b4a102a501e2a9a9c1ffe501c67efa8559d66d7d1aaf6e76f454a46c642cf1cf9aaafe17a9f1c2775d38b173aa0bdb0362243f0dbe83b72cb";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  768 bits of output (x4) OK!!!\n%s\n", hex );
   } else {
@@ -167,7 +167,7 @@ void test_512( char* val1 ) {
   char hex[129];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
 
-  char* empty_hash = "b4d1fb3fffb8b7a496677285b03e5c7dfaf26eda834dab12040a81923eb1081086a03ff930128bc8c2cbd29e3637fd13b911297c89d5a855fadd4393eb442683";
+  char* empty_hash = "62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe4a102a4f243dde7c1ffe501b86c5303421415e2aab2132e7";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -207,7 +207,7 @@ void test_320( char* val1 ) {
   char hex[81];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4] );
 
-  char* empty_hash = "f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0a";
+  char* empty_hash = "f5aeee6b7ff1ddf24484f584b3f7ce72e30d418fb28c7e3cea737b7f3abd27f7518dcc041e291c0f";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  320 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -247,7 +247,7 @@ void test_192( char* val1 ) {
   char hex[49];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2] );
 
-  char* empty_hash = "721927e00fb6a7a63b5188479cb19bd240440ab1408991da";
+  char* empty_hash = "e8c790169510bfbab9d25019a4f786cd8847d74565d2eba5";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  192 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -287,7 +287,7 @@ void test_128( char* val1 ) {
   char hex[33];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64,hash[0],hash[1] );
 
-  char* empty_hash = "e8c790169510bfbab9d25019a4f78714";
+  char* empty_hash = "e8c790169510bfbab9d25019a4f78716";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  128 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -328,7 +328,7 @@ void test_64( char* val1 ) {
   char hex[17];
   sprintf(hex,"%016" PRIx64,hash[0] );
 
-  char* empty_hash = "b4d1fb3fec8b0428";
+  char* empty_hash = "a041afe55d33c2cf";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {
