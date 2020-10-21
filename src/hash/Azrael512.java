@@ -27,10 +27,10 @@ public class Azrael512 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe4a102a4f243dde7c1ffe501b86c5303421415e2aab2132e7";
+			"62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe4a102a4f243dde7c612f804096dc267dcb70cef8a554c94c";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"e305ab9cdbc5a4db6aedd79126675f5297d7f5e79cdad1e1d85e8ba22884d8d5248c98f5ffbc5bdcf75659a26ab49278188d3389a5c32a2998180508ee7f0171";
+			"c1feef8f01435b4d4d1a3a4ce8d4f27945590a7bbbe44c80131d34debd74d6ba56e4d067551ed2d69b286e3fe99737e64e590cf26037da61f7d79247284f90b6";
 	
 	/**
 	 * 
@@ -275,8 +275,8 @@ public class Azrael512 implements FuncionHash {
 			hash4 += evaluaFuncBool( hash4,hash4,hash4,hash4,hash4) + IV9;
 			hash5 += evaluaFuncBool( hash5,hash5,hash5,hash5,hash5) + IV10;
 			hash6 += evaluaFuncBool( hash6,hash6,hash6,hash6,hash6) + IV1;
-			hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV3;
-			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV8;
+			hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV8;
+			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV2;
 		
 			if( DEBUG_PARTIAL_HASH ) {
 				System.out.println( "**** END DISPERSION FINAL 8x64: " );
