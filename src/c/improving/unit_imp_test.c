@@ -118,13 +118,17 @@ void test_512( char* val1 ) {
 
 void test_64( char* val1 ) {
 
+	int a=4;
+	int b=6;
+	int c=6;
+
   uint64_t hash[1]; // output 8 bytes/64 bits.
-  eval_hash_64( val1, hash, strlen(val1), 7, 7, 4 );
+  eval_hash_64( val1, hash, strlen(val1), a, b, c );
 
   char hex[17];
   sprintf(hex,"%016" PRIx64,hash[0] );
 
-  char* empty_hash = "d5a457d2b0fca4ff";
+  char* empty_hash = "ac242eaf9248c6df";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -262,6 +266,10 @@ int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uin
 
 int main(int argc, char *argv[]) {
 
+	int a=4; //7
+	int b=6; //7
+	int c=6; //4
+
   char* val1 = ""; // input the empty string.
   long n;
   int t;
@@ -273,20 +281,20 @@ int main(int argc, char *argv[]) {
 	val1 = argv[1];
 	char hex[17];
 	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
-	itera_64( val1, 1, 1, hex, hash, 7,7,4 );
+	itera_64( val1, 1, 1, hex, hash, a,b,c );
   } else if( argc == 3 ) { // Num. de iteracion.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	char hex[17];
 	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
-	itera_64( val1, n, 1, hex, hash, 7,7,4 );
+	itera_64( val1, n, 1, hex, hash, a,b,c );
   } else if( argc == 4 ) { // Bandera para imprimir el hash.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	char hex[17];
 	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
-	itera_64( val1, n, t, hex, hash, 7,7,4 );
+	itera_64( val1, n, t, hex, hash, a,b,c );
   } else if( argc == 5 ) { // Tipo de algoritmo.
 	val1 = argv[1];
 	n = atol(argv[2]);

@@ -13,7 +13,7 @@ FILE_IN_1=../../rockyou.txt
 FILE_IN_2=../../en.txt
 FILE_IN_3=../../esp.txt
 
-FILE_IN=$FILE_IN_3
+FILE_IN=$FILE_IN_1
   
 TIMEFORMAT='TIME (USER)=%3lU'
 
@@ -38,14 +38,32 @@ export CLEAN_RM=1
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 7 8
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 8 5
 
+./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash 64 1 0 4 6 6
 
-for j in $(seq 0 9);
-do
-	for i in $(seq 0 9);
-	do 
-	  ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 1 0 $j $i
-	done
-done
+#for i in $(seq 0 9);
+#do
+#	for j in $(seq 0 9);
+#	do 
+#		for k in $(seq 0 9);
+#		do 
+#			./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 $i $j $k
+#		done
+#	done
+#done
+
+#for i in $(seq 0 9);
+#do 
+#  ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash 64 1 0 7 7 $i
+#done
+
+
+#for j in $(seq 0 9);
+#do
+#	for i in $(seq 0 9);
+#	do 
+#	  ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 1 0 $j $i
+#	done
+#done
 
 
 # TESTING SUIT AGAINST SHA-3_512 SIPHASH
