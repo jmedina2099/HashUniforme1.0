@@ -23,7 +23,7 @@
   #include "azrael_imp_base.c"
 #endif
 
-void eval_hash_64( char* input, uint64_t* hash, int inputLength, int a, int b ) {
+void eval_hash_64( char* input, uint64_t* hash, int inputLength, int a, int b, int c ) {
   // Do padding..
   const int tail = inputLength % 64;
   int padding = 64 - tail >= 9? 64 - tail: 128 - tail;
@@ -79,7 +79,7 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength, int a, int b ) 
   carrier[1] += COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IVA(1);
   carrier[2] += COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IVA(2);
   carrier[3] += COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IVA(3);
-  carrier[4] += COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IVA(4);
+  carrier[4] += COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IVA(c);
 
   // Doing pile of bits.. (vertical 'avalanche' effect (2))
   hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
