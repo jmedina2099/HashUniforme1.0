@@ -6,6 +6,6 @@ TIMEFORMAT='TOTAL TIME (USER)=%3lU'
 date +"===================> %c <==================="
 
 echo '===================> PROCESSING...'
-time ./process.sh $1 $2 $3 $6 $SHOW $5 $7 $4 $CLEAN_RM $8 $9
+time ./process.sh $1 $2 $3 $6 $SHOW $5 $7 $4 $CLEAN_RM $8 $9 ${10}
 
 date +"===================> %c <==================="
