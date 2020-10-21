@@ -13,7 +13,7 @@ FILE_IN_1=../../rockyou.txt
 FILE_IN_2=../../en.txt
 FILE_IN_3=../../esp.txt
 
-FILE_IN=$FILE_IN_2
+FILE_IN=$FILE_IN_3
   
 TIMEFORMAT='TIME (USER)=%3lU'
 
@@ -25,13 +25,13 @@ export SHOW=0
 export CLEAN_RM=1
 
 
-for i in $(seq 0 2);
-do
-   FILE_IN=${FILE_IN_ARR[$i]}
-   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-out.hash 64 1 1 4 6
-   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-out.hash 64 1 1 7 7
-   # or do whatever with individual element of the array
-done
+#for i in $(seq 0 2);
+#do
+#   FILE_IN=${FILE_IN_ARR[$i]}
+#   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-out.hash 64 1 1 4 6
+#   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-out.hash 64 1 1 7 7
+#   # or do whatever with individual element of the array
+#done
 
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 4 6
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 7 7
@@ -39,13 +39,13 @@ done
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 8 5
 
 
-#for j in $(seq 0 9);
-#do
-#	for i in $(seq 0 9);
-#	do 
-	  #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 $j $i
-#	done
-#done
+for j in $(seq 0 9);
+do
+	for i in $(seq 0 9);
+	do 
+	  ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 1 0 $j $i
+	done
+done
 
 
 # TESTING SUIT AGAINST SHA-3_512 SIPHASH

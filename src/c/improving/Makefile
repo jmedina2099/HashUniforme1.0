@@ -23,6 +23,7 @@ endif
 
 TARGET_BASE = azrael_imp_base
 TARGET_64 = azrael_imp_64_link
+TARGET_512 = azrael_imp_512_link
 UNIT_TEST = unit_imp_test
 
 all: $(TARGET_BASE) $(TARGET_64) $(UNIT_TEST)
@@ -34,6 +35,9 @@ $(TARGET_BASE): $(TARGET_BASE).c
 $(TARGET_64): $(TARGET_64).c
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_64) $(TARGET_64).c
 
+$(TARGET_512): $(TARGET_512).c
+	$(CC) $(CFLAGS) $(COPT) $(CDELL) -c -o $(TARGET_512) $(TARGET_512).c
+
 $(UNIT_TEST): $(UNIT_TEST).c
 	$(MAKE) -C $(SHA_DIR)
 	$(CC) $(CFLAGS) $(COPT) $(CDELL) -o $(UNIT_TEST) $(UNIT_TEST).c
@@ -41,6 +45,7 @@ $(UNIT_TEST): $(UNIT_TEST).c
 clean-target:
 	$(RM) $(TARGET_BASE)
 	$(RM) $(TARGET_64)
+	$(RM) $(TARGET_512)
 	$(RM) $(UNIT_TEST)
 
 clean-hashes:
