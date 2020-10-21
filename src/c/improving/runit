@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# First test
+make test
+
+# Output dirs.
+export DIR_HASH=/spacio/azrael
+export DIR_HASH_XZ=/spacio/azrael
+
+declare -a FILE_IN_ARR=("../../rockyou.txt" "../../en.txt" "../../esp.txt")
+
+FILE_IN_1=../../rockyou.txt
+FILE_IN_2=../../en.txt
+FILE_IN_3=../../esp.txt
+
+FILE_IN=$FILE_IN_2
+  
+TIMEFORMAT='TIME (USER)=%3lU'
+
+date +"===================> %c <======================================"
+echo 'COUNTING FILE BITS ['$FILE_IN']..'
+time nice -0 ../random/random $FILE_IN
+
+export SHOW=0
+export CLEAN_RM=1
+
+
+for i in $(seq 0 2);
+do
+   FILE_IN=${FILE_IN_ARR[$i]}
+   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-out.hash 64 1 1 4 6
+   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-out.hash 64 1 1 7 7
+   # or do whatever with individual element of the array
+done
+
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 4 6
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 7 7
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 7 8
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 8 5
+
+
+#for j in $(seq 0 9);
+#do
+#	for i in $(seq 0 9);
+#	do 
+	  #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 0 $j $i
+#	done
+#done
+
+
+# TESTING SUIT AGAINST SHA-3_512 SIPHASH
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsiphash-rock.hash siphash 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsha3-rock.hash sha3 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out128-rock.hash 128 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out192-rock.hash 192 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash 320 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash 512 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxM-rock.hash xM 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxMM-rock.hash xMM 2 0
+
+# TESTING SUIT WITH COMPRESSION TEST
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out128-rock.hash 128 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out192-rock.hash 192 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash 320 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash 512 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxM-rock.hash xM 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxMM-rock.hash xMM 1 1
+
+# TESTING NUM OF ITERATIONS
+# 64 BITS 1-2-3
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash.1 64 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash.2 64 2 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash.3 64 3 0
+
+# 64 BITS 1-10-20
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash.1 64 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash.10 64 10 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash.20 64 20 0
+
+# 320 BITS 1-10-20
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash.1 320 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash.10 320 10 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out320-rock.hash.20 320 20 0
+
+# 512 BITS 1-10-20
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash.1 512 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash.10 512 10 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash.20 512 20 0
+
+# 768 BITS 1-10-20
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash.1 x4 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash.10 x4 10 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash.20 x4 20 0
+
+# 1024 BITS 1-10-20
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxM-rock.hash.1 xM 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxM-rock.hash.10 xM 10 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxM-rock.hash.20 xM 20 0
+
+# 2048 BITS 1-10-20
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxMM-rock.hash.1 xMM 1 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxMM-rock.hash.10 xMM 10 0
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outxMM-rock.hash.20 xMM 20 0

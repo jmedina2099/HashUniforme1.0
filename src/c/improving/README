@@ -1,0 +1,4 @@
+make clean
+#make clean-hashes
+make
+./runit 2>&1 | tee azrael_imp.log

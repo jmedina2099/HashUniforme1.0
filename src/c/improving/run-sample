@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TIMEFORMAT='TOTAL TIME (USER)=%3lU'
+
+#echo -ne '\e[?7h'
+date +"===================> %c <==================="
+
+echo '===================> PROCESSING...'
+time ./process.sh $1 $2 $3 $6 $SHOW $5 $7 $4 $CLEAN_RM $8 $9
+
+date +"===================> %c <==================="
