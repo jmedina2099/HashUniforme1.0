@@ -154,8 +154,8 @@ void eval_hash_x4( char* input, uint64_t* hash, int inputLength ) {
   hash[7]  += COMPRESS_320( hash[7],hash[7],hash[7],hash[7],hash[7]) + IV[7];
   hash[8]  += COMPRESS_320( hash[8],hash[8],hash[8],hash[8],hash[8]) + IV[4];
   hash[9]  += COMPRESS_320( hash[9],hash[9],hash[9],hash[9],hash[9]) + IV[6];
-  hash[10] += COMPRESS_320( hash[10],hash[10],hash[10],hash[10],hash[10]) + IV[9];
-  hash[11] += COMPRESS_320( hash[11],hash[11],hash[11],hash[11],hash[11]) + IV[3];
+  hash[10] += COMPRESS_320( hash[10],hash[10],hash[10],hash[10],hash[10]) + IV[7];
+  hash[11] += COMPRESS_320( hash[11],hash[11],hash[11],hash[11],hash[11]) + IV[7];
 
   // Finally, we add the number of rounds to output..
   hash[11] += inputLength + 8 + 12 + 12;
