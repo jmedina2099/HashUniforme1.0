@@ -31,10 +31,10 @@ public class Azrael64 implements FuncionHash {
 	private RandomAccessFile fileToPersist;
 
 	private static final String EMPTY_STRING_1_IT =
-			"a041afe55d33c2cf";
+			"d5a457d2b0fca4ff";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"f2bb8c6efc407fae";
+			"96ade719a4f10c3e";
 
 	/**
 	 * 
@@ -247,7 +247,7 @@ public class Azrael64 implements FuncionHash {
 	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
 	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL);
 
-		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV6;
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV8;
 		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV8;
 		
 		if( DEBUG_PARTIAL_HASH ) {

@@ -88,7 +88,7 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength ) {
             ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffffL);
 
   // Doing dispersion of bits.. (horizontal 'avalanche' effect (3))
-  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[5];
+  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[7];
   hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[7];
 
   // Finally, we add the number of rounds to output..
