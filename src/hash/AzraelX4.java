@@ -27,10 +27,10 @@ public class AzraelX4 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"6219986a754b80526556d98a6f67e19c32e5c68c9b3321cd40cba83372e0eeef9774287a573d1c4b4a102a501e2a9a9c1ffe501c67efa8559d66d7d1aaf6e76f454a46c642cf1cf9aaafe17a9f1c2775d38b173aa0bdb0362243f0dbe83b72cb";
+			"6219986a754b80526556d98a6f67e19c32e5c68c9b3321cd40cba83372e0eeef9774287a573d1c4b4a102a501e2a9a9c1ffe501c67efa8559d66d7d1aaf6e76f454a46c642cf1cf9aaafe17a9f1c277541991420f6cd914894ff99d537770487";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"61c243684ace59836818538559f6ecb25d40e1d1ab2218a3d812a8e61c870237e4609f6e200cb34d98cb45951414958c511350cf275edba3a9bdbaa5ab7b4258428bc0bfb140b3204f5ad00259f51ca0d3055e08bbb857d21f856ad6429672b7";
+			"1dc6e5ee1de394a62e6849900aa2b2e5c7b815c8a4331cd2598554141284d39e65201fe981615a359ccf798bb7555e7cbc9bfbfb9e18d22a08127572763553343a85b6ccf999d0339449e03ebf6f39ed22fe6250b71f6a9c8a3b09da25df0b77";
 	
 	/**
 	 * 
@@ -311,8 +311,8 @@ public class AzraelX4 implements FuncionHash {
 			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV8;
 			hash9 += evaluaFuncBool( hash9,hash9,hash9,hash9,hash9) + IV5;
 			hashA += evaluaFuncBool( hashA,hashA,hashA,hashA,hashA) + IV7;
-			hashB += evaluaFuncBool( hashB,hashB,hashB,hashB,hashB) + IV10;
-			hashC += evaluaFuncBool( hashC,hashC,hashC,hashC,hashC) + IV4;
+			hashB += evaluaFuncBool( hashB,hashB,hashB,hashB,hashB) + IV8;
+			hashC += evaluaFuncBool( hashC,hashC,hashC,hashC,hashC) + IV8;
 		
 			if( DEBUG_PARTIAL_HASH ) {
 				System.out.println( "**** END DISPERSION FINAL 8x64: " );
