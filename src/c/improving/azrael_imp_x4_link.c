@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 #ifndef UNIT_TEST
-  #include "azrael_base.c"
+  #include "azrael_imp_base.c"
 #endif
 
 void eval_hash_x4( char* input, uint64_t* hash, int inputLength, int a, int b ) {
