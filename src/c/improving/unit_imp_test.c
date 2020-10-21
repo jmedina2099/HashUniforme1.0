@@ -119,7 +119,7 @@ void test_512( char* val1 ) {
 void test_64( char* val1 ) {
 
   uint64_t hash[1]; // output 8 bytes/64 bits.
-  eval_hash_64( val1, hash, strlen(val1), 7, 7 );
+  eval_hash_64( val1, hash, strlen(val1), 7, 7, 4 );
 
   char hex[17];
   sprintf(hex,"%016" PRIx64,hash[0] );
@@ -132,7 +132,7 @@ void test_64( char* val1 ) {
   }
 }
 
-void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, int b) {
+void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, int b, int c) {
 
   long i;
   int j;
@@ -140,7 +140,7 @@ void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, i
   char val2[8];
 
   for( i=0; i<n; i++ ) {
-    eval_hash_64( val1, hash, size, a, b );
+    eval_hash_64( val1, hash, size, a, b, c );
     for(j=0; j<8; j++ ) {
       val2[7-j] = hash[0] >> 8*j;
     }
@@ -154,19 +154,20 @@ void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, i
   }
 }
 
-void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash, int a, int b ) {
+void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash, int a, int b, int c ) {
 
 	if( strcmp(spice,"64") == 0 ) {
-		a = a==0? 7: a;
-		b = b==0? 7: b;
-		itera_64( val1, n, flag, hex, hash, a, b );
+		a = a==-1? 7: a;
+		b = b==-1? 7: b;
+		c = c==-1? 4: c;
+		itera_64( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"512") == 0 ) {
-		a = a==0? 7: a;
-		b = b==0? 1: b;
+		a = a==-1? 7: a;
+		b = b==-1? 1: b;
 		itera_512( val1, n, flag, hex, hash, a, b );
 	} else if( strcmp(spice,"x4") == 0 ) {
-		a = a==0? 7: a;
-		b = b==0? 7: b;
+		a = a==-1? 7: a;
+		b = b==-1? 7: b;
 		itera_x4( val1, n, flag, hex, hash, a, b );
 	}
 }
@@ -222,7 +223,7 @@ int doFileRead( long n, int flag, char* spice, char* filein ) {
     char hex[sizeHex];
     uint64_t hash[getOutSize(spice)];
     while ((read = getline(&line, &len, fp)) != -1) {
-    	itera(line,n,flag,hex,spice,hash,5,7);
+    	itera(line,n,flag,hex,spice,hash,-1,-1,-1);
     }
 
     fclose(fp);
@@ -231,7 +232,7 @@ int doFileRead( long n, int flag, char* spice, char* filein ) {
     exit(EXIT_SUCCESS);
 }
 
-int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uint64_t* hash, int size, int a, int b ) {
+int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uint64_t* hash, int size, int a, int b, int c ) {
     FILE * fp;
     FILE * fo;
     char * line = NULL;
@@ -248,7 +249,7 @@ int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uin
     int sizeHex = getNumHex(spice);
     char hex[sizeHex];
     while ((read = getline(&line, &len, fp)) != -1) {
-    	itera(line,n,flag,hex,spice,hash,a,b);
+    	itera(line,n,flag,hex,spice,hash,a,b,c);
     	fwrite(hash, sizeof(hash[0]), size, fo);
     }
 
@@ -272,20 +273,20 @@ int main(int argc, char *argv[]) {
 	val1 = argv[1];
 	char hex[17];
 	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
-	itera_64( val1, 1, 1, hex, hash, 7,7 );
+	itera_64( val1, 1, 1, hex, hash, 7,7,4 );
   } else if( argc == 3 ) { // Num. de iteracion.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	char hex[17];
 	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
-	itera_64( val1, n, 1, hex, hash, 7,7 );
+	itera_64( val1, n, 1, hex, hash, 7,7,4 );
   } else if( argc == 4 ) { // Bandera para imprimir el hash.
 	val1 = argv[1];
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	char hex[17];
 	uint64_t hash[getOutSize("")]; // output 8 bytes/64 bits.
-	itera_64( val1, n, t, hex, hash, 7,7 );
+	itera_64( val1, n, t, hex, hash, 7,7,4 );
   } else if( argc == 5 ) { // Tipo de algoritmo.
 	val1 = argv[1];
 	n = atol(argv[2]);
@@ -293,7 +294,7 @@ int main(int argc, char *argv[]) {
 	int sizeHex = getNumHex(argv[4]);
 	char hex[sizeHex];
 	uint64_t hash[getOutSize(argv[4])];
-    itera( val1, n, t, hex, argv[4], hash, 0,0);
+    itera( val1, n, t, hex, argv[4], hash, -1,-1,-1 );
   } else if( argc == 6 ) { // Archivo a hashear entrada.
     n = atol(argv[2]);
     t = atoi(argv[3]);
@@ -303,15 +304,24 @@ int main(int argc, char *argv[]) {
     t = atoi(argv[3]);
 	uint64_t hash[getOutSize(argv[4])];
 	int sizeBytes = (int)((getOutSize2(argv[4]))/8.0);
-    doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes, 0,0 );
-  } else if( argc == 9 ) {
+    doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes, -1,-1,-1 );
+  } else if( argc == 9 ) { // (a,b) iv's perm.
 	int a = atoi(argv[7]);
 	int b = atoi(argv[8]);
 	n = atol(argv[2]);
 	t = atoi(argv[3]);
 	uint64_t hash[getOutSize(argv[4])];
 	int sizeBytes = (int)((getOutSize2(argv[4]))/8.0);
-	doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes, a,b );
+	doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes, a,b,-1 );
+  } else if( argc == 10 ) { // c iv perm.
+	int a = atoi(argv[7]);
+	int b = atoi(argv[8]);
+	int c = atoi(argv[9]);
+	n = atol(argv[2]);
+	t = atoi(argv[3]);
+	uint64_t hash[getOutSize(argv[4])];
+	int sizeBytes = (int)((getOutSize2(argv[4]))/8.0);
+	doFileWrite( n, t, argv[4], argv[5], argv[6], hash, sizeBytes, a,b,c );
   }
 
   return 0;
