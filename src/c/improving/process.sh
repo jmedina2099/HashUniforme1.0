@@ -7,7 +7,7 @@ export BZIP=-9
 
 echo '===> PROCESANDO.. FILE=[['$3']]-BITS=[['$6']]-[['$4'x]] OUT_DIR_HASH=[['$OUT_DIR_HASH']] OUT_DIR_HASH_XZ=[['$OUT_DIR_HASH_XZ']]'
 
-echo '===>('${10}','${11}')'
+echo '===>('${10}','${11}','${12}')'
 
 #echo 'COUNTING FILE BITS..'
 #time nice -0 ../random/random $3 
@@ -27,7 +27,7 @@ then
   done
 else
   echo 'c is parsing file..'
-  time nice -0 ./unit_imp_test "" $4 $5 $6 $3 $OUT_DIR_HASH/$8 ${10} ${11}
+  time nice -0 ./unit_imp_test "" $4 $5 $6 $3 $OUT_DIR_HASH/$8 ${10} ${11} ${12}
 fi
 
 #if [ $5 -eq 1 ]
