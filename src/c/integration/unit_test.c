@@ -328,7 +328,7 @@ void test_64( char* val1 ) {
   char hex[17];
   sprintf(hex,"%016" PRIx64,hash[0] );
 
-  char* empty_hash = "d5a457d2b0fca4ff";
+  char* empty_hash = "ac242eaf9248c6df";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {

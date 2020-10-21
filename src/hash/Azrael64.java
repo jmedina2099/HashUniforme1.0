@@ -31,10 +31,10 @@ public class Azrael64 implements FuncionHash {
 	private RandomAccessFile fileToPersist;
 
 	private static final String EMPTY_STRING_1_IT =
-			"d5a457d2b0fca4ff";
+			"ac242eaf9248c6df";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"96ade719a4f10c3e";
+			"6493ce8d67e26042";
 
 	/**
 	 * 
@@ -231,7 +231,7 @@ public class Azrael64 implements FuncionHash {
 		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
 		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
 		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
-		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV5;
+		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV7;
 
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** END DISPERSION 5x64: " );
@@ -247,8 +247,8 @@ public class Azrael64 implements FuncionHash {
 	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & 0xffffffffL) |
 	               ((sumaAnt3+sumaAnt4+sumaAnt5) & 0xffffffffL);
 
-		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV8;
-		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV8;
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV5;
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV7;
 		
 		if( DEBUG_PARTIAL_HASH ) {
 			System.out.println( "**** END APILACION 1x64:" );
