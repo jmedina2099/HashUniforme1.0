@@ -23,7 +23,7 @@
   #include "azrael_imp_base.c"
 #endif
 
-void eval_hash_512( char* input, uint64_t* hash, int inputLength, int a, int b ) {
+void eval_hash_512( char* input, uint64_t* hash, int inputLength, int a, int b, int c ) {
   // Do padding..
   const int tail = inputLength % 64;
   int padding = 64 - tail >= 9? 64 - tail: 128 - tail;
@@ -133,7 +133,7 @@ void eval_hash_512( char* input, uint64_t* hash, int inputLength, int a, int b )
   hash[2]  += COMPRESS_320( hash[2],hash[2],hash[2],hash[2],hash[2]) + IVA(7);
   hash[3]  += COMPRESS_320( hash[3],hash[3],hash[3],hash[3],hash[3]) + IVA(8);
   hash[4]  += COMPRESS_320( hash[4],hash[4],hash[4],hash[4],hash[4]) + IVA(9);
-  hash[5]  += COMPRESS_320( hash[5],hash[5],hash[5],hash[5],hash[5]) + IVA(0);
+  hash[5]  += COMPRESS_320( hash[5],hash[5],hash[5],hash[5],hash[5]) + IVA(c);
   hash[6]  += COMPRESS_320( hash[6],hash[6],hash[6],hash[6],hash[6]) + IVA(a);
   hash[7]  += COMPRESS_320( hash[7],hash[7],hash[7],hash[7],hash[7]) + IVA(b);
 

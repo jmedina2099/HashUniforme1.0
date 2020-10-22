@@ -75,7 +75,7 @@ void test_x4( char* val1 ) {
 
 }
 
-void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, int b) {
+void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, int b, int c) {
 
   long i;
   int j,k;
@@ -83,7 +83,7 @@ void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, 
   char val2[64];
 
   for( i=0; i<n; i++ ) {
-    eval_hash_512( val1, hash, size, a, b );
+    eval_hash_512( val1, hash, size, a, b, c );
     for(k=0; k<8; k++ ) {
       for(j=0; j<8; j++ ) {
         val2[8*(k+1)-1-j] = hash[k] >> 8*j;
@@ -101,8 +101,12 @@ void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, 
 
 void test_512( char* val1 ) {
 
-  uint64_t hash[8]; // output 64 bytes/512 bits.
-  eval_hash_512( val1, hash, strlen(val1), 7, 1 );
+	int a=7;
+	int b=1;
+	int c=0;
+
+	uint64_t hash[8]; // output 64 bytes/512 bits.
+  eval_hash_512( val1, hash, strlen(val1), a,b,c );
 
   char hex[129];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
@@ -161,14 +165,15 @@ void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, i
 void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash, int a, int b, int c ) {
 
 	if( strcmp(spice,"64") == 0 ) {
-		a = a==-1? 7: a;
-		b = b==-1? 7: b;
-		c = c==-1? 4: c;
+		a = a==-1? 4: a;
+		b = b==-1? 6: b;
+		c = c==-1? 6: c;
 		itera_64( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"512") == 0 ) {
 		a = a==-1? 7: a;
 		b = b==-1? 1: b;
-		itera_512( val1, n, flag, hex, hash, a, b );
+		c = c==-1? 0: c;
+		itera_512( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"x4") == 0 ) {
 		a = a==-1? 7: a;
 		b = b==-1? 7: b;
