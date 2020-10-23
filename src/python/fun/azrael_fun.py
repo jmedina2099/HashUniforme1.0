@@ -6,22 +6,23 @@ import sys
 import numpy as np
 
 def evaluaFuncBool(char1,char2,char3,char4,char5):
-    return (( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5) + \
-           (( char1 & char2 ) ^ ( char3 + char4 ) ^ char5) + \
-           (( char1 ^ char2 ) + ( char3 + char4 ) ^ char5) + \
-           (( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5) + \
-           (( char1 & char2 ) + ( char3 + char4 ) + char5) + \
-           (( char1 & char2 ) + ( char3 + char4 ) ^ char5) + \
-           (( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5) + \
-           (( char1 | char2 ) ^ ( char3 + char4 ) ^ char5) + \
-           (( char1 | char2 ) | ( char3 + char4 ) ^ char5) + \
-           (( char1 + char2 ) + ( char3 + char4 ) ^ char5) + \
-           (( char1 + char2 ) & ( char3 + char4 ) ^ char5) + \
-           (( char1 ^ char2 ) + ( char3 ^ char4 ) ^ char5) + \
-           (( char1 | char2 ) ^ ( char3 ^ char4 ) ^ char5) + \
-           (( char1 + char2 ) + ( char3 ^ char4 ) ^ char5) + \
-           (( char1 + char2 ) ^ ( char3 + char4 ) ^ char5) + \
-           (( char1 + char2 ) & ( char3 + char4 ) + char5);
+    c_0 = (( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5);
+    c_1 = (( char1 & char2 ) ^ ( char3 + char4 ) ^ char5);
+    c_2 = (( char1 ^ char2 ) + ( char3 + char4 ) ^ char5);
+    c_3 = (( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5);
+    c_4 = (( char1 & char2 ) + ( char3 + char4 ) + char5);
+    c_5 = (( char1 & char2 ) + ( char3 + char4 ) ^ char5);
+    c_6 = (( char1 ^ char2 ) ^ ( char3 + char4 ) ^ char5);
+    c_7 = (( char1 | char2 ) ^ ( char3 + char4 ) ^ char5);
+    c_8 = (( char1 | char2 ) | ( char3 + char4 ) ^ char5);
+    c_9 = (( char1 + char2 ) + ( char3 + char4 ) ^ char5);
+    c_a = (( char1 + char2 ) & ( char3 + char4 ) ^ char5);
+    c_b = (( char1 ^ char2 ) + ( char3 ^ char4 ) ^ char5);
+    c_c = (( char1 | char2 ) ^ ( char3 ^ char4 ) ^ char5);
+    c_d = (( char1 + char2 ) + ( char3 ^ char4 ) ^ char5);
+    c_e = (( char1 + char2 ) ^ ( char3 + char4 ) ^ char5);
+    c_f = (( char1 + char2 ) & ( char3 + char4 ) + char5);
+    return c_0+c_1+c_2+c_3+c_4+c_5+c_6+c_7+c_8+c_9+c_a+c_b+c_c+c_d+c_e+c_f;
 
 def pad(data):
 
@@ -117,7 +118,7 @@ class Azrael(object):
         carrier[2] += evaluaFuncBool( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + self._IV[2];
         carrier[3] += evaluaFuncBool( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + self._IV[3];
         carrier[4] += evaluaFuncBool( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + self._IV[6];
-        
+
         mask1 = np.int64(0xffffffff);
         mask2 = np.int64(-0x1);
          
