@@ -101,9 +101,9 @@ void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, 
 
 void test_512( char* val1 ) {
 
-	int a=7;
-	int b=1;
-	int c=0;
+	int a=2;
+	int b=3;
+	int c=6;
 
 	uint64_t hash[8]; // output 64 bytes/512 bits.
   eval_hash_512( val1, hash, strlen(val1), a,b,c );
@@ -111,7 +111,7 @@ void test_512( char* val1 ) {
   char hex[129];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
 
-  char* empty_hash = "62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe4a102a4f243dde7c612f804096dc267dcb70cef8a554c94c";
+  char* empty_hash = "62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe195d0642c2c741e81ffe501b86c53034ae85b5315be5a12b";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -170,9 +170,9 @@ void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash
 		c = c==-1? 6: c;
 		itera_64( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"512") == 0 ) {
-		a = a==-1? 7: a;
-		b = b==-1? 1: b;
-		c = c==-1? 0: c;
+		a = a==-1? 2: a;
+		b = b==-1? 3: b;
+		c = c==-1? 6: c;
 		itera_512( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"x4") == 0 ) {
 		a = a==-1? 7: a;
