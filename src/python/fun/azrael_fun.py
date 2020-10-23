@@ -3,6 +3,7 @@
 import struct
 import io
 import sys
+import numpy as np
 
 def evaluaFuncBool(char1,char2,char3,char4,char5):
     return (( char1 + char2 ) ^ ( char3 ^ char4 ) ^ char5) + \
@@ -31,30 +32,42 @@ def pad(data):
     else:
         padding = 128 - tail;
 
-    pad = [0 for i in range(padding)];
-    pad[0] = 0x80;
+    pad = [np.int64(0) for i in range(padding)];
+    pad[0] = np.int64(-0x80);
     bits = length * 8;
     for i in range(8):
         pad[padding - 1 - i] = ((bits >> (8 * i)) & 0xFF);
 
-    return data + bytes(pad);
+    out = [np.int64(0) for i in range(length+padding)];
+    for i in range(length):
+        out[i] = np.int64(data[i]);
+    for i in range(padding):
+        out[length+i] = pad[i];
 
+    return out;
+
+def longToBytes(l):
+    result = [0 for i in range(8)];
+    for i in range(7,-1,-1):
+        result[i] = l & 0xFF;
+        l >>= 8;
+    return result;
 
 class Azrael(object):
     
     def __init__(self):
         # Initial digest variables
         self._IV = (
-            0x6a09e667bb67ae85,
-            0x3c6ef372a54ff53a,
-            0x510e527f9b05688c,
-            0x1f83d9ab5be0cd19,
-            0x428a2f9871374491,
-            0xb5c0fbcfe9b5dba5,
-            0x3956c25b59f111f1,
-            0x923f82a4ab1c5ed5,
-            0xd807aa9812835b01,
-            0x243185be550c7dc3,
+            np.int64(0x6a09e667bb67ae85),
+            np.int64(0x3c6ef372a54ff53a),
+            np.int64(0x510e527f9b05688c),
+            np.int64(0x1f83d9ab5be0cd19),
+            np.int64(0x428a2f9871374491),
+            np.int64(-0x4A3F0430164A245B),
+            np.int64(0x3956c25b59f111f1),
+            np.int64(-0x6DC07D5B54E3A12B),
+            np.int64(-0x27F85567ED7CA4FF),
+            np.int64(0x243185be550c7dc3),
         )
 
     def getHashEval(self,input):
@@ -99,20 +112,34 @@ class Azrael(object):
         carrier[1] += carrier[0];
         carrier[0] += evaluaFuncBool( char[0],char[1],char[2],char[3],char[4]);
         
-        hash = ((carrier[0] << 48) & 0xffffffffffffffff ) | \
-            (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffff ) | \
-            (((carrier[0]+carrier[1]+carrier[2]) << 16) & 0xffffffff) | \
-            ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffff);
-        hash += length;
+        carrier[0] += evaluaFuncBool( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + self._IV[0];
+        carrier[1] += evaluaFuncBool( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + self._IV[1];
+        carrier[2] += evaluaFuncBool( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + self._IV[2];
+        carrier[3] += evaluaFuncBool( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + self._IV[3];
+        carrier[4] += evaluaFuncBool( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + self._IV[6];
         
-        return hash;
+        mask1 = np.int64(0xffffffff);
+        mask2 = np.int64(-0x1);
+         
+        hash = np.int64(0); 
+        hash = ((carrier[0] << 48) & mask2 ) | \
+            (((carrier[0]+carrier[1]) << 32) & mask2 ) | \
+            (((carrier[0]+carrier[1]+carrier[2]) << 16) & mask1) | \
+            ((carrier[2]+carrier[3]+carrier[4]) & mask1);
+
+        hash += evaluaFuncBool( hash,hash,hash,hash,hash) + self._IV[4];
+        hash += evaluaFuncBool( hash,hash,hash,hash,hash) + self._IV[6];
+        hash += length + 5 + 1 + 2;
+        
+        return longToBytes(hash);
 
 
 def main():
-    print("OK")
     azrael = Azrael();
     output = azrael.getHashEval( bytearray(b'') );
-    print(hex(output)); 
+    hex = '0x' + ''.join('{:02x}'.format(i) for i in output);
+    print(hex);
+    
     
 if __name__ == "__main__":
     main()
