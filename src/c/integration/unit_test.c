@@ -167,7 +167,7 @@ void test_512( char* val1 ) {
   char hex[129];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
 
-  char* empty_hash = "62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbe95c73fb7528c0b9c0b5ef10e910fbce2e0102e059b0a3c9e";
+  char* empty_hash = "62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbeff8a1d92c4b6fd100846bff745b0d999e0102e059b0a3c9e";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
