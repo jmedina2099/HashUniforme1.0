@@ -7,7 +7,14 @@ make test
 export DIR_HASH=/spacio/azrael
 export DIR_HASH_XZ=/spacio/azrael
 
-FILE_IN=../../rockyou.txt 
+declare -a FILE_IN_ARR=("../../rockyou.txt" "../../en.txt" "../../esp.txt")
+
+FILE_IN_1=../../rockyou.txt
+FILE_IN_2=../../en.txt
+FILE_IN_3=../../esp.txt
+
+FILE_IN=$FILE_IN_1
+
 TIMEFORMAT='TIME (USER)=%3lU'
 
 date +"===================> %c <======================================"
@@ -17,10 +24,17 @@ time nice -0 ../random/random $FILE_IN
 export SHOW=0
 export CLEAN_RM=1
 
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsiphash-rock.hash siphash 1 1
+#for i in $(seq 0 2);
+#do
+#   FILE_IN=${FILE_IN_ARR[$i]}
+#   ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsiphash-rock.hash siphash 1 1
+#done
+
+
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsiphash-rock.hash siphash 1 1
 ./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out64-rock.hash 64 1 1
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsha3-rock.hash sha3 1 1
-./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash 512 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outsha3-rock.hash sha3 1 1
+#./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN out512-rock.hash 512 1 1
 #./run-sample $DIR_HASH $DIR_HASH_XZ $FILE_IN outx4-rock.hash x4 1 1
 
 # TESTING SUIT AGAINST SHA-3_512 SIPHASH

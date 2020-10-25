@@ -40,7 +40,6 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength, int aa, int bb,
   int b =3;
   int c =4;
   int d =5;
-  int e =6;
 
   // First iteration..
   cha[0] += (uint64_t)input[ inputLength-2 ];
@@ -81,11 +80,11 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength, int aa, int bb,
   carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
 
   // Doing dispersion of bits..
-  carrier[0] += ROTATE_AZR( (COMPRESS_320( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0]), (40+e) );
-  carrier[1] += ROTATE_AZR( (COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[1]), (32+d) );
-  carrier[2] += ROTATE_AZR( (COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[2]), (24+c) );
-  carrier[3] += ROTATE_AZR( (COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[3]), (16+b) );
-  carrier[4] += ROTATE_AZR( (COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[cc]), (8+a) );
+  carrier[0] += COMPRESS_320( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0];
+  carrier[1] += COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[1];
+  carrier[2] += COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[2];
+  carrier[3] += COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[3];
+  carrier[4] += COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[cc];
 
   // Doing pile of bits..
   hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
@@ -94,8 +93,8 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength, int aa, int bb,
             ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffffL);
 
   // Doing dispersion of bits
-  hash[0]  += ROTATE_AZR( (COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[aa]), (16*b) );
-  hash[0]  += ROTATE_AZR( (COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[bb]), (8*a) );
+  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[aa];
+  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[bb];
 
   // Finally, we add the number of rounds to output..
   hash[0] += inputLength + 5 + 1 + 2;
