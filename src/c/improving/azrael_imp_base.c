@@ -61,6 +61,8 @@ const uint64_t IV[10] = {
 
 #define IVA(i) IV[i]
 
+#define ROTATE_AZR(x,o) (uint64_t)( x >> o )
+
 static inline char* azr_pad( const char* data, int length, int padding, char* output ) {
   int i;
   const uint64_t bits = length * 8;

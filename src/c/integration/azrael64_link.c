@@ -36,16 +36,22 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength ) {
   uint64_t cha[5] = {IV[0],IV[1],IV[2],IV[3],IV[4]};
   uint64_t carrier[5] = {IV[5],IV[6],IV[7],IV[8],IV[9]};
 
+  int a =2;
+  int b =3;
+  int c =4;
+  int d =5;
+  int e =6;
+
   // First iteration..
   cha[0] += (uint64_t)input[ inputLength-2 ];
   cha[1] += (uint64_t)input[ inputLength-1 ];
   cha[2] += (uint64_t)input[ 0 ];
   cha[3] += (uint64_t)input[ 1 ];
   cha[4] += (uint64_t)input[ 2 ];
-  carrier[4] += carrier[3];
-  carrier[3] += carrier[2];
-  carrier[2] += carrier[1];
-  carrier[1] += carrier[0];
+  carrier[4] += ROTATE_AZR( carrier[3], d);
+  carrier[3] += ROTATE_AZR( carrier[2], c);
+  carrier[2] += ROTATE_AZR( carrier[1], b);
+  carrier[1] += ROTATE_AZR( carrier[0], a);
   carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
   
   // Main Loop for hash streaming..
@@ -55,10 +61,10 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength ) {
     cha[2] += cha[3];
     cha[3] += (uint64_t)input[i+1];
     cha[4] += carrier[1];
-    carrier[4] += carrier[3];
-    carrier[3] += carrier[2];
-    carrier[2] += carrier[1];
-    carrier[1] += carrier[0];
+    carrier[4] += ROTATE_AZR( carrier[3], (8*(i+3)+d));
+    carrier[3] += ROTATE_AZR( carrier[2], (8*(i+2)+c));
+    carrier[2] += ROTATE_AZR( carrier[1], (8*(i+1)+b));
+    carrier[1] += ROTATE_AZR( carrier[0], (8*i+a));
     carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
   }
 
@@ -68,28 +74,28 @@ void eval_hash_64( char* input, uint64_t* hash, int inputLength ) {
   cha[2] += cha[3];
   cha[3] += (uint64_t)input[ 0 ];
   cha[4] += carrier[1];
-  carrier[4] += carrier[3];
-  carrier[3] += carrier[2];
-  carrier[2] += carrier[1];
-  carrier[1] += carrier[0];
+  carrier[4] += ROTATE_AZR( carrier[3],(32+d) );
+  carrier[3] += ROTATE_AZR( carrier[2],(24+c) );
+  carrier[2] += ROTATE_AZR( carrier[1],(16+b) );
+  carrier[1] += ROTATE_AZR( carrier[0],(8+a) );
   carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
 
-  // Doing dispersion of bits.. (horizontal 'avalanche' effect (1))
-  carrier[0] += COMPRESS_320( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0];
-  carrier[1] += COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[1];
-  carrier[2] += COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[2];
-  carrier[3] += COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[3];
-  carrier[4] += COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[6];
+  // Doing dispersion of bits..
+  carrier[0] += ROTATE_AZR( (COMPRESS_320( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0]), (40+e) );
+  carrier[1] += ROTATE_AZR( (COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[1]), (32+d) );
+  carrier[2] += ROTATE_AZR( (COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[2]), (24+c) );
+  carrier[3] += ROTATE_AZR( (COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[3]), (16+b) );
+  carrier[4] += ROTATE_AZR( (COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[6]), (8+a) );
 
-  // Doing pile of bits.. (vertical 'avalanche' effect (2))
+  // Doing pile of bits..
   hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
             (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffffL ) |
             (((carrier[0]+carrier[1]+carrier[2]) << 16) & 0xffffffffL) |
             ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffffL);
 
-  // Doing dispersion of bits.. (horizontal 'avalanche' effect (3))
-  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[4];
-  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[6];
+  // Doing dispersion of bits
+  hash[0]  += ROTATE_AZR( (COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[4]), (16*b) );
+  hash[0]  += ROTATE_AZR( (COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[6]), (8*a) );
 
   // Finally, we add the number of rounds to output..
   hash[0] += inputLength + 5 + 1 + 2;
