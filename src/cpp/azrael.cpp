@@ -144,21 +144,24 @@ class Azrael64 {
 
 int main(int argc, char *argv[]) {
 
-	Azrael64 azrael64;
+	if( argc > 1 )  {
+		string val(argv[1]); // input the empty string.
+		int size = val.length();
 
-	string val(argv[1]); // input the empty string.
-	int size = val.length();
+		Azrael64 azrael64;
 
-	char val1[size+1];
-	strcpy(val1, val.c_str());
+		char val1[size+1];
+		strcpy(val1, val.c_str());
 
-	uint64_t hash[1]; // output 8 bytes/64 bits.
-	azrael64.eval_hash_64(val1,hash,size);
+		uint64_t hash[1]; // output 8 bytes/64 bits.
+		azrael64.eval_hash_64(val1,hash,size);
 
-	stringstream sstream;
-	sstream << std::hex << hash[0];
-	string result = sstream.str();
+		stringstream sstream;
+		sstream << std::hex << hash[0];
+		string result = sstream.str();
 
-	std::cout << result << "\n";
+		std::cout << result << "\n";
+	}
+
     return 0;
 }
