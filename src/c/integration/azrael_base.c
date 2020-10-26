@@ -59,7 +59,10 @@ const uint64_t IV[10] = {
   + C8(x1,x2,x3,x4,x5) + C9(x1,x2,x3,x4,x5) + CA(x1,x2,x3,x4,x5) + CB(x1,x2,x3,x4,x5) \
   + CC(x1,x2,x3,x4,x5) + CD(x1,x2,x3,x4,x5) + CE(x1,x2,x3,x4,x5) + CF(x1,x2,x3,x4,x5)
 
-#define ROTATE_AZR(x,o) (uint64_t)( x >> o )
+static inline uint64_t ROTATE_AZR( uint64_t x, int o ) {
+	o %= 64;
+	return (uint64_t)( x >> o );
+}
 
 static inline char* azr_pad( const char* data, int length, int padding, char* output ) {
   int i;
