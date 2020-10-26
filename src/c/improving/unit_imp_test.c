@@ -101,9 +101,9 @@ void itera_512( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, 
 
 void test_512( char* val1 ) {
 
-	int a=6;
-	int b=2;
-	int c=3;
+	int a=9;
+	int b=3;
+	int c=5;
 
 	uint64_t hash[8]; // output 64 bytes/512 bits.
   eval_hash_512( val1, hash, strlen(val1), a,b,c );
@@ -111,7 +111,7 @@ void test_512( char* val1 ) {
   char hex[129];
   sprintf(hex,"%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,hash[0],hash[1],hash[2],hash[3],hash[4],hash[5],hash[6],hash[7] );
 
-  char* empty_hash = "62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbeff8a1d92c4b6fd100846bff745b0d999e0102e059b0a3c9e";
+  char* empty_hash = "b5f2408161649c643c175bae0a09354fc2925d35ab3b1bf3dae14f179d8387b62489d6c7ad0f3f5ce72cd6624b1844be2fef2a3c4e13175d554511ca0d198796";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST  512 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -122,9 +122,9 @@ void test_512( char* val1 ) {
 
 void test_64( char* val1 ) {
 
-	int a=4;
-	int b=6;
-	int c=6;
+	int a=2;
+	int b=7;
+	int c=3;
 
   uint64_t hash[1]; // output 8 bytes/64 bits.
   eval_hash_64( val1, hash, strlen(val1), a, b, c );
@@ -132,7 +132,7 @@ void test_64( char* val1 ) {
   char hex[17];
   sprintf(hex,"%016" PRIx64,hash[0] );
 
-  char* empty_hash = "7fffae8c18883c4f";
+  char* empty_hash = "2667b0f9c3dbcf2c";
   if( strcmp(hex,empty_hash) == 0 ) {
     printf( "TEST   64 bits of output OK!!!\n%s\n", hex );
   } else {
@@ -165,14 +165,14 @@ void itera_64( char* val1, long n, int flag, char* hex, uint64_t* hash, int a, i
 void itera( char* val1, long n, int flag, char* hex, char* spice, uint64_t* hash, int a, int b, int c ) {
 
 	if( strcmp(spice,"64") == 0 ) {
-		a = a==-1? 4: a;
-		b = b==-1? 6: b;
-		c = c==-1? 6: c;
+		a = a==-1? 2: a;
+		b = b==-1? 7: b;
+		c = c==-1? 3: c;
 		itera_64( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"512") == 0 ) {
-		a = a==-1? 6: a;
-		b = b==-1? 2: b;
-		c = c==-1? 3: c;
+		a = a==-1? 9: a;
+		b = b==-1? 3: b;
+		c = c==-1? 5: c;
 		itera_512( val1, n, flag, hex, hash, a, b, c );
 	} else if( strcmp(spice,"x4") == 0 ) {
 		a = a==-1? 7: a;
@@ -271,9 +271,9 @@ int doFileWrite( long n, int flag, char* spice, char* filein, char* fileout, uin
 
 int main(int argc, char *argv[]) {
 
-	int a=4; //7
-	int b=6; //7
-	int c=6; //4
+	int a=2; //4; //7
+	int b=7; //6; //7
+	int c=3; //6; //4
 
   char* val1 = ""; // input the empty string.
   long n;
