@@ -27,10 +27,10 @@ public class Azrael512 implements FuncionHash {
 
 
 	private static final String EMPTY_STRING_1_IT = 
-			"62199873880effb36556d98ab20a2c4f32e5c68a4bc49bbd40cba833785e3c2c9774287ab18dffbeff8a1d92c4b6fd100846bff745b0d999e0102e059b0a3c9e";
+			"b5f2408161649c643c175bae0a09354fc2925d35ab3b1bf3dae14f179d8387b62489d6c7ad0f3f5ce72cd6624b1844be2fef2a3c4e13175d554511ca0d198796";
 
 	private static final String EMPTY_STRING_2_IT = 
-			"b9c16a1aef610078b81d2b686013a0b4f28ab4bab0f54c7730084c755861380455b8b944ebae5b1780410bbfa6a1fc503e5764375cc34a910cbe9eef9b106876";
+			"47a7e3a5fddd0b24cb4b73f366aa92123e9d9b140b4e8aba706134a81e4ada2d244846e81b73643761c6143f64741f027b8b0fcfab0cd65aff1c7423c79c1f0c";
 	
 	/**
 	 * 
@@ -55,6 +55,10 @@ public class Azrael512 implements FuncionHash {
 		for( ; iteration<numIterations; ) {
 			iteration++;
 			input = getHashEval( input );
+			
+			//String value = Hex.encodeHexString(input);
+			//System.out.println( value );
+			
 			if( DEBUG_INTERMIDIATE_HASH ) {
 				
 				String value = Hex.encodeHexString(input);
@@ -109,6 +113,12 @@ public class Azrael512 implements FuncionHash {
 		return new BigInteger( input );
 	}
 
+	public long rotate( long x, int o ) {
+		o %= 64;
+		//return (long)( (long)(x >> o) | (long)(x << (64 - o)) );
+		return x >>> o;
+	}
+
 	/**
 	 * 
 	 * @param input
@@ -145,20 +155,40 @@ public class Azrael512 implements FuncionHash {
 		long sumaAnt7 = IV3;
 		long sumaAnt8 = IV8;
 		
+		int a = 2;
+		int b = 3;
+		int c = 4;
+		int d = 5;
+		int e = 6;
+		int f = 7;
+		int g = 9;
+		
 		char1 += (long)input[ input.length-2 ];
 		char2 += (long)input[ input.length-1 ];
 		char3 += (long)input[ 0 ];
 		char4 += (long)input[ 1 ];
 		char5 += (long)input[ 2 ];
 
-		sumaAnt8 += sumaAnt7;
-		sumaAnt7 += sumaAnt6;
-		sumaAnt6 += sumaAnt5;
-		sumaAnt5 += sumaAnt4;
-		sumaAnt4 += sumaAnt3;
-		sumaAnt3 += sumaAnt2;
-		sumaAnt2 += sumaAnt1;
+		sumaAnt8 += rotate( sumaAnt7, g );
+		sumaAnt7 += rotate( sumaAnt6, f );
+		sumaAnt6 += rotate( sumaAnt5, e );
+		sumaAnt5 += rotate( sumaAnt4, d );
+		sumaAnt4 += rotate( sumaAnt3, c );
+		sumaAnt3 += rotate( sumaAnt2, b );
+		sumaAnt2 += rotate( sumaAnt1, a );
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
+		
+		if( DEBUG_PARTIAL_HASH ) {
+			System.out.println( "**** END FIRST 8x64: " );
+			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
+			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
+			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
+			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
+			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
+			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
+			System.out.println( "**** sumAnt2 = "+sumaAnt2 );
+			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
+		}
 
 		// Main Loop.
 		for( int i=1; i<input.length-1; i++ ) {
@@ -167,28 +197,40 @@ public class Azrael512 implements FuncionHash {
 			char3 += char4;
 			char4 += (long)input[ i+1 ];
 			char5 += sumaAnt2;
-			sumaAnt8 += sumaAnt7;
-			sumaAnt7 += sumaAnt6;
-			sumaAnt6 += sumaAnt5;
-			sumaAnt5 += sumaAnt4;
-			sumaAnt4 += sumaAnt3;
-			sumaAnt3 += sumaAnt2;
-			sumaAnt2 += sumaAnt1;
+			sumaAnt8 += rotate( sumaAnt7, (8*(i+6)+g));
+			sumaAnt7 += rotate( sumaAnt6, (8*(i+5)+f));
+			sumaAnt6 += rotate( sumaAnt5, (8*(i+4)+e));
+			sumaAnt5 += rotate( sumaAnt4, (8*(i+3)+d));
+			sumaAnt4 += rotate( sumaAnt3, (8*(i+2)+c));
+			sumaAnt3 += rotate( sumaAnt2, (8*(i+1)+b));
+			sumaAnt2 += rotate( sumaAnt1, (8*i+a));
 			sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		}
 
+		if( DEBUG_PARTIAL_HASH ) {
+			System.out.println( "**** END LOOP" );
+			System.out.println( "**** sumAnt8 = "+sumaAnt8 );
+			System.out.println( "**** sumAnt7 = "+sumaAnt7 );
+			System.out.println( "**** sumAnt6 = "+sumaAnt6 );
+			System.out.println( "**** sumAnt5 = "+sumaAnt5 );
+			System.out.println( "**** sumAnt4 = "+sumaAnt4 );
+			System.out.println( "**** sumAnt3 = "+sumaAnt3 );
+			System.out.println( "**** sumAnt2 = "+sumaAnt2 );
+			System.out.println( "**** sumAnt1 = "+sumaAnt1 );
+		}
+		
 		char1 += sumaAnt1;
 		char2 += char3;
 		char3 += char4;
 		char4 += (long)input[ 0 ];
 		char5 += sumaAnt2;
-		sumaAnt8 += sumaAnt7;
-		sumaAnt7 += sumaAnt6;
-		sumaAnt6 += sumaAnt5;
-		sumaAnt5 += sumaAnt4;
-		sumaAnt4 += sumaAnt3;
-		sumaAnt3 += sumaAnt2;
-		sumaAnt2 += sumaAnt1;
+		sumaAnt8 += rotate( sumaAnt7,(56+g) );
+		sumaAnt7 += rotate( sumaAnt6,(48+f) );
+		sumaAnt6 += rotate( sumaAnt5,(40+e) );
+		sumaAnt5 += rotate( sumaAnt4,(32+d) );
+		sumaAnt4 += rotate( sumaAnt3,(24+c) );
+		sumaAnt3 += rotate( sumaAnt2,(16+b) );
+		sumaAnt2 += rotate( sumaAnt1,(8+a) );
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		
 		if( DEBUG_PARTIAL_HASH ) {
@@ -274,9 +316,9 @@ public class Azrael512 implements FuncionHash {
 			hash3 += evaluaFuncBool( hash3,hash3,hash3,hash3,hash3) + IV8;
 			hash4 += evaluaFuncBool( hash4,hash4,hash4,hash4,hash4) + IV9;
 			hash5 += evaluaFuncBool( hash5,hash5,hash5,hash5,hash5) + IV10;
-			hash6 += evaluaFuncBool( hash6,hash6,hash6,hash6,hash6) + IV4;
-			hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV7;
-			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV3;
+			hash6 += evaluaFuncBool( hash6,hash6,hash6,hash6,hash6) + IV6;
+			hash7 += evaluaFuncBool( hash7,hash7,hash7,hash7,hash7) + IV10;
+			hash8 += evaluaFuncBool( hash8,hash8,hash8,hash8,hash8) + IV4;
 		
 			if( DEBUG_PARTIAL_HASH ) {
 				System.out.println( "**** END DISPERSION FINAL 8x64: " );
@@ -395,8 +437,11 @@ public class Azrael512 implements FuncionHash {
 		hex1 = Hex.encodeHexString( hash1 );
 		hex2 = Hex.encodeHexString( hash2 );
 		
-		System.out.println( hex1+" == EMPTY (1) ="+hex1.equals(EMPTY_STRING_1_IT) );
-		System.out.println( hex2+" == EMPTY (2) ="+hex2.equals(EMPTY_STRING_2_IT) );
+		System.out.println( "1 => "+hex1 );
+		System.out.println( "2 => "+hex2 );
+		
+		System.out.println( "EMPTY 1 => "+(hex1.equals(EMPTY_STRING_1_IT)) );
+		System.out.println( "EMPTY 2 => "+(hex2.equals(EMPTY_STRING_2_IT)) );
 		/*
 		
 		String input = null;
