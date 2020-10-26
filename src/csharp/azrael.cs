@@ -20,7 +20,12 @@ class Azrael64 {
 			   (( char1 + char2 ) + ( char3 ^ char4 ) ^ char5) +
 			   (( char1 + char2 ) ^ ( char3 + char4 ) ^ char5) +
 			   (( char1 + char2 ) & ( char3 + char4 ) + char5);
-		}
+	}
+	
+	private long rotate( long x, int o ) {
+		o %= 64;
+		return (long)( (ulong)x >> o );
+	}
 	
 	private int[] pad(byte[] data) {
 		int length = data.Length;
@@ -81,15 +86,20 @@ class Azrael64 {
 		long sumaAnt4 = IV9;
 		long sumaAnt5 = IV10;
 		
+		int a =2;
+		int b =3;
+		int c =4;
+		int d =5;
+
 		char1 += (long)input[ input.Length-2 ];
 		char2 += (long)input[ input.Length-1 ];
 		char3 += (long)((sbyte)input[ 0 ]);
 		char4 += (long)input[ 1 ];
 		char5 += (long)input[ 2 ];
-		sumaAnt5 += sumaAnt4;
-		sumaAnt4 += sumaAnt3;
-		sumaAnt3 += sumaAnt2;
-		sumaAnt2 += sumaAnt1;
+		sumaAnt5 += rotate( sumaAnt4, d);
+		sumaAnt4 += rotate( sumaAnt3, c);
+		sumaAnt3 += rotate( sumaAnt2, b);
+		sumaAnt2 += rotate( sumaAnt1, a);
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
 		// Main Loop.
@@ -99,10 +109,10 @@ class Azrael64 {
 			char3 += char4;
 			char4 += (long)input[ i+1 ];
 			char5 += sumaAnt2;
-			sumaAnt5 += sumaAnt4;
-			sumaAnt4 += sumaAnt3;
-			sumaAnt3 += sumaAnt2;
-			sumaAnt2 += sumaAnt1;
+			sumaAnt5 += rotate( sumaAnt4, (8*(i+3)+d));
+			sumaAnt4 += rotate( sumaAnt3, (8*(i+2)+c));
+			sumaAnt3 += rotate( sumaAnt2, (8*(i+1)+b));
+			sumaAnt2 += rotate( sumaAnt1, (8*i+a));
 			sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 		}
 
@@ -111,17 +121,17 @@ class Azrael64 {
 		char3 += char4;
 		char4 += (long)input[ 0 ];
 		char5 += sumaAnt2;
-		sumaAnt5 += sumaAnt4;
-		sumaAnt4 += sumaAnt3;
-		sumaAnt3 += sumaAnt2;
-		sumaAnt2 += sumaAnt1;
+		sumaAnt5 += rotate( sumaAnt4,(32+d) );
+		sumaAnt4 += rotate( sumaAnt3,(24+c) );
+		sumaAnt3 += rotate( sumaAnt2,(16+b) );
+		sumaAnt2 += rotate( sumaAnt1,(8+a) );
 		sumaAnt1 += evaluaFuncBool( char1,char2,char3,char4,char5);
 
 		sumaAnt1 += evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1) + IV1;
 		sumaAnt2 += evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2) + IV2;
 		sumaAnt3 += evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3) + IV3;
 		sumaAnt4 += evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4) + IV4;
-		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV7;
+		sumaAnt5 += evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5) + IV4;
 
 		long mask1 = 0xffffffffL;
 		long mask2 = -0x1;
@@ -131,8 +141,8 @@ class Azrael64 {
 	               ((sumaAnt1+sumaAnt2+sumaAnt3 << 16) & mask1) |
 	               ((sumaAnt3+sumaAnt4+sumaAnt5) & mask1);
 
-		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV5;
-		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV7 + input.Length+5+2+1;
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV3;
+		hash += evaluaFuncBool( hash,hash,hash,hash,hash) + IV8 + input.Length+5+2+1;
 		
 		return longToBytes(hash);
   }
