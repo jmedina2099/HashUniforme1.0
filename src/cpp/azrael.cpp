@@ -21,6 +21,10 @@ class Azrael64 {
 		  0xd807aa9812835b01,
 		  0x243185be550c7dc3
 		};
+		inline uint64_t ROTATE_AZR( uint64_t x, int o ) {
+			o %= 64;
+			return (uint64_t)( x >> o );
+		}
 		inline uint64_t COMPRESS_320( register const uint64_t char1,
 				register const uint64_t char2,
 				register const uint64_t char3,
@@ -73,16 +77,21 @@ class Azrael64 {
 		  uint64_t cha[5] = {IV[0],IV[1],IV[2],IV[3],IV[4]};
 		  uint64_t carrier[5] = {IV[5],IV[6],IV[7],IV[8],IV[9]};
 
+		  int a =2;
+		  int b =3;
+		  int c =4;
+		  int d =5;
+
 		  // First iteration..
 		  cha[0] += (uint64_t)input[ inputLength-2 ];
 		  cha[1] += (uint64_t)input[ inputLength-1 ];
 		  cha[2] += (uint64_t)input[ 0 ];
 		  cha[3] += (uint64_t)input[ 1 ];
 		  cha[4] += (uint64_t)input[ 2 ];
-		  carrier[4] += carrier[3];
-		  carrier[3] += carrier[2];
-		  carrier[2] += carrier[1];
-		  carrier[1] += carrier[0];
+		  carrier[4] += ROTATE_AZR( carrier[3], d);
+		  carrier[3] += ROTATE_AZR( carrier[2], c);
+		  carrier[2] += ROTATE_AZR( carrier[1], b);
+		  carrier[1] += ROTATE_AZR( carrier[0], a);
 		  carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
 
 		  // Main Loop for hash streaming..
@@ -92,10 +101,10 @@ class Azrael64 {
 		    cha[2] += cha[3];
 		    cha[3] += (uint64_t)input[i+1];
 		    cha[4] += carrier[1];
-		    carrier[4] += carrier[3];
-		    carrier[3] += carrier[2];
-		    carrier[2] += carrier[1];
-		    carrier[1] += carrier[0];
+		    carrier[4] += ROTATE_AZR( carrier[3], (8*(i+3)+d));
+		    carrier[3] += ROTATE_AZR( carrier[2], (8*(i+2)+c));
+		    carrier[2] += ROTATE_AZR( carrier[1], (8*(i+1)+b));
+		    carrier[1] += ROTATE_AZR( carrier[0], (8*i+a));
 		    carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
 		  }
 
@@ -105,20 +114,31 @@ class Azrael64 {
 		  cha[2] += cha[3];
 		  cha[3] += (uint64_t)input[ 0 ];
 		  cha[4] += carrier[1];
-		  carrier[4] += carrier[3];
-		  carrier[3] += carrier[2];
-		  carrier[2] += carrier[1];
-		  carrier[1] += carrier[0];
+		  carrier[4] += ROTATE_AZR( carrier[3],(32+d) );
+		  carrier[3] += ROTATE_AZR( carrier[2],(24+c) );
+		  carrier[2] += ROTATE_AZR( carrier[1],(16+b) );
+		  carrier[1] += ROTATE_AZR( carrier[0],(8+a) );
 		  carrier[0] += COMPRESS_320( cha[0],cha[1],cha[2],cha[3],cha[4]);
 
-		  // Doing pile of bits.. (vertical 'avalanche' effect (2))
+		  // Doing dispersion of bits..
+		  carrier[0] += COMPRESS_320( carrier[0],carrier[0],carrier[0],carrier[0],carrier[0]) + IV[0];
+		  carrier[1] += COMPRESS_320( carrier[1],carrier[1],carrier[1],carrier[1],carrier[1]) + IV[1];
+		  carrier[2] += COMPRESS_320( carrier[2],carrier[2],carrier[2],carrier[2],carrier[2]) + IV[2];
+		  carrier[3] += COMPRESS_320( carrier[3],carrier[3],carrier[3],carrier[3],carrier[3]) + IV[3];
+		  carrier[4] += COMPRESS_320( carrier[4],carrier[4],carrier[4],carrier[4],carrier[4]) + IV[3];
+
+		  // Doing pile of bits..
 		  hash[0] = ((carrier[0] << 48) & 0xffffffffffffffffL ) |
 		            (((carrier[0]+carrier[1]) << 32) & 0xffffffffffffffffL ) |
 		            (((carrier[0]+carrier[1]+carrier[2]) << 16) & 0xffffffffL) |
 		            ((carrier[2]+carrier[3]+carrier[4]) & 0xffffffffL);
 
+		  // Doing dispersion of bits
+		  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[2];
+		  hash[0]  += COMPRESS_320( hash[0],hash[0],hash[0],hash[0],hash[0]) + IV[7];
+
 		  // Finally, we add the number of rounds to output..
-		  hash[0] += inputLength;
+		  hash[0] += inputLength + 5 + 1 + 2;
 		}
 };
 
