@@ -1,6 +1,8 @@
 declare var require: any;
 
 const Integer = require('integer');
+const ctypes = require('ctypes');
+const UInt64 = ctypes.UInt64;
 
 function longToBytes( l:typeof Integer ) {
 	let result = new Array<number>(8);
@@ -9,6 +11,19 @@ function longToBytes( l:typeof Integer ) {
         l = l.shiftRight(8);
     }
     return result;
+}
+
+function rotate( x: typeof Integer, o: number) {
+	o %= 64;
+	if( x.greaterThanOrEquals( Integer(0) ) ) {
+		return x.shiftRight(o);
+	} else {
+		let xx = x.and( Integer.fromString("7FFFFFFFFFFFFFFF",16) );
+		let y = xx.shiftRight(o);
+		let mask = Integer.fromString("4000000000000000",16);
+		let yy = y.or( mask.shiftRight(o-1) );
+		return yy;
+	}
 }
 
 
@@ -73,7 +88,7 @@ function toUTF8Array(str: string) {
         }
     }
     return utf8;
-}
+}Integer.fromString("6a09e667bb67ae85",16);
 
 function evaluaFuncBool(x1:typeof Integer, x2:typeof Integer, x3:typeof Integer, x4:typeof Integer, x5:typeof Integer) {
 		let c_0:typeof Integer = (add(x1,x2).xor(x3.xor(x4))).xor(x5);
@@ -155,16 +170,21 @@ class Azrael64 {
 		let sumaAnt4:typeof Integer = IV9;
 		let sumaAnt5:typeof Integer = IV10;
 		
+		let a =2;
+		let b =3;
+		let c =4;
+		let d =5;
+		
 		char1 = add(char1,input[ input.length-2 ]);
 		char2 = add(char2,input[ input.length-1 ]);
 		char3 = add(char3,input[ 0 ]);
 		char4 = add(char4,input[ 1 ]);
 		char5 = add(char5,input[ 2 ]);
 
-		sumaAnt5 = add(sumaAnt5,sumaAnt4);
-		sumaAnt4 = add(sumaAnt4,sumaAnt3);
-		sumaAnt3 = add(sumaAnt3,sumaAnt2);
-		sumaAnt2 = add(sumaAnt2,sumaAnt1);
+		sumaAnt5 = add(sumaAnt5,rotate( sumaAnt4, d));
+		sumaAnt4 = add(sumaAnt4,rotate( sumaAnt3, c));
+		sumaAnt3 = add(sumaAnt3,rotate( sumaAnt2, b));
+		sumaAnt2 = add(sumaAnt2,rotate( sumaAnt1, a));
 		sumaAnt1 = add(sumaAnt1,evaluaFuncBool( char1,char2,char3,char4,char5));
 		
 		// Main Loop.
@@ -174,10 +194,10 @@ class Azrael64 {
 			char3 = add(char3,char4);
 			char4 = add(char4,input[ i+1 ]);
 			char5 = add(char5,sumaAnt2);
-			sumaAnt5 = add(sumaAnt5,sumaAnt4);
-			sumaAnt4 = add(sumaAnt4,sumaAnt3);
-			sumaAnt3 = add(sumaAnt3,sumaAnt2);
-			sumaAnt2 = add(sumaAnt2,sumaAnt1);
+			sumaAnt5 = add(sumaAnt5,rotate( sumaAnt4, (8*(i+3)+d)));
+			sumaAnt4 = add(sumaAnt4,rotate( sumaAnt3, (8*(i+2)+c)));
+			sumaAnt3 = add(sumaAnt3,rotate( sumaAnt2, (8*(i+1)+b)));
+			sumaAnt2 = add(sumaAnt2,rotate( sumaAnt1, (8*i+a)));
 			sumaAnt1 = add(sumaAnt1,evaluaFuncBool( char1,char2,char3,char4,char5));
 		}
 		
@@ -186,17 +206,17 @@ class Azrael64 {
 		char3 = add(char3,char4);
 		char4 = add(char4,input[ 0 ]);
 		char5 = add(char5,sumaAnt2);
-		sumaAnt5 = add(sumaAnt5,sumaAnt4);
-		sumaAnt4 = add(sumaAnt4,sumaAnt3);
-		sumaAnt3 = add(sumaAnt3,sumaAnt2);
-		sumaAnt2 = add(sumaAnt2,sumaAnt1);
+		sumaAnt5 = add(sumaAnt5,rotate( sumaAnt4,(32+d) ));
+		sumaAnt4 = add(sumaAnt4,rotate( sumaAnt3,(24+c) ));
+		sumaAnt3 = add(sumaAnt3,rotate( sumaAnt2,(16+b) ));
+		sumaAnt2 = add(sumaAnt2,rotate( sumaAnt1,(8+a) ));
 		sumaAnt1 = add(sumaAnt1,evaluaFuncBool( char1,char2,char3,char4,char5));
 
 		sumaAnt1 = add(add(sumaAnt1,evaluaFuncBool( sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1,sumaAnt1)),IV1);
 		sumaAnt2 = add(add(sumaAnt2,evaluaFuncBool( sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2,sumaAnt2)),IV2);
 		sumaAnt3 = add(add(sumaAnt3,evaluaFuncBool( sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3,sumaAnt3)),IV3);
 		sumaAnt4 = add(add(sumaAnt4,evaluaFuncBool( sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4,sumaAnt4)),IV4);
-		sumaAnt5 = add(add(sumaAnt5,evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5)),IV7);
+		sumaAnt5 = add(add(sumaAnt5,evaluaFuncBool( sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5,sumaAnt5)),IV4);
 		
 		let mask1:typeof Integer = Integer(0xffffffff);
 		let mask2:typeof Integer = Integer(-0x1);
@@ -208,8 +228,8 @@ class Azrael64 {
 
 		let rounds:typeof Integer = input.length+5+2+1;
 
-		hash = add(add(hash,evaluaFuncBool( hash,hash,hash,hash,hash)),IV5);
-		hash = add(add(add(hash,evaluaFuncBool( hash,hash,hash,hash,hash)),IV7),rounds);
+		hash = add(add(hash,evaluaFuncBool( hash,hash,hash,hash,hash)),IV3);
+		hash = add(add(add(hash,evaluaFuncBool( hash,hash,hash,hash,hash)),IV8),rounds);
 
 		return hash;
 		
