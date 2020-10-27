@@ -29,6 +29,11 @@ impl Azrael64 {
 			.wrapping_add(c_c).wrapping_add(c_d).wrapping_add(c_e).wrapping_add(c_f);
 	}
 	
+	fn rotate( &self, x:i64, mut o:usize ) -> i64 {
+		o %= 64;
+		return ( (x as u64) >> o ) as i64;
+	}
+	
 	fn pad( &self, data: &[u8], _output: &mut Vec<i8>, length: usize, padding: usize ) {
 		let mut pad: Vec<i8> = vec![0;padding];
         pad[0] = -0x80 as i8;
@@ -72,15 +77,20 @@ impl Azrael64 {
 		let mut suma_ant4:i64 = iv9;
 		let mut suma_ant5:i64 = iv10;
 		
+		let a =2;
+		let b =3;
+		let c =4;
+		let d =5;
+		
 		char1 = char1.wrapping_add( input[ length-2 ] as i64 );
 		char2 = char2.wrapping_add( input[ length-1 ] as i64 );
 		char3 = char3.wrapping_add( input[ 0 ] as i64 );
 		char4 = char4.wrapping_add( input[ 1 ] as i64 );
 		char5 = char5.wrapping_add( input[ 2 ] as i64 );
-		suma_ant5 = suma_ant5.wrapping_add(suma_ant4);
-		suma_ant4 = suma_ant4.wrapping_add(suma_ant3);
-		suma_ant3 = suma_ant3.wrapping_add(suma_ant2);
-		suma_ant2 = suma_ant2.wrapping_add(suma_ant1);
+		suma_ant5 = suma_ant5.wrapping_add( self.rotate(suma_ant4,d) );
+		suma_ant4 = suma_ant4.wrapping_add( self.rotate(suma_ant3,c) );
+		suma_ant3 = suma_ant3.wrapping_add( self.rotate(suma_ant2,b) );
+		suma_ant2 = suma_ant2.wrapping_add( self.rotate(suma_ant1,a) );
 		suma_ant1 = suma_ant1.wrapping_add(self.evalua_func_bool( char1,char2,char3,char4,char5));
 
 		// Main Loop.
@@ -90,10 +100,10 @@ impl Azrael64 {
 			char3 = char3.wrapping_add(char4);
 			char4 = char4.wrapping_add(input[ i+1 ] as i64);
 			char5 = char5.wrapping_add(suma_ant2);
-			suma_ant5 = suma_ant5.wrapping_add(suma_ant4);
-			suma_ant4 = suma_ant4.wrapping_add(suma_ant3);
-			suma_ant3 = suma_ant3.wrapping_add(suma_ant2);
-			suma_ant2 = suma_ant2.wrapping_add(suma_ant1);
+			suma_ant5 = suma_ant5.wrapping_add( self.rotate(suma_ant4, 8*(i+3)+d) );
+			suma_ant4 = suma_ant4.wrapping_add( self.rotate(suma_ant3, 8*(i+2)+c) );
+			suma_ant3 = suma_ant3.wrapping_add( self.rotate(suma_ant2, 8*(i+1)+b) );
+			suma_ant2 = suma_ant2.wrapping_add( self.rotate(suma_ant1, 8*i+a) );
 			suma_ant1 = suma_ant1.wrapping_add(self.evalua_func_bool( char1,char2,char3,char4,char5));
 		}
 		
@@ -102,17 +112,17 @@ impl Azrael64 {
 		char3 = char3.wrapping_add(char4);
 		char4 = char4.wrapping_add(input[ 0 ] as i64);
 		char5 = char5.wrapping_add(suma_ant2);
-		suma_ant5 = suma_ant5.wrapping_add(suma_ant4);
-		suma_ant4 = suma_ant4.wrapping_add(suma_ant3);
-		suma_ant3 = suma_ant3.wrapping_add(suma_ant2);
-		suma_ant2 = suma_ant2.wrapping_add(suma_ant1);
+		suma_ant5 = suma_ant5.wrapping_add( self.rotate(suma_ant4, 32+d) );
+		suma_ant4 = suma_ant4.wrapping_add( self.rotate(suma_ant3, 24+c) );
+		suma_ant3 = suma_ant3.wrapping_add( self.rotate(suma_ant2, 16+b) );
+		suma_ant2 = suma_ant2.wrapping_add( self.rotate(suma_ant1, 8+a) );
 		suma_ant1 = suma_ant1.wrapping_add(self.evalua_func_bool( char1,char2,char3,char4,char5));
 
 		suma_ant1 = suma_ant1.wrapping_add(self.evalua_func_bool( suma_ant1,suma_ant1,suma_ant1,suma_ant1,suma_ant1)).wrapping_add(iv1);
 		suma_ant2 = suma_ant2.wrapping_add(self.evalua_func_bool( suma_ant2,suma_ant2,suma_ant2,suma_ant2,suma_ant2)).wrapping_add(iv2);
 		suma_ant3 = suma_ant3.wrapping_add(self.evalua_func_bool( suma_ant3,suma_ant3,suma_ant3,suma_ant3,suma_ant3)).wrapping_add(iv3);
 		suma_ant4 = suma_ant4.wrapping_add(self.evalua_func_bool( suma_ant4,suma_ant4,suma_ant4,suma_ant4,suma_ant4)).wrapping_add(iv4);
-		suma_ant5 = suma_ant5.wrapping_add(self.evalua_func_bool( suma_ant5,suma_ant5,suma_ant5,suma_ant5,suma_ant5)).wrapping_add(iv7);
+		suma_ant5 = suma_ant5.wrapping_add(self.evalua_func_bool( suma_ant5,suma_ant5,suma_ant5,suma_ant5,suma_ant5)).wrapping_add(iv4);
 		
 		let mask1:i64 = 0xffffffff as i64;
 		let mask2 = -0x1 as i64;
@@ -123,8 +133,8 @@ impl Azrael64 {
 	               ((suma_ant3.wrapping_add(suma_ant4).wrapping_add(suma_ant5)) & mask1);
 
 		let rounds = (length as i64)+5+2+1;
-		hash = hash.wrapping_add(self.evalua_func_bool( hash,hash,hash,hash,hash).wrapping_add(iv5));
-		hash = hash.wrapping_add(self.evalua_func_bool( hash,hash,hash,hash,hash).wrapping_add(iv7).wrapping_add(rounds));
+		hash = hash.wrapping_add(self.evalua_func_bool( hash,hash,hash,hash,hash).wrapping_add(iv3));
+		hash = hash.wrapping_add(self.evalua_func_bool( hash,hash,hash,hash,hash).wrapping_add(iv8).wrapping_add(rounds));
 
 		*hash1 = hash;
 	}
